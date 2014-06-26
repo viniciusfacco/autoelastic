@@ -29,7 +29,7 @@ public class FAutoElastic extends javax.swing.JFrame {
         gerenciador = new AutoElastic(this.jpGraficoLine);
         this.setExtendedState(MAXIMIZED_BOTH);//maximoza janela        
         variaveis_padroes();//inicializo todos os parâmetros para o padrão
-        this.setIconImage(new ImageIcon("./images/icone64x64.png").getImage());
+        this.setIconImage(new javax.swing.ImageIcon(getClass().getResource("/images/icone64x64.png")).getImage());
     }
 
     @SuppressWarnings("unchecked")

@@ -5,7 +5,6 @@
         <data xmlns="http://www.netbeans.org/ns/j2se-project/3">
             <name>AutoElastic</name>
             <source-roots>
-                <root id="src.images.dir" name="Imagens"/>
                 <root id="src.dir"/>
             </source-roots>
             <test-roots>

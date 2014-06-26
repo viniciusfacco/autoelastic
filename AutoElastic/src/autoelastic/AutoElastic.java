@@ -21,6 +21,8 @@ import slas.WSAgreementSLA;
  *            - Inicialização está OK
  * 26/05/2014 - Finalizada a implementação do novo gerenciado
  * Última atualização: 26/05/2014
+ * 26/06/2014 - Inicialização do projeto no GitHub
+ *            - Versão 2.1
  */
 public class AutoElastic implements Runnable {
 
