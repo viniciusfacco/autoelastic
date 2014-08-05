@@ -19,7 +19,7 @@ import slas.WSAgreementSLA;
  * @author vinicius.rodrigues
  * 23/05/2014 - Criação do novo AutoElastic
  *            - Inicialização está OK
- * 26/05/2014 - Finalizada a implementação do novo gerenciado
+ * 26/05/2014 - Finalizada a implementação do novo gerenciador
  * Última atualização: 26/05/2014
  * 26/06/2014 - Inicialização do projeto no GitHub
  *            - Versão 2.1
@@ -156,6 +156,7 @@ public class AutoElastic implements Runnable {
                         //here we need deal with the violation
                         if (evaluator.isHighAction()){//if we have a violation on the high threshold
                             gera_log(objname,"Main: Avaliador detectou alta carga...Verificando se SLA está no limite...");
+                            evaluator.reset(); //after deal with the problem/violation, re-initialize the parameters of evaluation
                             if(sla.canIncrease(cloud_manager.getTotalActiveHosts())){ //verify the SLA to know if we can increase resources
                                 gera_log(objname,"Main: SLA não atingido...novo recurso pode ser alocado...");
                                 gera_log(objname,"Main: Alocando recursos...");
@@ -163,6 +164,7 @@ public class AutoElastic implements Runnable {
                             } else {gera_log(objname,"Main: SLA no limite...nada pode ser feito...");}
                         } else if (evaluator.isLowAction()){ //if we have a violation on the low threshold
                             gera_log(objname,"Main: Avaliador detectou baixa carga...Verificando se SLA está no limite...");
+                            evaluator.reset(); //after deal with the problem/violation, re-initialize the parameters of evaluation
                             if(sla.canDecrease(cloud_manager.getTotalActiveHosts())){ //verify the SLA to know if we can decrease resources
                                 gera_log(objname,"Main: SLA não atingido...novo recurso pode ser liberado...");
                                 gera_log(objname,"Main: Liberando recursos...");
@@ -170,9 +172,8 @@ public class AutoElastic implements Runnable {
                             } else {gera_log(objname,"Main: SLA no limite...nada pode ser feito...");}
                         } else {gera_log(objname,"Main: Evaluator problem. We have violation but we do not know which.");}
                     } else {
-                        gera_log(objname,"Main: Nenhum problema detecrado pelo avaliador.");
-                    }
-                    evaluator.reset(); //after deal with the problem/violation, re-initialize the parameters of evaluation
+                        gera_log(objname,"Main: Nenhum problema detectado pelo avaliador.");
+                    }                    
                 } else {
                         gera_log(objname,"Main: Aguardando inicialização de recursos.");
                 }

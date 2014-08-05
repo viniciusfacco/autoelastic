@@ -609,18 +609,12 @@
                 <Component class="javax.swing.JTable" name="jtHosts">
                   <Properties>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                      <Table columnCount="1" rowCount="10">
+                      <Table columnCount="1" rowCount="4">
                         <Column editable="true" title="Hosts" type="java.lang.String">
-                          <Data value="192.168.10.2"/>
-                          <Data value="192.168.10.3"/>
-                          <Data value="192.168.10.4"/>
-                          <Data value="192.168.10.5"/>
-                          <Data value="192.168.10.6"/>
-                          <Data value="192.168.10.7"/>
-                          <Data value="192.168.10.8"/>
-                          <Data value="192.168.10.10"/>
-                          <Data value="192.168.10.11"/>
-                          <Data value="192.168.10.14"/>
+                          <Data value="10.210.7.230"/>
+                          <Data value="10.210.7.231"/>
+                          <Data value="10.210.6.232"/>
+                          <Data value="10.210.1.88"/>
                         </Column>
                       </Table>
                     </Property>

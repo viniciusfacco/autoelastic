@@ -416,16 +416,10 @@ public class FAutoElastic extends javax.swing.JFrame {
 
         jtHosts.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"192.168.10.2"},
-                {"192.168.10.3"},
-                {"192.168.10.4"},
-                {"192.168.10.5"},
-                {"192.168.10.6"},
-                {"192.168.10.7"},
-                {"192.168.10.8"},
-                {"192.168.10.10"},
-                {"192.168.10.11"},
-                {"192.168.10.14"}
+                {"10.210.7.230"},
+                {"10.210.7.231"},
+                {"10.210.6.232"},
+                {"10.210.1.88"}
             },
             new String [] {
                 "Hosts"
@@ -879,10 +873,11 @@ public class FAutoElastic extends javax.swing.JFrame {
 
     private void variaveis_padroes() {
         //definir os parametros para o padrao
-        this.jtfFrontend.setText("192.168.10.1");
+        this.jtfFrontend.setText("10.210.2.164");
         this.jtfUsuario.setText("oneadmin");
         this.jtfSenha.setText("oneadmin");
-        this.jtfSla.setText("D:\\Users\\Vinicius\\Dropbox\\UNISINOS\\PIPCA\\Projetos\\AutoElastic\\autoelasticsla.xml");
+        //this.jtfSla.setText("D:\\Users\\Vinicius\\Dropbox\\UNISINOS\\PIPCA\\Projetos\\AutoElastic\\autoelasticsla.xml");
+        this.jtfSla.setText("C:\\Users\\Vinicius Facco\\Dropbox\\UNISINOS\\PIPCA\\Projetos\\AutoElastic\\autoelasticsla.xml");
         this.jtfLogs.setText("C:\\Temp\\");
         this.jtfIntervalo.setText("15");
         this.jtfEvaluatorWindow.setText("3");

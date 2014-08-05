@@ -101,7 +101,10 @@ public class OneManager {
     
     //return the load of the cloud based on CPU
     public float getCPULoad(){
-        return ohpool.get_used_CPU() / ohpool.get_allocated_CPU() ;
+        float used = ohpool.get_used_CPU();
+        float allocated = ohpool.get_allocated_CPU();        
+        float value = used / allocated;
+        return value;
     }
     
     //return the total of CPU available in the cloud
@@ -125,11 +128,11 @@ public class OneManager {
         if (hostid > 0){
             for (int i = 0; i < vms_for_host; i++) {
                 last_vms[i] = new OneVM(vmtemplateid);
-                                increaseVM(last_vms[i], hostid); //aloca vm nesse host
-                                gera_log(objname,"Main: Nova VM alocada: " + last_vms[i].get_id());
-                                ohpool.get_onehost(hostid).add_vm(last_vms[i]);
-                                Thread.sleep(10000);
-                            }
+                increaseVM(last_vms[i], hostid); //aloca vm nesse host
+                gera_log(objname,"Main: Nova VM alocada: " + last_vms[i].get_id());
+                ohpool.get_onehost(hostid).add_vm(last_vms[i]);
+                Thread.sleep(10000);
+            }
             waiting_vms = true;
             return true;
         }
