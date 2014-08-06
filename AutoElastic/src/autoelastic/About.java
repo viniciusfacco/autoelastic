@@ -48,14 +48,14 @@ public class About extends javax.swing.JFrame {
         jlIcone = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Sobre");
+        setTitle("About");
         setResizable(false);
 
         jl_app.setFont(new java.awt.Font("Century Gothic", 1, 36)); // NOI18N
         jl_app.setText("AutoElastic");
 
         jl_version.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
-        jl_version.setText("Versão 2.1");
+        jl_version.setText("Version 2.1");
 
         jl_name.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         jl_name.setText("Vinicius Facco Rodrigues");
@@ -75,12 +75,12 @@ public class About extends javax.swing.JFrame {
         jta_description.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         jta_description.setLineWrap(true);
         jta_description.setRows(5);
-        jta_description.setText("AutoElastic é uma aplicação para gerenciamento de elasticidade em ambientes de Computação em Nuvem.  Sua principal funcionalidade é oferecer elasticidade automática de recursos.\n\nAtualmente, somente a plataforma OpenNebula é suportada.");
+        jta_description.setText("AutoElastic is an application for managing resources in cloud computing environments. Its main functionality is to provide automatically elasticity of resources. \n\nCurrently, only the OpenNebula platform is supported.");
         jta_description.setWrapStyleWord(true);
         jta_description.setBorder(null);
         jScrollPane1.setViewportView(jta_description);
 
-        jButton1.setText("Fechar");
+        jButton1.setText("Close");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
