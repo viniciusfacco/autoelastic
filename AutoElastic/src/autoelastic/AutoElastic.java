@@ -17,12 +17,17 @@ import slas.WSAgreementSLA;
 /**
  *
  * @author vinicius.rodrigues
- * 23/05/2014 - Criação do novo AutoElastic
+ * 23/05/2014 - viniciusfacco
+ *            - Criação do novo AutoElastic
  *            - Inicialização está OK
- * 26/05/2014 - Finalizada a implementação do novo gerenciador
+ * 26/05/2014 - viniciusfacco
+ *            - Finalizada a implementação do novo gerenciador
  * Última atualização: 26/05/2014
- * 26/06/2014 - Inicialização do projeto no GitHub
+ * 26/06/2014 - viniciusfacco
+ *            - Inicialização do projeto no GitHub
  *            - Versão 2.1
+ * 05/08/2014 - viniciusfacco
+ *            - Realizadas correções de erros
  */
 public class AutoElastic implements Runnable {
 
