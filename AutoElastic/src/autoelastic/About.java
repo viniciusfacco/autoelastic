@@ -75,7 +75,7 @@ public class About extends javax.swing.JFrame {
         jta_description.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         jta_description.setLineWrap(true);
         jta_description.setRows(5);
-        jta_description.setText("AutoElastic is an application for managing resources in cloud computing environments. Its main functionality is to provide automatically elasticity of resources. \n\nCurrently, only the OpenNebula platform is supported.");
+        jta_description.setText("AutoElastic is an application for managing resources in cloud computing environments. Its main functionality is to provide automatically elasticity of resources. Currently, only the OpenNebula platform is supported.");
         jta_description.setWrapStyleWord(true);
         jta_description.setBorder(null);
         jScrollPane1.setViewportView(jta_description);
