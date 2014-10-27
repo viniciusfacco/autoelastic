@@ -40,6 +40,7 @@ public class OneHost {
     private float USED_CPU;
     private float MAX_MEM;
     private float USED_MEM;
+    private long LAST_MON_TIME;
      private JTextArea log;
     
     public OneHost(String nome, String im, String vmm, String vnm, int cid, JTextArea plog){
@@ -116,12 +117,24 @@ public class OneHost {
         return this.name;
     }
     
-    public int get_used_cpu(){
-        return (int) this.USED_CPU;
+    public float get_used_cpu(){
+        return this.USED_CPU;
     }
     
-    public int get_max_cpu(){
-        return (int) this.MAX_CPU;
+    public float get_max_cpu(){
+        return this.MAX_CPU;
+    }
+    
+    public float get_used_mem(){
+        return this.USED_MEM;
+    }
+    
+    public float get_max_mem(){
+        return this.MAX_MEM;
+    }
+    
+    public long get_last_mon_time(){
+        return this.LAST_MON_TIME;
     }
     
     public boolean enable(){
@@ -136,6 +149,10 @@ public class OneHost {
         Document doc = docBuilder.parse(is);
         doc.getDocumentElement().normalize();
         //System.out.println ("Elemento Root: " + doc.getDocumentElement().getNodeName());
+        
+        //obtendo o último tempoo de monitoramento
+        NodeList LASTMONTIME = doc.getElementsByTagName("LAST_MON_TIME");
+        this.LAST_MON_TIME = Long.parseLong(LASTMONTIME.item(0).getChildNodes().item(0).getNodeValue());
         
         //obtendo lista de métricas para pesquisa
         NodeList parametros = doc.getElementsByTagName("HOST_SHARE");

@@ -154,7 +154,7 @@ public class AutoElastic implements Runnable {
                 cloud_manager.syncData();                               //synchronize data of the cloud
                 grafico.update(cont, cloud_manager.getUsedCPU(), cloud_manager.getAllocatedCPU(), cloud_manager.getAllocatedCPU() * threshold_max, cloud_manager.getAllocatedCPU() * threshold_min);
                 gera_log(objname,"Main|monitora: Soma da carga de cpu de todos os hosts: " + cloud_manager.getUsedCPU() + " / Threshold maximo estabelecido: " + cloud_manager.getAllocatedCPU() * threshold_max + " / Threshold minimo estabelecido: " + cloud_manager.getAllocatedCPU() * threshold_min);
-                export_log(cont, tempo, cloud_manager.getTotalActiveHosts(), cloud_manager.getAllocatedCPU(), cloud_manager.getUsedCPU(), cloud_manager.getAllocatedCPU() * threshold_max, cloud_manager.getAllocatedCPU() * threshold_min);
+                export_log(cont, tempo, cloud_manager.getTotalActiveHosts(), cloud_manager.getAllocatedCPU(), cloud_manager.getUsedCPU(), cloud_manager.getAllocatedMEM(), cloud_manager.getUsedMEM(), cloud_manager.getAllocatedCPU() * threshold_max, cloud_manager.getAllocatedCPU() * threshold_min, cloud_manager.getLastMonitorTimes());
                 gera_log(objname,"Main: Realiza verificação de alguma violação dos thresholds...");
                 if (!cloud_manager.isWaiting()){// if we are not waiting for new resource allocation we can evaluate the cloud
                     if (evaluator.evaluate(cloud_manager.getCPULoad())){//analyze the cloud situation and if we have some violation we need deal with this
@@ -214,11 +214,11 @@ public class AutoElastic implements Runnable {
     }
     
     //método para geração do arquivo de log
-    private static void export_log(int tempo, int time, int num_hosts, int tot_cpu_dis, int tot_cpu_usa, double th_max, double th_min ){
-        File arquivo = new File(logspath + "autoelastic" + logtime + ".txt");
+    private static void export_log(int tempo, int time, int num_hosts, float tot_cpu_dis, float tot_cpu_usa, float tot_mem_dis, float tot_mem_usa, double th_max, double th_min, String extra_info){
+        File arquivo = new File(logspath + "autoelastic" + logtime + ".csv");
         try (
             BufferedWriter escritor = new BufferedWriter(new FileWriter(arquivo, true))) {
-            escritor.append(tempo + ";" + time + ";" + num_hosts + ";" + tot_cpu_dis + ";" + tot_cpu_usa + ";" + th_max + ";" + th_min + "\n");
+            escritor.append(tempo + "," + time + "," + num_hosts + "," + tot_cpu_dis + "," + tot_cpu_usa + "," + tot_mem_dis + "," + tot_mem_usa + "," + th_max + "," + th_min + extra_info + "\n");
             escritor.close();
         } catch (IOException ex) {
             Logger.getLogger(AutoElastic.class.getName()).log(Level.SEVERE, null, ex);

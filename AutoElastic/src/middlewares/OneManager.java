@@ -108,13 +108,28 @@ public class OneManager {
     }
     
     //return the total of CPU available in the cloud
-    public int getAllocatedCPU(){
+    public float getAllocatedCPU(){
         return ohpool.get_allocated_CPU();
     }
     
     //return the current use of CPU
-    public int getUsedCPU(){
+    public float getUsedCPU(){
         return ohpool.get_used_CPU();
+    }
+    
+    //return the total of MEM available in the cloud
+    public float getAllocatedMEM(){
+        return ohpool.get_allocated_MEM();
+    }
+    
+    //return the current use of MEM
+    public float getUsedMEM(){
+        return ohpool.get_used_MEM();
+    }
+    
+    //return the list of the last monitor time of each host
+    public String getLastMonitorTimes(){
+        return ohpool.get_last_monitor_times();
     }
     
     //return the current number of hosts in use
