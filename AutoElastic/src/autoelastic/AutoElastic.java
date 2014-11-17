@@ -28,6 +28,8 @@ import slas.WSAgreementSLA;
  *            - Versão 2.1
  * 05/08/2014 - viniciusfacco
  *            - Realizadas correções de erros
+ * 27/10/2014 - viniciusfacco
+ *            - Update to export the MAX_MEM, USED_MEM and LAST_MON_TIME
  */
 public class AutoElastic implements Runnable {
 

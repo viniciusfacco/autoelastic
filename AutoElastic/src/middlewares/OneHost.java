@@ -1,10 +1,19 @@
 
 package middlewares;
 
+import autoelastic.AutoElastic;
 import static autoelastic.AutoElastic.gera_log;
+import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JTextArea;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -22,6 +31,11 @@ import org.xml.sax.SAXException;
 /**
  *
  * @author Vinicius
+ * 27/10/2014 - viniciusfacco
+ *            - added parameter LAST_MON_TIME
+ * 17/11/2014 - viniciusfacco
+ *            - implementeded method to log the name of the host and the creation and exclusion time
+ *            - added parameter "AllocationTime"
  */
 public class OneHost {
     
@@ -41,7 +55,8 @@ public class OneHost {
     private float MAX_MEM;
     private float USED_MEM;
     private long LAST_MON_TIME;
-     private JTextArea log;
+    private JTextArea log;
+    private String AllocationTime;
     
     public OneHost(String nome, String im, String vmm, String vnm, int cid, JTextArea plog){
     //public OneHost(String nome, String im, String vmm, String vnm, String tm){ comentado por atualização de versão
@@ -66,6 +81,9 @@ public class OneHost {
         else {
             this.id = Integer.parseInt(rc.getMessage());
             this.host = new Host(this.id, oc);
+            DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");   //code to get
+            Date date = new Date();                                     //the allocate time
+            this.AllocationTime = dateFormat.format(date);                
         }
         this.status = true;
         return true;
@@ -89,6 +107,9 @@ public class OneHost {
             gera_log(objname,"Falha ao deletar host ID " + this.id + "\n" + rc.getErrorMessage());
             return false;
         }
+        DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");   //code to get
+        Date date = new Date();                                     //the delete time
+        greenHPC_log(this.name + ";" + this.AllocationTime + ";" + dateFormat.format(date));
         this.status = false;
         return true;
     }
@@ -218,4 +239,17 @@ public class OneHost {
         //System.out.println(rc.getMessage());        
         return rc.getMessage();
     }    
+    
+    //method to generate a specific log
+    private static void greenHPC_log(String data){
+        File arquivo = new File("C:\\temp\\autoelastic_resource_operaiton.csv");
+        try (
+            BufferedWriter escritor = new BufferedWriter(new FileWriter(arquivo, true))) {
+            escritor.append(data + "\n");
+            escritor.close();
+        } catch (IOException ex) {
+            Logger.getLogger(AutoElastic.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
 }

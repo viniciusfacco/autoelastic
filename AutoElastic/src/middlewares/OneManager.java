@@ -2,6 +2,8 @@
  * 25/04/2014
  * OneManager
  * - Classe destinada a fazer a a realizar operações e leituras no ambiente
+ * 27/10/2014 - viniciusfacco
+ *            - Upated to get allocatedMEM, usedMEM and allMonitoringTimes from the pool
  */
 
 package middlewares;

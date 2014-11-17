@@ -20,6 +20,8 @@ import org.xml.sax.SAXException;
 /**
  *
  * @author vinicius.rodrigues
+ * 27/10/2014 - viniciusfacco
+ *            - Upated to save allocatedMEM, usedMEM and allMonitoringTimes
  */
 public class OneHostPool {
     
