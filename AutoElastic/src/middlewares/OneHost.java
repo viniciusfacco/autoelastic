@@ -56,7 +56,6 @@ public class OneHost {
     private float USED_MEM;
     private long LAST_MON_TIME;
     private JTextArea log;
-    private String AllocationTime;
     
     public OneHost(String nome, String im, String vmm, String vnm, int cid, JTextArea plog){
     //public OneHost(String nome, String im, String vmm, String vnm, String tm){ comentado por atualização de versão
@@ -83,7 +82,7 @@ public class OneHost {
             this.host = new Host(this.id, oc);
             DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");   //code to get
             Date date = new Date();                                     //the allocate time
-            this.AllocationTime = dateFormat.format(date);                
+            greenHPC_log(this.name + ";" + dateFormat.format(date) + ";ALOCA");
         }
         this.status = true;
         return true;
@@ -109,7 +108,7 @@ public class OneHost {
         }
         DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");   //code to get
         Date date = new Date();                                     //the delete time
-        greenHPC_log(this.name + ";" + this.AllocationTime + ";" + dateFormat.format(date));
+        greenHPC_log(this.name + ";" + dateFormat.format(date) + ";DESALOCA");
         this.status = false;
         return true;
     }
