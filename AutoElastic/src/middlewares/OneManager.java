@@ -101,8 +101,11 @@ public class OneManager {
         ohpool.sync_hosts(); //sincroniza dados dos hosts
     }
     
-    //return the load of the cloud based on CPU
-    public float getCPULoad(){
+    /**
+     * Return the load of the cloud based on CPU
+     * @return [0 &lt load &lt 1]
+     */
+        public float getCPULoad(){
         float used = ohpool.get_used_CPU();
         float allocated = ohpool.get_allocated_CPU();        
         float load = used / allocated;
@@ -114,7 +117,10 @@ public class OneManager {
         return ohpool.get_allocated_CPU();
     }
     
-    //return the current use of CPU
+    /**
+     * Return the amount of busy CPU
+     * @return 0 &lt CPU 
+     */
     public float getUsedCPU(){
         return ohpool.get_used_CPU();
     }
@@ -129,7 +135,10 @@ public class OneManager {
         return ohpool.get_used_MEM();
     }
     
-    //return the list of the last monitor time of each host
+    /**
+     * Return the list of the last monitor time of each host.
+     * @return the times in string separeted by ","
+     */
     public String getLastMonitorTimes(){
         return ohpool.get_last_monitor_times();
     }

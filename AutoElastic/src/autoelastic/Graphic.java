@@ -29,19 +29,19 @@ public class Graphic {
     private DefaultValueDataset valuedataset;
     private ThermometerPlot termometro;
     
-    public Graphic(JPanel painelline){
+    public Graphic(JPanel painelline, String title){
         grafico = painelline;   
-        legendas = new String[] {"Used CPU","Available CPU","Maximum Threshold","Minimum Threshold"};
+        legendas = new String[] {"Used CPU","Available CPU","Upper Threshold","Lower Threshold"};
         dataset = new DefaultCategoryDataset();
         //popula_dataset();
-        criaGraficoLine(grafico);
+        criaGraficoLine(grafico, title);
         //criaGraficoBar(graficos[1]);
         //criaGraficoThermometer(graficos[2]);
     }
 
-    private void criaGraficoLine(JPanel grafico) {
+    private void criaGraficoLine(JPanel grafico, String title) {
         //CategoryDataset cds = createDataset();
-        String titulo = "Monitoring";
+        String titulo = title;
         String eixoy = "CPU";
         String txt_legenda = "";
         boolean legenda = true;

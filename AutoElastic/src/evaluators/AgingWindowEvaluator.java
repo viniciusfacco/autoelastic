@@ -1,9 +1,9 @@
 /*
  * 26/05/2014
- * Aging
- * - Classe destinada a fazer a avaliação genérica de carga de CPU;
+ * AgingWindowEvaluator
+ * - Classe destinada a fazer a avaliação de carga de CPU;
  * - Avaliação consiste em examinar um histórico de X leituras de CPU aplicando o método de envelhecimento para obter o valor de comparação com os thresholds
- * - São considerados as últimas 6 observações para o cálculo do Aging.
+ * - São considerados as últimas VIEW_SIZE observações para o cálculo do AgingWindowEvaluator.
  */
 
 package evaluators;
@@ -11,46 +11,58 @@ package evaluators;
 import java.util.ArrayList;
 
 /**
- *
- * @author Vinicius
- * 26/05/2014 - criação da classe
+ * Reviews
+ * @author viniciusfacco
+ * 02/07/2015 - viniciusfacco 
+ *            - changed the constructor and parameters. Now the thresholds are not keep here
+ *            - changed method "evaluate" to receive the thresholds as parameters
+ * 06/07/2015 - viniciusfacco
+ *            - class renamed from "AgingEvaluator" to "AgingWindowEvaluator"
  */
 
 
-public class Aging extends Generic{
+public class AgingWindowEvaluator extends GenericEvaluator{
     
     private ArrayList<Float> observ; //list with the VIEW_SIZE observations
     
     
     //26/05/2014: constructor
-    public Aging(int viewsize, float th_max, float th_min){
-        super(viewsize, th_max, th_min); //call father's constructor
-        objname = "evaluators.Aging";    //rewrite the name
+    //public AgingWindowEvaluator(int viewsize, float th_max, float th_min){
+    //    super(viewsize, th_max, th_min); //call father's constructor
+    public AgingWindowEvaluator(int viewsize){
+        super(viewsize); //call father's constructor
+        objname = "evaluators.AgingWindowEvaluator";    //rewrite the name
         observ = new ArrayList<>();
     }
     
-    //26/05/2014: return if the aging system identified if the factor is out of range between the thresholds
+    //26/05/2014: viniciusfacco
+    /**
+     * Return if the aging system identified if the factor is out of range between the thresholds.
+     * @param load - the current system load.
+     * @param upper_threshold - the current upper threshold.
+     * @param lower_threshold - the current lower threshold.
+     * @return 
+     */
     @Override
-    public boolean evaluate(float load){
-        float factor = 0;
+    public boolean evaluate(float load, float upper_threshold, float lower_threshold){
+        decision_load = 0;
         observ.add(0, load); //inserte the new value in the first place in the list
         //aply the aging concept if counter > VIEW_SIZE and the average if VIEW_SIZE < counter < 2
         if (observ.size() >= VIEW_SIZE){ // if we do have the minimum of VIEW_SIZE values
-            factor = calc_aging(0); //calculate the aging initializing in the first position (the newer value)
+            decision_load = calc_aging(0); //calculate the aging initializing in the first position (the newer value)
         } else if (observ.size() > 2){ // if the counter is betwen 3 and VIEW_SIZE we will calculate the average to define the factor
-            factor = average();
+            decision_load = average();
         }
         //test if the aging is out of the range between the thresholds
-        if (factor > threshold_high) { //test if we have a violation on the higher threshold after aply the aging
+        if (decision_load > upper_threshold) { //test if we have a violation on the higher threshold after aply the aging
             high_alert = true; 
             low_alert = false; 
             return true;
-        } else if (factor < threshold_low){ //test if we have a violation on the lower threshold after aply the aging
+        } else if (decision_load < lower_threshold){ //test if we have a violation on the lower threshold after aply the aging
             high_alert = false;
             low_alert = true;
             return true; 
         }
-        
         return false;
     }
     
