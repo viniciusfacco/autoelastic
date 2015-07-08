@@ -17,7 +17,7 @@ import org.xml.sax.SAXException;
 import thresholds.*;
 
 /**
- * Reviews
+ * Main class that runs the monitoring system.
  * @author viniciusfacco
  * 23/05/2014 - viniciusfacco
  *            - Criação do novo AutoElastic
@@ -39,6 +39,8 @@ import thresholds.*;
  * 06/07/2015 - viniciusfacco
  *            - created selection of constructors using the new parameter "thresholdtype"
  *            - inserted calls to new obect "thresholds" to recalculate thresholds
+ * 08/07/2015 - viniciusfacco
+ *            - created two methods to group the code for inicialization and monitoring
  */
 public class AutoElastic implements Runnable {
 
@@ -77,6 +79,28 @@ public class AutoElastic implements Runnable {
         graphic2 = new Graphic(pgraphic2, "CPU Usage (%)");
     }
 
+    /**
+     * Set all systems' parameters.
+     * @param pfrontend - address of the cloud frontend
+     * @param pusuario - user to connect the frontend
+     * @param psenha - password to connect the frontend
+     * @param psla - sla file
+     * @param plogs - path to save the logs
+     * @param ptemplateid - template id of the virtual machine to be launched
+     * @param pintervalo - time between the monitoring observations
+     * @param pthreshouldmax - the value of the upper threshold
+     * @param pthreshouldmin - the value of the lower threshold
+     * @param pvmsporhost - amount of virtual machines to be launched in each physical machine
+     * @param pevaluator - type of evaluator algorithm
+     * @param pthresholdtype - type of threshold algorithm
+     * @param pmonitoringwindow - size of the monitoring window
+     * @param hosts - addresses of the host to be used
+     * @param pim - cloud image manager type
+     * @param pvmm - cloud virtual machine manager type
+     * @param pvnm - cloud virtual network manager type
+     * @param pcid - cloud cluster id
+     * @param plog - component to receive the log messages
+     */
     public void set_parameters(String pfrontend, 
                        String pusuario, 
                        String psenha, 
@@ -89,7 +113,7 @@ public class AutoElastic implements Runnable {
                        int pvmsporhost,
                        String pevaluator,
                        String pthresholdtype,
-                       int plimiteestouros, 
+                       int pmonitoringwindow, 
                        String[] hosts,
                        String pim,
                        String pvmm,
@@ -108,7 +132,7 @@ public class AutoElastic implements Runnable {
         lowert = (float) pthreshouldmin;
         evaluatortype = pevaluator;
         thresholdtype = pthresholdtype; 
-        viewsize = plimiteestouros;
+        viewsize = pmonitoringwindow;
         num_vms = pvmsporhost;
         log = plog;
         iphosts = hosts;
@@ -129,53 +153,11 @@ public class AutoElastic implements Runnable {
         System.out.println("Oi Vini");        
 
         try {
-            //---------------------------INICIALIZATION---------------------------------//
-            gera_log(objname,"Inicialização...");
-            //create a new cloud manager with OpenNebula
-            cloud_manager = new OneManager(usuario, senha, frontend, iphosts, image_manager, virtual_machine_manager, virtual_network_manager, cluster_id, log, num_vms, vmtemplateid);            
-            //connect with the cloud server
-            if (cloud_manager.serverConnect()){
-                gera_log(objname,"Conexão realizada com o servidor: " + frontend);
-                monitoring = true; //if connection ok, then we can monitor
-            } else {
-                gera_log(objname,"Problema ao realizar conexão com o servidor: " + frontend);
-                monitoring = false; //if trouble, then we can't monitor
-            }
-            //--
-            gera_log(objname,"Main: Inicializando SLA: " + slapath);
-            //create a new SLA
-            sla = new WSAgreementSLA(slapath, log);
-            //--
-            gera_log(objname,"Main: Inicializando avaliador.");
-            //create a new cloud evaluator
-            switch (evaluatortype){
-                case "generic": 
-                    //evaluator = new GenericEvaluator(viewsize, upper_threshold, lower_threshold);
-                    evaluator = new GenericEvaluator(viewsize);
-                    break;
-                case "window_aging": 
-                    //evaluator = new AgingWindowEvaluator(viewsize, upper_threshold, lower_threshold);
-                    evaluator = new AgingWindowEvaluator(viewsize);
-                    break;
-                case "full_aging":
-                    evaluator = new AgingFullEvaluator(viewsize);
-            }
-            //create a new threshold manager
-            switch (thresholdtype){
-                case "static":
-                    thresholds = new StaticThresholds(uppert, lowert);
-                    break;
-                case "live":
-                    thresholds = new LiveThresholds(uppert, lowert);
-            }
-            export_log(0,0,0,0,0,0,0,0,0,0,0,0,0,"Contador,Tempo,Total Hosts Ativos,Total CPU Alocada,Total CPU Usada,Total RAM Alocada,Total RAM Usada,CPU Limite Superior,CPU Limite Inferior,% Carga de CPU,Load Calculado,Threshold Inferior,Threshold Superior,Tempos de Monitoramento");
-            //----------------------------------------------------------------------------------//
-
-            //---------------------------------MONITORING------------------------------------//
-            gera_log(objname,"Main: Iniciando monitoramento...");
+/*LOG*    */gera_log(objname,"Inicialização...");
+            inicialize();//inicialize the system
+/*LOG*    */gera_log(objname,"Main: Iniciando monitoramento...");
             elasticity();//start monitoring
 /*LOG*    */gera_log(objname,"Monitoramento finalizado.");
-
         } catch (ParserConfigurationException | SAXException | IOException e) {
 /*LOG*    */gera_log(objname,e.getMessage());
         } catch (Exception ex) {
@@ -184,7 +166,7 @@ public class AutoElastic implements Runnable {
     }
 
     /**
-     * stop the monitoring of the cloud
+     * Stop the monitoring of the cloud
      * @return true if stop the monitoring
      */
     public boolean stop() {
@@ -199,7 +181,7 @@ public class AutoElastic implements Runnable {
     }
     
     /**
-     * generate log in screen
+     * Generate log in screen.
      * @param name - object that are logging
      * @param texto - the message
      */
@@ -216,7 +198,7 @@ public class AutoElastic implements Runnable {
             BufferedWriter escritor = new BufferedWriter(new FileWriter(arquivo, true))) {
             escritor.append(tempo + "," + time + "," + num_hosts + "," + tot_cpu_dis + "," + tot_cpu_usa + "," + tot_mem_dis + "," + tot_mem_usa + "," + th_max + "," + th_min + "," + load + "," + calcutated_load + "," + lowert + "," + uppert + "," + extra_info + "\n");
             escritor.close();
-        } catch (IOException ex) {
+        } catch (IOException ex) { 
             Logger.getLogger(AutoElastic.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -276,5 +258,46 @@ public class AutoElastic implements Runnable {
             Thread.sleep(intervalo);
             cont++;
         }
+    }
+
+    private void inicialize() throws ParserConfigurationException, SAXException, IOException {
+        //create a new cloud manager with OpenNebula
+        cloud_manager = new OneManager(usuario, senha, frontend, iphosts, image_manager, virtual_machine_manager, virtual_network_manager, cluster_id, log, num_vms, vmtemplateid);            
+        //connect with the cloud server
+        if (cloud_manager.serverConnect()){
+            gera_log(objname,"Conexão realizada com o servidor: " + frontend);
+            monitoring = true; //if connection ok, then we can monitor
+        } else {
+            gera_log(objname,"Problema ao realizar conexão com o servidor: " + frontend);
+            monitoring = false; //if trouble, then we can't monitor
+        }
+        //--
+        gera_log(objname,"Main: Inicializando SLA: " + slapath);
+        //create a new SLA
+        sla = new WSAgreementSLA(slapath, log);
+        //--
+        gera_log(objname,"Main: Inicializando avaliador.");
+        //create a new cloud evaluator
+        switch (evaluatortype){
+            case "generic": 
+                //evaluator = new GenericEvaluator(viewsize, upper_threshold, lower_threshold);
+                evaluator = new GenericEvaluator(viewsize);
+                break;
+            case "window_aging": 
+                //evaluator = new AgingWindowEvaluator(viewsize, upper_threshold, lower_threshold);
+                evaluator = new AgingWindowEvaluator(viewsize);
+                break;
+            case "full_aging":
+                evaluator = new AgingFullEvaluator(viewsize);
+        }
+        //create a new threshold manager
+        switch (thresholdtype){
+            case "static":
+                thresholds = new StaticThresholds(uppert, lowert);
+                break;
+            case "live":
+                thresholds = new LiveThresholds(uppert, lowert);
+        }
+        export_log(0,0,0,0,0,0,0,0,0,0,0,0,0,"Contador,Tempo,Total Hosts Ativos,Total CPU Alocada,Total CPU Usada,Total RAM Alocada,Total RAM Usada,CPU Limite Superior,CPU Limite Inferior,% Carga de CPU,Load Calculado,Threshold Inferior,Threshold Superior,Tempos de Monitoramento");
     }
 }
