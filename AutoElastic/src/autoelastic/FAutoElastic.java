@@ -24,10 +24,14 @@ import javax.swing.tree.DefaultMutableTreeNode;
 public class FAutoElastic extends javax.swing.JFrame {
     private Thread th_gerenciador;
     private AutoElastic gerenciador;
+    private About about;
     
     public FAutoElastic() {
+        setUndecorated(true);
         initComponents();
         gerenciador = new AutoElastic(this.jpGraficoLineTotal, this.jbGraphicLinePercent);
+        about = new About();
+        about.setVisible(false);
         this.setExtendedState(MAXIMIZED_BOTH);//maximoza janela        
         variaveis_padroes();//inicializo todos os parâmetros para o padrão
         this.setIconImage(new javax.swing.ImageIcon(getClass().getResource("/images/icone64x64.png")).getImage());
@@ -94,19 +98,19 @@ public class FAutoElastic extends javax.swing.JFrame {
         jpGraficos = new javax.swing.JPanel();
         jpGraficoLineTotal = new javax.swing.JPanel();
         jbGraphicLinePercent = new javax.swing.JPanel();
-        jPanel5 = new javax.swing.JPanel();
+        jpMainButtons = new javax.swing.JPanel();
         jbLimpar = new javax.swing.JButton();
         jbExecutar = new javax.swing.JButton();
         jbParar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jtaLog = new javax.swing.JTextArea();
-        jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jmiSaveLog = new javax.swing.JMenuItem();
-        jSeparator1 = new javax.swing.JPopupMenu.Separator();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
-        jMenuItem2 = new javax.swing.JMenuItem();
+        jpUpperButtons = new javax.swing.JPanel();
+        jbMinimize = new javax.swing.JButton();
+        jbSaleLog = new javax.swing.JButton();
+        jbAbout = new javax.swing.JButton();
+        jLabel18 = new javax.swing.JLabel();
+        jbExit = new javax.swing.JButton();
+        jSeparator1 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("AutoElastic");
@@ -641,9 +645,9 @@ public class FAutoElastic extends javax.swing.JFrame {
             jpHostsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
             .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
             .addGroup(jpHostsLayout.createSequentialGroup()
-                .addComponent(jbAddHost, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE)
+                .addComponent(jbAddHost, javax.swing.GroupLayout.DEFAULT_SIZE, 103, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jbDelHost, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE))
+                .addComponent(jbDelHost, javax.swing.GroupLayout.DEFAULT_SIZE, 104, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Hosts", jpHosts);
@@ -667,7 +671,7 @@ public class FAutoElastic extends javax.swing.JFrame {
         );
         jpGraficoLineTotalLayout.setVerticalGroup(
             jpGraficoLineTotalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 180, Short.MAX_VALUE)
+            .addGap(0, 213, Short.MAX_VALUE)
         );
 
         jbGraphicLinePercent.setBackground(new java.awt.Color(255, 255, 255));
@@ -700,7 +704,7 @@ public class FAutoElastic extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Graph", jpGraficos);
 
-        jPanel5.setBackground(new java.awt.Color(255, 255, 255));
+        jpMainButtons.setBackground(new java.awt.Color(255, 255, 255));
 
         jbLimpar.setBackground(new java.awt.Color(51, 204, 255));
         jbLimpar.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -792,20 +796,20 @@ public class FAutoElastic extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+        javax.swing.GroupLayout jpMainButtonsLayout = new javax.swing.GroupLayout(jpMainButtons);
+        jpMainButtons.setLayout(jpMainButtonsLayout);
+        jpMainButtonsLayout.setHorizontalGroup(
+            jpMainButtonsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpMainButtonsLayout.createSequentialGroup()
                 .addComponent(jbLimpar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jbExecutar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jbParar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+        jpMainButtonsLayout.setVerticalGroup(
+            jpMainButtonsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpMainButtonsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                 .addComponent(jbLimpar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addComponent(jbExecutar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addComponent(jbParar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -818,70 +822,179 @@ public class FAutoElastic extends javax.swing.JFrame {
         jtaLog.setRows(5);
         jScrollPane1.setViewportView(jtaLog);
 
+        jpUpperButtons.setBackground(new java.awt.Color(250, 250, 250));
+
+        jbMinimize.setBackground(new java.awt.Color(51, 204, 255));
+        jbMinimize.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jbMinimize.setForeground(new java.awt.Color(102, 102, 102));
+        jbMinimize.setText("_");
+        jbMinimize.setContentAreaFilled(false);
+        jbMinimize.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jbMinimize.setFocusable(false);
+        jbMinimize.setOpaque(true);
+        jbMinimize.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jbMinimizeMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jbMinimizeMouseExited(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jbMinimizeMousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                jbMinimizeMouseReleased(evt);
+            }
+        });
+        jbMinimize.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbMinimizeActionPerformed(evt);
+            }
+        });
+
+        jbSaleLog.setBackground(new java.awt.Color(51, 204, 255));
+        jbSaleLog.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jbSaleLog.setForeground(new java.awt.Color(255, 255, 255));
+        jbSaleLog.setText("Save LOG");
+        jbSaleLog.setContentAreaFilled(false);
+        jbSaleLog.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jbSaleLog.setFocusable(false);
+        jbSaleLog.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jbSaleLog.setOpaque(true);
+        jbSaleLog.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jbSaleLogMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jbSaleLogMouseExited(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jbSaleLogMousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                jbSaleLogMouseReleased(evt);
+            }
+        });
+        jbSaleLog.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbSaleLogActionPerformed(evt);
+            }
+        });
+
+        jbAbout.setBackground(new java.awt.Color(51, 204, 255));
+        jbAbout.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jbAbout.setForeground(new java.awt.Color(255, 255, 255));
+        jbAbout.setText("About");
+        jbAbout.setToolTipText("");
+        jbAbout.setContentAreaFilled(false);
+        jbAbout.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jbAbout.setFocusable(false);
+        jbAbout.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jbAbout.setOpaque(true);
+        jbAbout.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jbAboutMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jbAboutMouseExited(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jbAboutMousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                jbAboutMouseReleased(evt);
+            }
+        });
+        jbAbout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbAboutActionPerformed(evt);
+            }
+        });
+
+        jLabel18.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel18.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel18.setText("AutoElastic");
+
+        jbExit.setBackground(new java.awt.Color(255, 153, 153));
+        jbExit.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jbExit.setForeground(new java.awt.Color(102, 102, 102));
+        jbExit.setText("X");
+        jbExit.setContentAreaFilled(false);
+        jbExit.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jbExit.setFocusable(false);
+        jbExit.setOpaque(true);
+        jbExit.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jbExitMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jbExitMouseExited(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jbExitMousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                jbExitMouseReleased(evt);
+            }
+        });
+        jbExit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbExitActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jpUpperButtonsLayout = new javax.swing.GroupLayout(jpUpperButtons);
+        jpUpperButtons.setLayout(jpUpperButtonsLayout);
+        jpUpperButtonsLayout.setHorizontalGroup(
+            jpUpperButtonsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpUpperButtonsLayout.createSequentialGroup()
+                .addComponent(jbSaleLog, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jbAbout, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(134, 134, 134)
+                .addComponent(jLabel18, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(231, 231, 231)
+                .addComponent(jbMinimize)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jbExit, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(3, 3, 3))
+        );
+        jpUpperButtonsLayout.setVerticalGroup(
+            jpUpperButtonsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpUpperButtonsLayout.createSequentialGroup()
+                .addGroup(jpUpperButtonsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jpUpperButtonsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jbMinimize, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jbExit))
+                    .addComponent(jbSaleLog, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel18, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jbAbout, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout jpMainLayout = new javax.swing.GroupLayout(jpMain);
         jpMain.setLayout(jpMainLayout);
         jpMainLayout.setHorizontalGroup(
             jpMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jTabbedPane1)
-            .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jpMainButtons, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jScrollPane1)
+            .addComponent(jpUpperButtons, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jSeparator1)
         );
         jpMainLayout.setVerticalGroup(
             jpMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpMainLayout.createSequentialGroup()
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jpUpperButtons, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(1, 1, 1)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 418, Short.MAX_VALUE))
+                .addComponent(jpMainButtons, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 371, Short.MAX_VALUE))
         );
-
-        jMenuBar1.setBackground(new java.awt.Color(255, 255, 255));
-        jMenuBar1.setBorder(null);
-        jMenuBar1.setForeground(new java.awt.Color(255, 255, 255));
-        jMenuBar1.setAutoscrolls(true);
-        jMenuBar1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-
-        jMenu1.setBackground(new java.awt.Color(255, 255, 255));
-        jMenu1.setText("File");
-        jMenu1.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
-
-        jmiSaveLog.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
-        jmiSaveLog.setBackground(new java.awt.Color(255, 255, 255));
-        jmiSaveLog.setText("Save Log");
-        jmiSaveLog.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jmiSaveLogActionPerformed(evt);
-            }
-        });
-        jMenu1.add(jmiSaveLog);
-        jMenu1.add(jSeparator1);
-
-        jMenuItem1.setBackground(new java.awt.Color(255, 255, 255));
-        jMenuItem1.setText("Exit");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
-            }
-        });
-        jMenu1.add(jMenuItem1);
-
-        jMenuBar1.add(jMenu1);
-
-        jMenu2.setText("Help");
-        jMenu2.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
-
-        jMenuItem2.setText("About");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
-            }
-        });
-        jMenu2.add(jMenuItem2);
-
-        jMenuBar1.add(jMenu2);
-
-        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -896,28 +1009,6 @@ public class FAutoElastic extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        //esta é a oppção sair do menu. Aqui eu finalizo o programa
-        this.dispose();
-        System.exit(0);
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
-
-    private void jmiSaveLogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiSaveLogActionPerformed
-        // TODO add your handling code here:
-        File arquivo = new File(seleciona_arquivo());
-        try (
-            BufferedWriter escritor = new BufferedWriter(new FileWriter(arquivo, true))) {
-            escritor.append(jtaLog.getText());
-            escritor.close();
-        } catch (IOException ex) {
-            Logger.getLogger(AutoElastic.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_jmiSaveLogActionPerformed
-
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        new About().setVisible(true);
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jpGraficosLineComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jpGraficosLineComponentResized
         //toda vez que a janela é redimensionada tenho que redimensionar o gráfico também
@@ -1187,6 +1278,86 @@ public class FAutoElastic extends javax.swing.JFrame {
         jbDelHost.setBackground(new Color(51,204,255));
     }//GEN-LAST:event_jbDelHostMouseReleased
 
+    private void jbSaleLogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbSaleLogActionPerformed
+        saveLogFile();
+    }//GEN-LAST:event_jbSaleLogActionPerformed
+
+    private void jbAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbAboutActionPerformed
+        showAbout();
+    }//GEN-LAST:event_jbAboutActionPerformed
+
+    private void jbSaleLogMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbSaleLogMouseEntered
+        jbSaleLog.setBackground(new Color(41,194,255));
+    }//GEN-LAST:event_jbSaleLogMouseEntered
+
+    private void jbSaleLogMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbSaleLogMouseExited
+        jbSaleLog.setBackground(new Color(51,204,255));
+    }//GEN-LAST:event_jbSaleLogMouseExited
+
+    private void jbSaleLogMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbSaleLogMousePressed
+        jbSaleLog.setBackground(new Color(51,234,205));
+    }//GEN-LAST:event_jbSaleLogMousePressed
+
+    private void jbSaleLogMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbSaleLogMouseReleased
+        jbSaleLog.setBackground(new Color(51,204,255));
+    }//GEN-LAST:event_jbSaleLogMouseReleased
+
+    private void jbAboutMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbAboutMouseEntered
+       jbAbout.setBackground(new Color(41,194,255));
+    }//GEN-LAST:event_jbAboutMouseEntered
+
+    private void jbAboutMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbAboutMouseExited
+        jbAbout.setBackground(new Color(51,204,255));
+    }//GEN-LAST:event_jbAboutMouseExited
+
+    private void jbAboutMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbAboutMousePressed
+        jbAbout.setBackground(new Color(51,234,205));
+    }//GEN-LAST:event_jbAboutMousePressed
+
+    private void jbAboutMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbAboutMouseReleased
+        jbAbout.setBackground(new Color(51,204,255));
+    }//GEN-LAST:event_jbAboutMouseReleased
+
+    private void jbMinimizeMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbMinimizeMouseEntered
+        jbMinimize.setBackground(new Color(41,194,255));
+    }//GEN-LAST:event_jbMinimizeMouseEntered
+
+    private void jbMinimizeMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbMinimizeMouseExited
+        jbMinimize.setBackground(new Color(51,204,255));
+    }//GEN-LAST:event_jbMinimizeMouseExited
+
+    private void jbMinimizeMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbMinimizeMousePressed
+        jbMinimize.setBackground(new Color(51,234,205));
+    }//GEN-LAST:event_jbMinimizeMousePressed
+
+    private void jbMinimizeMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbMinimizeMouseReleased
+        jbMinimize.setBackground(new Color(51,204,255));
+    }//GEN-LAST:event_jbMinimizeMouseReleased
+
+    private void jbExitMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbExitMouseEntered
+        jbExit.setBackground(new Color(255,143,143));
+    }//GEN-LAST:event_jbExitMouseEntered
+
+    private void jbExitMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbExitMouseExited
+        jbExit.setBackground(new Color(255,153,153));
+    }//GEN-LAST:event_jbExitMouseExited
+
+    private void jbExitMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbExitMousePressed
+       jbExit.setBackground(new Color(205,153,123));
+    }//GEN-LAST:event_jbExitMousePressed
+
+    private void jbExitMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbExitMouseReleased
+        jbExit.setBackground(new Color(255,153,153));
+    }//GEN-LAST:event_jbExitMouseReleased
+
+    private void jbExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbExitActionPerformed
+        exit();
+    }//GEN-LAST:event_jbExitActionPerformed
+
+    private void jbMinimizeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbMinimizeActionPerformed
+        this.setState(java.awt.Frame.ICONIFIED);
+    }//GEN-LAST:event_jbMinimizeActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1234,6 +1405,7 @@ public class FAutoElastic extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -1242,36 +1414,35 @@ public class FAutoElastic extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
     private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JButton jbAbout;
     private javax.swing.JButton jbAddHost;
     private javax.swing.JButton jbBuscarSLA;
     private javax.swing.JButton jbDelHost;
     private javax.swing.JButton jbExecutar;
+    private javax.swing.JButton jbExit;
     private javax.swing.JPanel jbGraphicLinePercent;
     private javax.swing.JButton jbLimpar;
+    private javax.swing.JButton jbMinimize;
     private javax.swing.JButton jbParar;
-    private javax.swing.JMenuItem jmiSaveLog;
+    private javax.swing.JButton jbSaleLog;
     private javax.swing.JPanel jpGraficoLineTotal;
     private javax.swing.JPanel jpGraficos;
     private javax.swing.JPanel jpHosts;
     private javax.swing.JPanel jpMain;
+    private javax.swing.JPanel jpMainButtons;
     private javax.swing.JPanel jpParameters;
     private javax.swing.JPanel jpServer;
+    private javax.swing.JPanel jpUpperButtons;
     private javax.swing.JRadioButton jrbAging;
     private javax.swing.JRadioButton jrbFixed;
     private javax.swing.JRadioButton jrbGeneric;
@@ -1342,4 +1513,29 @@ public class FAutoElastic extends javax.swing.JFrame {
 		return arquivo.getPath(); 
         }
     }
+    
+    //exit the program
+    private void exit(){
+        about.dispose();
+        this.dispose();
+        System.exit(0);
+    }
+    
+    //save the Log in a file
+    private void saveLogFile(){
+        File arquivo = new File(seleciona_arquivo());
+        try (
+            BufferedWriter escritor = new BufferedWriter(new FileWriter(arquivo, true))) {
+            escritor.append(jtaLog.getText());
+            escritor.close();
+        } catch (IOException ex) {
+            Logger.getLogger(AutoElastic.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    //show about frame
+    private void showAbout(){
+        about.setVisible(true);
+    }
+
 }
