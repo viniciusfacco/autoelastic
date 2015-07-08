@@ -12,6 +12,8 @@ import javax.swing.JTextArea;
 import middlewares.OneManager;
 import slas.WSAgreementSLA;
 import evaluators.*;
+import javax.xml.parsers.ParserConfigurationException;
+import org.xml.sax.SAXException;
 import thresholds.*;
 
 /**
@@ -127,7 +129,7 @@ public class AutoElastic implements Runnable {
         System.out.println("Oi Vini");        
 
         try {
-            //---------------------------INICIALIZAÇÂO---------------------------------//
+            //---------------------------INICIALIZATION---------------------------------//
             gera_log(objname,"Inicialização...");
             //create a new cloud manager with OpenNebula
             cloud_manager = new OneManager(usuario, senha, frontend, iphosts, image_manager, virtual_machine_manager, virtual_network_manager, cluster_id, log, num_vms, vmtemplateid);            
@@ -169,66 +171,15 @@ public class AutoElastic implements Runnable {
             export_log(0,0,0,0,0,0,0,0,0,0,0,0,0,"Contador,Tempo,Total Hosts Ativos,Total CPU Alocada,Total CPU Usada,Total RAM Alocada,Total RAM Usada,CPU Limite Superior,CPU Limite Inferior,% Carga de CPU,Load Calculado,Threshold Inferior,Threshold Superior,Tempos de Monitoramento");
             //----------------------------------------------------------------------------------//
 
-            //---------------------------------MONITORAMENTO------------------------------------//
+            //---------------------------------MONITORING------------------------------------//
             gera_log(objname,"Main: Iniciando monitoramento...");
-            int tempo; //tempo decorrido
-            int cont = 1; //contador de verificações
-            long time0 = System.currentTimeMillis(); //tempo inicial
-            long timen;
-            
-            while (monitoring){
-                timen = System.currentTimeMillis();
-                tempo = (int) ((timen - time0)/1000);
-/*LOG*        */gera_log(objname,"Main: " + cont + " Time: " + tempo + "s");
-/*LOG*        */gera_log(objname,"Main: Sincronizando hosts...");
-                cloud_manager.syncData(); //synchronize data of the cloud
-                thresholds.calculateThresholds(cloud_manager.getCPULoad()); //recalculate the thresholds
-/*GRAPHIC*    */graphic1.update(cont, cloud_manager.getUsedCPU(), cloud_manager.getAllocatedCPU(), cloud_manager.getAllocatedCPU() * thresholds.getUpperThreshold(), cloud_manager.getAllocatedCPU() * thresholds.getLowerThreshold());
-/*GRAPHIC*    */graphic2.update(cont, cloud_manager.getCPULoad(), 1, thresholds.getUpperThreshold(), thresholds.getLowerThreshold());
-/*LOG*        */gera_log(objname,"Main|monitora: Soma da carga de cpu de todos os hosts: " + cloud_manager.getUsedCPU() + " / Threshold maximo estabelecido: " + cloud_manager.getAllocatedCPU() * thresholds.getUpperThreshold() + " / Threshold minimo estabelecido: " + cloud_manager.getAllocatedCPU() * thresholds.getLowerThreshold());
-/*LOG*        */export_log(cont, tempo, cloud_manager.getTotalActiveHosts(), cloud_manager.getAllocatedCPU(), cloud_manager.getUsedCPU(), cloud_manager.getAllocatedMEM(), cloud_manager.getUsedMEM(), cloud_manager.getAllocatedCPU() * thresholds.getUpperThreshold(), cloud_manager.getAllocatedCPU() * thresholds.getLowerThreshold(), cloud_manager.getCPULoad(), evaluator.getDecisionLoad(), thresholds.getLowerThreshold(), thresholds.getUpperThreshold(), cloud_manager.getLastMonitorTimes());
-/*LOG*        */gera_log(objname,"Main: Realiza verificação de alguma violação dos thresholds...");
-                if (!cloud_manager.isWaiting()){// if we are not waiting for new resource allocation we can evaluate the cloud
-                    if (evaluator.evaluate(cloud_manager.getCPULoad(), thresholds.getUpperThreshold(), thresholds.getLowerThreshold())){//analyze the cloud situation and if we have some violation we need deal with this
-                        //here we need deal with the violation
-                        if (evaluator.isHighAction()){//if we have a violation on the high threshold
-/*LOG*                    */gera_log(objname,"Main: Avaliador detectou alta carga...Verificando se SLA está no limite...");
-                            evaluator.reset(); //after deal with the problem/violation, re-initialize the parameters of evaluation
-                            thresholds.recalculateUpperThreshold(cloud_manager.getCPULoad()); //recalculate the upper threshold
-                            if(sla.canIncrease(cloud_manager.getTotalActiveHosts())){ //verify the SLA to know if we can increase resources
-/*LOG*                        */gera_log(objname,"Main: SLA não atingido...novo recurso pode ser alocado...");
-/*LOG*                        */gera_log(objname,"Main: Alocando recursos...");
-                                cloud_manager.increaseResources(); //increase one host and the number of vms informed in the parameters
-                            } else {
-/*LOG*                        */gera_log(objname,"Main: SLA no limite...nada pode ser feito...");
-                            }
-                        } else if (evaluator.isLowAction()){ //if we have a violation on the low threshold
-/*LOG*                    */gera_log(objname,"Main: Avaliador detectou baixa carga...Verificando se SLA está no limite...");
-                            evaluator.reset(); //after deal with the problem/violation, re-initialize the parameters of evaluation
-                            thresholds.recalculateLowerThreshold(cloud_manager.getCPULoad()); //recalculate the lower threshold
-                            if(sla.canDecrease(cloud_manager.getTotalActiveHosts())){ //verify the SLA to know if we can decrease resources
-/*LOG*                        */gera_log(objname,"Main: SLA não atingido...novo recurso pode ser liberado...");
-/*LOG*                        */gera_log(objname,"Main: Liberando recursos...");
-                                cloud_manager.decreaseResources(); //decrease the last host added and the number its vms
-                            } else {
-/*LOG*                        */gera_log(objname,"Main: SLA no limite...nada pode ser feito...");
-                            }
-                        } else {
-/*LOG*                    */gera_log(objname,"Main: Evaluator problem. We have violation but we do not know which.");
-                        }
-                    } else {
-/*LOG*                */gera_log(objname,"Main: Nenhum problema detectado pelo avaliador.");
-                    }                    
-                } else {
-/*LOG*                */gera_log(objname,"Main: Aguardando inicialização de recursos.");
-                }
-/*LOG*        */gera_log(objname,"Main: Aguarda intervalo de tempo...");
-                Thread.sleep(intervalo);
-                cont++;
-            }
+            elasticity();//start monitoring
 /*LOG*    */gera_log(objname,"Monitoramento finalizado.");
-        } catch (Exception e) {
+
+        } catch (ParserConfigurationException | SAXException | IOException e) {
 /*LOG*    */gera_log(objname,e.getMessage());
+        } catch (Exception ex) {
+/*LOG*    */gera_log(objname,ex.getMessage());
         }
     }
 
@@ -267,6 +218,63 @@ public class AutoElastic implements Runnable {
             escritor.close();
         } catch (IOException ex) {
             Logger.getLogger(AutoElastic.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void elasticity() throws ParserConfigurationException, SAXException, IOException, InterruptedException, Exception {
+        int tempo; //tempo decorrido
+        int cont = 1; //contador de verificações
+        long time0 = System.currentTimeMillis(); //tempo inicial
+        long timen;
+        while (monitoring){
+        timen = System.currentTimeMillis();
+        tempo = (int) ((timen - time0)/1000);
+/*LOG*  */gera_log(objname,"Main: " + cont + " Time: " + tempo + "s");
+/*LOG*  */gera_log(objname,"Main: Sincronizando hosts...");
+        cloud_manager.syncData(); //synchronize data of the cloud
+        thresholds.calculateThresholds(cloud_manager.getCPULoad()); //recalculate the thresholds
+/*GRA* */graphic1.update(cont, cloud_manager.getUsedCPU(), cloud_manager.getAllocatedCPU(), cloud_manager.getAllocatedCPU() * thresholds.getUpperThreshold(), cloud_manager.getAllocatedCPU() * thresholds.getLowerThreshold());
+/*GRA* */graphic2.update(cont, cloud_manager.getCPULoad(), 1, thresholds.getUpperThreshold(), thresholds.getLowerThreshold());
+/*LOG*  */gera_log(objname,"Main|monitora: Soma da carga de cpu de todos os hosts: " + cloud_manager.getUsedCPU() + " / Threshold maximo estabelecido: " + cloud_manager.getAllocatedCPU() * thresholds.getUpperThreshold() + " / Threshold minimo estabelecido: " + cloud_manager.getAllocatedCPU() * thresholds.getLowerThreshold());
+/*LOG*  */export_log(cont, tempo, cloud_manager.getTotalActiveHosts(), cloud_manager.getAllocatedCPU(), cloud_manager.getUsedCPU(), cloud_manager.getAllocatedMEM(), cloud_manager.getUsedMEM(), cloud_manager.getAllocatedCPU() * thresholds.getUpperThreshold(), cloud_manager.getAllocatedCPU() * thresholds.getLowerThreshold(), cloud_manager.getCPULoad(), evaluator.getDecisionLoad(), thresholds.getLowerThreshold(), thresholds.getUpperThreshold(), cloud_manager.getLastMonitorTimes());
+/*LOG*  */gera_log(objname,"Main: Realiza verificação de alguma violação dos thresholds...");
+            if (!cloud_manager.isWaiting()){// if we are not waiting for new resource allocation we can evaluate the cloud
+                if (evaluator.evaluate(cloud_manager.getCPULoad(), thresholds.getUpperThreshold(), thresholds.getLowerThreshold())){//analyze the cloud situation and if we have some violation we need deal with this
+                    //here we need deal with the violation
+                    if (evaluator.isHighAction()){//if we have a violation on the high threshold
+/*LOG*                  */gera_log(objname,"Main: Avaliador detectou alta carga...Verificando se SLA está no limite...");
+                        evaluator.reset(); //after deal with the problem/violation, re-initialize the parameters of evaluation
+                        thresholds.recalculateUpperThreshold(cloud_manager.getCPULoad()); //recalculate the upper threshold
+                        if(sla.canIncrease(cloud_manager.getTotalActiveHosts())){ //verify the SLA to know if we can increase resources
+/*LOG*                      */gera_log(objname,"Main: SLA não atingido...novo recurso pode ser alocado...");
+/*LOG*                      */gera_log(objname,"Main: Alocando recursos...");
+                            cloud_manager.increaseResources(); //increase one host and the number of vms informed in the parameters
+                        } else {
+/*LOG*                      */gera_log(objname,"Main: SLA no limite...nada pode ser feito...");
+                        }
+                    } else if (evaluator.isLowAction()){ //if we have a violation on the low threshold
+/*LOG*                  */gera_log(objname,"Main: Avaliador detectou baixa carga...Verificando se SLA está no limite...");
+                        evaluator.reset(); //after deal with the problem/violation, re-initialize the parameters of evaluation
+                        thresholds.recalculateLowerThreshold(cloud_manager.getCPULoad()); //recalculate the lower threshold
+                        if(sla.canDecrease(cloud_manager.getTotalActiveHosts())){ //verify the SLA to know if we can decrease resources
+/*LOG*                      */gera_log(objname,"Main: SLA não atingido...novo recurso pode ser liberado...");
+/*LOG*                      */gera_log(objname,"Main: Liberando recursos...");
+                            cloud_manager.decreaseResources(); //decrease the last host added and the number its vms
+                        } else {
+/*LOG*                      */gera_log(objname,"Main: SLA no limite...nada pode ser feito...");
+                        }
+                    } else {
+/*LOG*                  */gera_log(objname,"Main: Evaluator problem. We have violation but we do not know which.");
+                    }
+                } else {
+/*LOG*              */gera_log(objname,"Main: Nenhum problema detectado pelo avaliador.");
+                }                    
+            } else {
+/*LOG*          */gera_log(objname,"Main: Aguardando inicialização de recursos.");
+            }
+/*LOG*      */gera_log(objname,"Main: Aguarda intervalo de tempo...");
+            Thread.sleep(intervalo);
+            cont++;
         }
     }
 }
