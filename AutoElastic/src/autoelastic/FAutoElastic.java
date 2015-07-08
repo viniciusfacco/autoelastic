@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -25,16 +27,13 @@ public class FAutoElastic extends javax.swing.JFrame {
     private Thread th_gerenciador;
     private AutoElastic gerenciador;
     private About about;
+    private int positionX;
+    private int positionY;
     
     public FAutoElastic() {
         setUndecorated(true);
         initComponents();
-        gerenciador = new AutoElastic(this.jpGraficoLineTotal, this.jbGraphicLinePercent);
-        about = new About();
-        about.setVisible(false);
-        this.setExtendedState(MAXIMIZED_BOTH);//maximoza janela        
-        variaveis_padroes();//inicializo todos os parâmetros para o padrão
-        this.setIconImage(new javax.swing.ImageIcon(getClass().getResource("/images/icone64x64.png")).getImage());
+        init();
     }
 
     @SuppressWarnings("unchecked")
@@ -1536,6 +1535,38 @@ public class FAutoElastic extends javax.swing.JFrame {
     //show about frame
     private void showAbout(){
         about.setVisible(true);
+    }
+    
+    private void init(){
+        /*this.jpUpperButtons.addMouseListener(
+        new MouseAdapter(){
+        @Override
+        public void mousePressed(MouseEvent me){
+        // Get x,y and store them
+        positionX = me.getX();
+        positionY = me.getY();
+        }
+        }
+        );
+        this.jpUpperButtons.addMouseMotionListener(
+        new MouseAdapter(){
+        @Override
+        public void mouseDragged(MouseEvent me){
+        // Set the location
+        // get the current location x-co-ordinate and then get
+        // the current drag x co-ordinate, add them and subtract most recent
+        // mouse pressed x co-ordinate
+        // do same for y co-ordinate
+        setLocation(getLocation().x+me.getX()-positionX,getLocation().y+me.getY()-positionY);
+        }
+        }
+        );*/
+        gerenciador = new AutoElastic(this.jpGraficoLineTotal, this.jbGraphicLinePercent);
+        about = new About();
+        about.setVisible(false);
+        this.setExtendedState(MAXIMIZED_BOTH);//maximoza janela        
+        variaveis_padroes();//inicializo todos os parâmetros para o padrão
+        this.setIconImage(new javax.swing.ImageIcon(getClass().getResource("/images/icone64x64.png")).getImage());
     }
 
 }
