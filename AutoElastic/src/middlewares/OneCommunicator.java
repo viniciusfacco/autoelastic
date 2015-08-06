@@ -43,7 +43,7 @@ public class OneCommunicator {
     private final String permission_decrease_file_name = "liberarecurso.txt";
     private final String warning_deacrease_file_name = "poucacarga.txt";
     private final String notify_increase_file_name = "novorecurso.txt";
-    private final String localdir_temp_files = "C:\\temp\\";
+    private final String localdir_temp_files = "C:\\temp\\autoelastic\\";
     
     public OneCommunicator(String pserver, String puser, String ppassword, JTextArea plog){
         server = pserver;
@@ -83,7 +83,7 @@ public class OneCommunicator {
 
             Session session = jsch.getSession(user, server, 22);
 
-            UserInfo ui = new OneFrontEndConect(password);
+            UserInfo ui = new OneFrontEndConnect(password);
             session.setUserInfo(ui);
             session.connect();
 
@@ -173,7 +173,7 @@ public class OneCommunicator {
             JSch jsch = new JSch();
             Session session = jsch.getSession(user, server, 22);
             // username and password will be given via UserInfo interface.
-            UserInfo ui = new OneFrontEndConect(password);
+            UserInfo ui = new OneFrontEndConnect(password);
             session.setUserInfo(ui);
             session.connect();
             boolean ptimestamp = true;
@@ -191,7 +191,8 @@ public class OneCommunicator {
                 }
                 File _lfile = new File(filepath);
                 if (ptimestamp) {
-                    command = "T " + (_lfile.lastModified() / 1000) + " 0";
+                    //command = "T " + (_lfile.lastModified() / 1000) + " 0";
+                    command = "T" + (_lfile.lastModified() / 1000) + " 0";
                     // The access time should be sent here,
                     // but it is not accessible with JavaAPI ;-<
                     command += (" " + (_lfile.lastModified() / 1000) + " 0\n");

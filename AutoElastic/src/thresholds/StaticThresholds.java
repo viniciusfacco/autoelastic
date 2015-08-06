@@ -61,5 +61,11 @@ public class StaticThresholds implements Thresholds{
     public float getLowerThreshold() {
         return lower_threshold;
     }
+
+    @Override
+    public void reset(float uppert, float lowert) {
+        upper_threshold = uppert;
+        lower_threshold = lowert;
+    }
     
 }

@@ -11,11 +11,11 @@ import javax.swing.JOptionPane;
  *
  * @author vinicius.rodrigues
  */
-public class OneFrontEndConect implements UserInfo {
+public class OneFrontEndConnect implements UserInfo {
 
     String passwd;
 
-    public OneFrontEndConect(String senha) {
+    public OneFrontEndConnect(String senha) {
         this.passwd = senha;
     }
 

@@ -55,6 +55,15 @@ public class LiveThresholds extends StaticThresholds{
         super.upper_threshold = 1 - ((1 - load) / 2);
     }
     
+    @Override
+    public void reset(float uppert, float lowert) {
+        upper_threshold = uppert;
+        lower_threshold = lowert;
+        counter = 0;
+        last_load = 0;
+        live_value = 0;
+    }
+    
     // return a new value for the threshold using the value "live_value" to adapt the threshold
     private float calculateThreshold(float threshold){
         if ((threshold - live_value) < 0){

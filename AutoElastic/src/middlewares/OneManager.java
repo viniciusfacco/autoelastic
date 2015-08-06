@@ -148,9 +148,15 @@ public class OneManager {
         return ohpool.get_total_ativos();
     }
     
-    //método que adiciona um host e suas máquinas virtuais no ambiente
+    /**
+     * Create a new host with virtual machines.
+     * @return
+     * @throws InterruptedException
+     * @throws Exception
+     */
     public boolean increaseResources() throws InterruptedException, Exception{
-        int hostid = ohpool.aloca_host(oneClient);
+        //int hostid = ohpool.allocatesHostNow(oneClient); //allocates the host and it will be active immediatly
+        int hostid = ohpool.allocatesHost(oneClient);      //allocates the host and it will be active after resorces be online
         if (hostid > 0){
             for (int i = 0; i < vms_for_host; i++) {
                 last_vms[i] = new OneVM(vmtemplateid);
@@ -174,6 +180,15 @@ public class OneManager {
         return false;
     }
     
+    /**
+     * Remove the host with the highest id and its virtual machines without ask permission
+     * @return
+     * @throws InterruptedException
+     */
+    public boolean decreaseResourcesHard() throws InterruptedException{
+        return ohpool.remove_host(oneClient);//remove último host criado e suas vms também
+    }
+    
     //método que aloca máquina virtual em host específico
     private int increaseVM(OneVM ov, int hid) {
         return ov.deploy(oneClient, hid, log);
@@ -186,6 +201,7 @@ public class OneManager {
                 last_vms[1].sync_vm();
             } else {
                 if (ping(last_vms[0].get_ip()) && ping(last_vms[1].get_ip())){
+                    ohpool.enableLastHost();
                     waiting_vms = false;
                     gera_log(objname,"Notifica criação de novos recursos...");
                     messenger.notifyNewResources(last_vms[0].get_ip() + "\n" + last_vms[1].get_ip());
@@ -224,7 +240,18 @@ public class OneManager {
     //================================ Métodos não utilizados ========================================
     //================================ Implementação para futura nova versão =========================
     //instantiate "amounthosts" hosts with "vmsperhost" virtual machines each one / return an array with the IPs of the new virtual machines
-    public String[] instantiate_resources(int amounthosts, int vmsperhost, int idtemplatevm) throws ParserConfigurationException, SAXException, IOException{
+
+    /**
+     * Unused
+     * @param amounthosts
+     * @param vmsperhost
+     * @param idtemplatevm
+     * @return
+     * @throws ParserConfigurationException
+     * @throws SAXException
+     * @throws IOException
+     */
+        public String[] instantiate_resources(int amounthosts, int vmsperhost, int idtemplatevm) throws ParserConfigurationException, SAXException, IOException{
         int hostid;
         int vmid;
         String[] ipvms = new String[vmsperhost * amounthosts]; //create a array to store the IPs of all new virtual machines
@@ -260,7 +287,7 @@ public class OneManager {
     private int instantiate_host(){
         int hostid = 0;
         try {
-            hostid = ohpool.aloca_host(oneClient); //create a new host in the "ohpool"
+            hostid = ohpool.allocatesHostNow(oneClient); //create a new host in the "ohpool"
         } catch (Exception ex) {
             Logger.getLogger(OneManager.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -22,6 +22,9 @@ import org.xml.sax.SAXException;
  * @author vinicius.rodrigues
  * 27/10/2014 - viniciusfacco
  *            - Upated to save allocatedMEM, usedMEM and allMonitoringTimes
+ * 04/08/2015 - viniciusfacco
+ *            - Renamed the method aloca_host to allocatesHostNow
+ *            - Created two new methods to allocate hosts: allocatesHost and enableLastHost
  */
 public class OneHostPool {
     
@@ -82,17 +85,24 @@ public class OneHostPool {
         return this.hosts_ativos.size();
     }
     
+    //return the host with specific id from the actives or inactives hosts
     public OneHost get_onehost(int id){
         OneHost onehost = null;
-        for (int i = 0; i < hosts_ativos.size(); i++){
-            if (hosts_ativos.get(i).get_id() == id){
-                onehost = hosts_ativos.get(i);
+        for (OneHost host : hosts_ativos) {
+            if (host.get_id() == id) {
+                return host;
+            }
+        }
+        for (OneHost host : hosts_inativos) {
+            if (host.get_id() == id) {
+                return host;
             }
         }
         return onehost;
     }
     
-    public int aloca_host(Client oc) throws Exception{
+    //when this method is used, automatically allocated host becomes part of the set of active hosts
+    public int allocatesHostNow(Client oc) throws Exception{
         if (!hosts_inativos.isEmpty()){
             OneHost host;
             hosts_inativos.get(0).create(oc);
@@ -101,6 +111,24 @@ public class OneHostPool {
             return host.get_id();
         }
         return 0;
+    }
+    
+    //when this method is used, a new host is allocated but it is still not considered part of set of active hosts
+    public int allocatesHost(Client oc) throws Exception{
+        if (!hosts_inativos.isEmpty()){
+            OneHost host;
+            host = hosts_inativos.get(0);
+            host.create(oc);
+            //host = hosts_inativos.remove(0);
+            //hosts_ativos.add(host);
+            return host.get_id();
+        }
+        return 0;
+    }
+    
+    //this method insert the last host created with the method allocatesHost in the set of active hosts. this is used when the host will be considered active only when the resources in it are online.
+    public void enableLastHost(){
+        hosts_ativos.add(hosts_inativos.remove(0));
     }
     
     public boolean remove_host(Client oc) throws InterruptedException{        
@@ -138,6 +166,7 @@ public class OneHostPool {
         }
     }
     
+    //>verifica e cria os hosts no gerenciador que já estão rodando no opennebula
     public void atualiza_hosts(Client oc) throws ParserConfigurationException, SAXException, IOException, Exception {
         
         DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -157,6 +186,7 @@ public class OneHostPool {
         }
     }
 
+    //cria host e adiciona no array de hosts ativos
     private void cria_host(String id, String name, Client oc) throws Exception {
         OneHost host;
         for (int i = 0; i < hosts_inativos.size(); i++){

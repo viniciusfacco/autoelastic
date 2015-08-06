@@ -21,5 +21,7 @@ public interface Thresholds {
     public float getUpperThreshold();
     
     public float getLowerThreshold();
+
+    public void reset(float uppert, float lowert);
     
 }
