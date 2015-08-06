@@ -14,6 +14,7 @@ import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import com.jcraft.jsch.UserInfo;
+import communication.SSHClient;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
@@ -29,8 +30,12 @@ import org.xml.sax.SAXException;
 
 /**
  *
- * @author Vinicius
+ * @author viniciusfacco
+ * 06/08/2015 - viniciusfacco
+ *            - added a new ssh object to manage the shared file system.
+ *            - updated methos to use the new ssh object and removed old methods
  */
+
 public class OneCommunicator {
     
     private static final String objname = "middlewares.OneComunicator"; //name of the class to be used in the logs
@@ -44,12 +49,18 @@ public class OneCommunicator {
     private final String warning_deacrease_file_name = "poucacarga.txt";
     private final String notify_increase_file_name = "novorecurso.txt";
     private final String localdir_temp_files = "C:\\temp\\autoelastic\\";
+    private SSHClient ssh;
     
     public OneCommunicator(String pserver, String puser, String ppassword, JTextArea plog){
         server = pserver;
         user = puser;
         password = ppassword;
         log = plog;
+        ssh = null;
+    }
+    
+    public void setSSHClient(SSHClient sshclient){
+        ssh = sshclient;
     }
     
     
@@ -60,7 +71,8 @@ public class OneCommunicator {
             BufferedWriter escritor = new BufferedWriter(new FileWriter(arquivo))) {
             escritor.write("pouca_carga");
         }
-        if (envia_arquivo(arquivo.getAbsolutePath())) {
+        //if (envia_arquivo(arquivo.getAbsolutePath())) {
+        if (ssh.sendFile(arquivo.getAbsolutePath(), remotedir_file_target)){
             gera_log(objname,"Main|posso_liberar: Arquivo enviado com sucesso...");
             return true;
         } else {
@@ -73,6 +85,51 @@ public class OneCommunicator {
     
     //método para verificar se arquivo de liberação foi criado no diretório no frontend
     public boolean canDecrease() {
+        
+        boolean libera;
+        if (ssh.fileExists(permission_decrease_file_name, remotedir_file_source)){
+            ssh.deleteFile(permission_decrease_file_name, remotedir_file_source);
+            libera = true; //liberação pode ser realizada
+            System.out.println("Main|VerificaLiberacao: Liberação de recursos pode ser realizada...");
+            gera_log(objname,"Main|VerificaLiberacao: Liberação de recursos pode ser realizada.");
+        } else {
+            System.out.println("Recursos ainda não podem ser liberados.");
+            gera_log(objname,"Main|VerificaLiberacao: Recursos ainda não podem ser liberados.");
+            libera = false;
+        }
+        return libera;
+    }
+
+    //método para enviar que cria e envia arquivo para o frontend, notificando a aplicação da criação de novo host e vm
+    public boolean notifyNewResources(String file_content) throws ParserConfigurationException, SAXException, IOException, InterruptedException {
+        
+        gera_log(objname,"vms online");
+        try {
+            //File arquivo = new File("C:\\temp\\one");
+            //arquivo.mkdirs();
+            File arquivo = new File(localdir_temp_files + notify_increase_file_name);
+            try (
+                BufferedWriter escritor = new BufferedWriter(new FileWriter(arquivo))) {
+                escritor.write(file_content + "\n");
+            }
+            //if (envia_arquivo(arquivo.getAbsolutePath())) {
+            if (ssh.sendFile(arquivo.getAbsolutePath(), remotedir_file_target)){
+                gera_log(objname,"Main|notifica: Arquivo enviado com sucesso...");
+                return true;
+            } else {
+                gera_log(objname,"Main|notifica: Arquivo não foi enviado...");
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(AutoElastic.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+
+    /*==================================================*
+     *This methods are discontinued and will be deleted *
+     *==================================================*/
+    //método para verificar se arquivo de liberação foi criado no diretório no frontend
+    public boolean canDecreaseAntigo() {
         
         String retorno;
         retorno = "";
@@ -139,31 +196,7 @@ public class OneCommunicator {
         }
         return libera;
     }
-
-    //método para enviar que cria e envia arquivo para o frontend, notificando a aplicação da criação de novo host e vm
-    public boolean notifyNewResources(String file_content) throws ParserConfigurationException, SAXException, IOException, InterruptedException {
-        
-        gera_log(objname,"vms online");
-        try {
-            //File arquivo = new File("C:\\temp\\one");
-            //arquivo.mkdirs();
-            File arquivo = new File(localdir_temp_files + notify_increase_file_name);
-            try (
-                BufferedWriter escritor = new BufferedWriter(new FileWriter(arquivo))) {
-                escritor.write(file_content + "\n");
-            }
-            if (envia_arquivo(arquivo.getAbsolutePath())) {
-                gera_log(objname,"Main|notifica: Arquivo enviado com sucesso...");
-                return true;
-            } else {
-                gera_log(objname,"Main|notifica: Arquivo não foi enviado...");
-            }
-        } catch (IOException ex) {
-            Logger.getLogger(AutoElastic.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return false;
-    }
-
+    
     //método para enviar arquivo para o frontend
     private boolean envia_arquivo(String filepath) {
 

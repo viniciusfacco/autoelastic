@@ -87,18 +87,18 @@ public class SSHClient {
     
     /**
      * Remove a file in a remote directory.
-     * @param remote_file_name File name to be removed
-     * @param remote_dir Remote directory
+     * @param file_name File name to be removed
+     * @param remote_dir Remote directory where the file is (include "/" or "\\" in the end)
      * @return
      */
-    public boolean deleteFile(String remote_file_name, String remote_dir){
+    public boolean deleteFile(String file_name, String remote_dir){
         try{      
             JSch jsch = new JSch();  
             Session session = jsch.getSession(user, server, 22);
             UserInfo ui = new ServerConnect(password);
             session.setUserInfo(ui);
             session.connect();
-            String remover = "rm " + remote_dir + remote_file_name;
+            String remover = "rm " + remote_dir + file_name;
             Channel channel=session.openChannel("exec");
             ((ChannelExec)channel).setCommand(remover);
             channel.setInputStream(null);
@@ -115,11 +115,11 @@ public class SSHClient {
     
     /**
      * Sends a file to a remote directory
-     * @param filepath Full file path
-     * @param remote_dirpath Remote directory
+     * @param filepath Full local file path including file name (source)
+     * @param remote_dir Remote directory to send the file (target)
      * @return
      */
-    public boolean sendFile(String filepath, String remote_dirpath){
+    public boolean sendFile(String filepath, String remote_dir){
         FileInputStream fis = null;
 
         try {
@@ -131,7 +131,7 @@ public class SSHClient {
             session.connect();
             boolean ptimestamp = true;
             // exec 'scp -t destino' remotely
-            String command = "scp " + (ptimestamp ? "-p" : "") + " -t " + remote_dirpath;
+            String command = "scp " + (ptimestamp ? "-p" : "") + " -t " + remote_dir;
             Channel channel = session.openChannel("exec");
             ((ChannelExec) channel).setCommand(command);
             try (

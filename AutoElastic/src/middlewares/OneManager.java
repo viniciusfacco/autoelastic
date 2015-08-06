@@ -28,7 +28,7 @@ public class OneManager {
     private static final String objname = "middlewares.OneManager"; //name of the class to be used in the logs
     private Client oneClient; //cliente de conexão com o servidor opennebula
     private OneHostPool ohpool; //conjunto de hosts que serão monitorados e utilizados
-    private OneCommunicator messenger; //comunicador utilizado para realizar a comunicação de operações de elasticidade
+    public OneCommunicator messenger; //comunicador utilizado para realizar a comunicação de operações de elasticidade
     private final String user; //usuario para conexão com o OpenNebula
     private final String password; //senha para conexão com o OpenNebula
     private final String server_address; //IP do servidor OpenNebula

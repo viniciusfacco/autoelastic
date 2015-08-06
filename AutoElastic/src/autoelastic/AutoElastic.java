@@ -347,6 +347,8 @@ public class AutoElastic implements Runnable {
         AutoElastic.cluster_id = 0;
         
         inicialize();
+        cloud_manager.messenger.setSSHClient(ssh);
+        cloud_manager.messenger.notifyDecrease();
         //int initial_hosts = 2;
         int initial_hosts = 1;
         int minimum_hosts = 1;
