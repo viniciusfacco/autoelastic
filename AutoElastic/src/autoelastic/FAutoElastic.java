@@ -17,8 +17,10 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
 /**
- *
- * @author vinicius.rodrigues
+ * User Interface
+ * @author viniciusfacco
+ * 11/08/2015 - viniciusfacco
+ *            - user can set the log name in the UI
  */
 public class FAutoElastic extends javax.swing.JFrame {
 
@@ -64,7 +66,7 @@ public class FAutoElastic extends javax.swing.JFrame {
         jtfSla = new javax.swing.JTextField();
         jbBuscarSLA = new javax.swing.JButton();
         jLabel15 = new javax.swing.JLabel();
-        jtfLogs = new javax.swing.JTextField();
+        jtfLogPath = new javax.swing.JTextField();
         jPanel1 = new javax.swing.JPanel();
         jLabel16 = new javax.swing.JLabel();
         jrbAging = new javax.swing.JRadioButton();
@@ -88,6 +90,8 @@ public class FAutoElastic extends javax.swing.JFrame {
         jtfMonitoringInterval = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         jtfVmsPorHost = new javax.swing.JTextField();
+        jLabel20 = new javax.swing.JLabel();
+        jtfExecutionLogName = new javax.swing.JTextField();
         jpHosts = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         jtHosts = new javax.swing.JTable();
@@ -307,11 +311,11 @@ public class FAutoElastic extends javax.swing.JFrame {
         });
 
         jLabel15.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        jLabel15.setText("Logs");
+        jLabel15.setText("Log Path");
 
-        jtfLogs.addFocusListener(new java.awt.event.FocusAdapter() {
+        jtfLogPath.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
-                jtfLogsFocusGained(evt);
+                jtfLogPathFocusGained(evt);
             }
         });
 
@@ -431,6 +435,7 @@ public class FAutoElastic extends javax.swing.JFrame {
         jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         jLabel8.setText("Monitoring Window");
 
+        jtfMonitoringWindow.setToolTipText("This value is the amount of observations to be considered by the evaluation algorithm. (\"Full Aging\" considers this value as the minimum of initial observations.)");
         jtfMonitoringWindow.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 jtfMonitoringWindowFocusGained(evt);
@@ -536,6 +541,11 @@ public class FAutoElastic extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        jLabel20.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        jLabel20.setText("Execution Log");
+
+        jtfExecutionLogName.setToolTipText("");
+
         javax.swing.GroupLayout jpParametersLayout = new javax.swing.GroupLayout(jpParameters);
         jpParameters.setLayout(jpParametersLayout);
         jpParametersLayout.setHorizontalGroup(
@@ -554,9 +564,14 @@ public class FAutoElastic extends javax.swing.JFrame {
                     .addComponent(jLabel15)
                     .addComponent(jbBuscarSLA, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jpParametersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jtfLogs)
-                    .addComponent(jtfSla))
+                .addGroup(jpParametersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jtfSla)
+                    .addGroup(jpParametersLayout.createSequentialGroup()
+                        .addComponent(jtfLogPath)
+                        .addGap(63, 63, 63)
+                        .addComponent(jLabel20)
+                        .addGap(18, 18, 18)
+                        .addComponent(jtfExecutionLogName)))
                 .addContainerGap())
         );
         jpParametersLayout.setVerticalGroup(
@@ -569,7 +584,9 @@ public class FAutoElastic extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jpParametersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel15)
-                    .addComponent(jtfLogs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jtfLogPath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel20)
+                    .addComponent(jtfExecutionLogName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jpParametersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1081,9 +1098,9 @@ public class FAutoElastic extends javax.swing.JFrame {
         model.addRow(new Object[]{""});
     }//GEN-LAST:event_jbAddHostActionPerformed
 
-    private void jtfLogsFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtfLogsFocusGained
-        jtfLogs.selectAll();
-    }//GEN-LAST:event_jtfLogsFocusGained
+    private void jtfLogPathFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtfLogPathFocusGained
+        jtfLogPath.selectAll();
+    }//GEN-LAST:event_jtfLogPathFocusGained
 
     private void jtfMonitoringWindowFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtfMonitoringWindowFocusGained
         jtfMonitoringWindow.selectAll();
@@ -1168,7 +1185,8 @@ public class FAutoElastic extends javax.swing.JFrame {
                     this.jtfUsuario.getText(),
                     this.jtfSenha.getText(),
                     this.jtfSla.getText(),
-                    this.jtfLogs.getText(),
+                    this.jtfLogPath.getText(),
+                    this.jtfExecutionLogName.getText(),
                     Integer.parseInt(this.jtfTemplateid.getText()),
                     Integer.parseInt(this.jtfMonitoringInterval.getText()),
                     Double.parseDouble(this.jtfThresholdMax.getText()) / 100,
@@ -1489,6 +1507,7 @@ public class FAutoElastic extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
+    private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -1533,10 +1552,11 @@ public class FAutoElastic extends javax.swing.JFrame {
     private javax.swing.JTable jtHosts;
     private javax.swing.JTextArea jtaLog;
     private javax.swing.JTextField jtfClusterId;
+    private javax.swing.JTextField jtfExecutionLogName;
     private javax.swing.JTextField jtfFrontend;
     private javax.swing.JTextField jtfIM;
     private javax.swing.JTextField jtfInitialNodes;
-    private javax.swing.JTextField jtfLogs;
+    private javax.swing.JTextField jtfLogPath;
     private javax.swing.JTextField jtfMonitoringInterval;
     private javax.swing.JTextField jtfMonitoringWindow;
     private javax.swing.JTextField jtfSenha;
@@ -1568,12 +1588,12 @@ public class FAutoElastic extends javax.swing.JFrame {
         this.jtfFrontend.setText("10.210.7.116");
         this.jtfUsuario.setText("oneadmin");
         this.jtfSenha.setText("nebula");
-        //this.jtfSla.setText("D:\\Users\\Vinicius\\Dropbox\\UNISINOS\\PIPCA\\Projetos\\AutoElastic\\autoelasticsla.xml");
         this.jtfSla.setText("C:\\Users\\Vinicius Facco\\Dropbox\\UNISINOS\\PIPCA\\Projetos\\AutoElastic\\autoelasticsla.xml");
-        this.jtfLogs.setText("C:\\Temp\\");
+        this.jtfLogPath.setText("C:\\Temp\\autoelastic\\");
+        this.jtfExecutionLogName.setText("");
         this.jtfMonitoringInterval.setText("15");
-        this.jtfMonitoringWindow.setText("0");
-        this.jtfTemplateid.setText("1");
+        this.jtfMonitoringWindow.setText("6");
+        this.jtfTemplateid.setText("3");
         this.jtfThresholdMax.setText("80");
         this.jtfThresholdMin.setText("40");
         this.jtfVmsPorHost.setText("2");
