@@ -94,7 +94,7 @@ public class OneVM {
         nl = doc.getElementsByTagName("STATE");
         el = (Element) nl.item(0);
         this.state = Integer.parseInt(el.getChildNodes().item(0).getNodeValue().trim());
-        System.out.println("Status VM ID " + this.id + ": " + this.state);log.append("Status VM ID " + this.id + ": " + this.state + "\n");
+        //System.out.println("Status VM ID " + this.id + ": " + this.state);log.append("Status VM ID " + this.id + ": " + this.state + "\n");
     }
     
     private String get_info() {
