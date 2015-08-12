@@ -30,7 +30,7 @@ import org.xml.sax.SAXException;
 
 /**
  *
- * @author Vinicius
+ * @author viniciusfacco
  * 27/10/2014 - viniciusfacco
  *            - added parameter LAST_MON_TIME
  * 17/11/2014 - viniciusfacco
@@ -82,7 +82,7 @@ public class OneHost {
             this.host = new Host(this.id, oc);
             DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");   //code to get
             Date date = new Date();                                     //the allocate time
-            greenHPC_log(this.name + ";" + dateFormat.format(date) + ";ALOCA");
+            greenHPC_log(this.name + ";" + dateFormat.format(date) + ";" + date.getTime() + ";ALOCA");
         }
         this.status = true;
         return true;
@@ -108,7 +108,7 @@ public class OneHost {
         }
         DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");   //code to get
         Date date = new Date();                                     //the delete time
-        greenHPC_log(this.name + ";" + dateFormat.format(date) + ";DESALOCA");
+        greenHPC_log(this.name + ";" + dateFormat.format(date) + ";" + date.getTime() + ";DESALOCA");
         this.status = false;
         return true;
     }
@@ -241,7 +241,7 @@ public class OneHost {
     
     //method to generate a specific log
     private static void greenHPC_log(String data){
-        File arquivo = new File("C:\\temp\\autoelastic_resource_operaiton.csv");
+        File arquivo = new File("C:\\temp\\autoelastic\\autoelastic_resource_operation.csv");
         try (
             BufferedWriter escritor = new BufferedWriter(new FileWriter(arquivo, true))) {
             escritor.append(data + "\n");
