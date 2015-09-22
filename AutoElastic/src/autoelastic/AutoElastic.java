@@ -210,62 +210,62 @@ public class AutoElastic implements Runnable {
     }
 
     private void monitoring() throws ParserConfigurationException, SAXException, IOException, InterruptedException, Exception {
-        int tempo; //tempo decorrido
-        int cont = 1; //contador de verificações
-        long time0 = System.currentTimeMillis(); //tempo inicial
-        long timen;
-        boolean resourcesPending;
-        while (monitoring){
+        boolean resourcesPending;                   //flag to inform if the system are waiting for new resources
+        int time;                                   //elapsed time
+        int cont = 0;                               //counter of verifications
+        long timeLoop;                              //time to execute the entire loop
+        long timen;                                 //current time         
+        long time0 = System.currentTimeMillis();    //initial time
+        while (monitoring){     
             timen = System.currentTimeMillis();
-            tempo = (int) ((timen - time0)/1000);
-/*LOG*      */gera_log(objname,"Main: " + cont + " Time: " + tempo + "s" + " | " + timen);
-/*LOG*      */gera_log(objname,"Main: Sincronizando hosts...");
+            cont++;
+            time = (int) ((timen - time0)/1000);
+            /*LOG*/gera_log(objname,"Main: " + cont + " Time: " + time + "s" + " | " + timen);
+            /*LOG*/gera_log(objname,"Main: Sincronizando hosts...");
             resourcesPending = cloud_manager.newResourcesPending();
             cloud_manager.syncData(); //synchronize data of the cloud
-/*LOG*      */export_log(cont, tempo, System.currentTimeMillis(), cloud_manager.getTotalActiveHosts(), cloud_manager.getAllocatedCPU(), cloud_manager.getUsedCPU(), cloud_manager.getAllocatedMEM(), cloud_manager.getUsedMEM(), cloud_manager.getAllocatedCPU() * thresholds.getUpperThreshold(), cloud_manager.getAllocatedCPU() * thresholds.getLowerThreshold(), cloud_manager.getCPULoad(), evaluator.getDecisionLoad(), thresholds.getLowerThreshold(), thresholds.getUpperThreshold(), cloud_manager.getLastMonitorTimes());
             thresholds.calculateThresholds(cloud_manager.getCPULoad()); //recalculate the thresholds
-/*GRA*      */graphic1.update(cont, cloud_manager.getUsedCPU(), cloud_manager.getAllocatedCPU(), cloud_manager.getAllocatedCPU() * thresholds.getUpperThreshold(), cloud_manager.getAllocatedCPU() * thresholds.getLowerThreshold());
-/*GRA*      */graphic2.update(cont, cloud_manager.getCPULoad(), 1, thresholds.getUpperThreshold(), thresholds.getLowerThreshold());
-/*LOG*      */gera_log(objname,"Main|monitora: Soma da carga de cpu de todos os hosts: " + cloud_manager.getUsedCPU() + " / Threshold maximo estabelecido: " + cloud_manager.getAllocatedCPU() * thresholds.getUpperThreshold() + " / Threshold minimo estabelecido: " + cloud_manager.getAllocatedCPU() * thresholds.getLowerThreshold());
-/*LOG*      */gera_log(objname,"Main: Realiza verificação de alguma violação dos thresholds...");
-            if (resourcesPending){// if we are waiting for new resource allocation we can evaluate the cloud
-/*LOG*          */gera_log(objname,"Main: Aguardando inicialização de recursos.");
-                evaluator.evaluate(cloud_manager.getCPULoad(), thresholds.getUpperThreshold(), thresholds.getLowerThreshold()); //although there are pending resources, autoelastic still evaluates the load but any operation is executed
-            } else {
-                if (evaluator.evaluate(cloud_manager.getCPULoad(), thresholds.getUpperThreshold(), thresholds.getLowerThreshold())){//analyze the cloud situation and if we have some violation we need deal with this
-                    //here we need deal with the violation
-                    if (evaluator.isHighAction()){//if we have a violation on the high threshold
-/*LOG*                  */gera_log(objname,"Main: Avaliador detectou alta carga...Verificando se SLA está no limite...");
-                        evaluator.reset(); //after deal with the problem/violation, re-initialize the parameters of evaluation
-                        thresholds.recalculateUpperThreshold(cloud_manager.getCPULoad()); //recalculate the upper threshold
-                        if(sla.canIncrease(cloud_manager.getTotalActiveHosts())){ //verify the SLA to know if we can increase resources
-/*LOG*                      */gera_log(objname,"Main: SLA não atingido...novo recurso pode ser alocado...");
-/*LOG*                      */gera_log(objname,"Main: Alocando recursos...");
-                            cloud_manager.increaseResources(); //increase one host and the number of vms informed in the parameters
-                        } else {
-/*LOG*                      */gera_log(objname,"Main: SLA no limite...nada pode ser feito...");
-                        }
-                    } else if (evaluator.isLowAction()){ //if we have a violation on the low threshold
-/*LOG*                  */gera_log(objname,"Main: Avaliador detectou baixa carga...Verificando se SLA está no limite...");
-                        evaluator.reset(); //after deal with the problem/violation, re-initialize the parameters of evaluation
-                        thresholds.recalculateLowerThreshold(cloud_manager.getCPULoad()); //recalculate the lower threshold
-                        if(sla.canDecrease(cloud_manager.getTotalActiveHosts())){ //verify the SLA to know if we can decrease resources
-/*LOG*                      */gera_log(objname,"Main: SLA não atingido...novo recurso pode ser liberado...");
-/*LOG*                      */gera_log(objname,"Main: Liberando recursos...");
-                            cloud_manager.decreaseResources(); //decrease the last host added and the number its vms
-                        } else {
-/*LOG*                      */gera_log(objname,"Main: SLA no limite...nada pode ser feito...");
-                        }
+            /*GRA*/graphic1.update(cont, cloud_manager.getUsedCPU(), cloud_manager.getAllocatedCPU(), cloud_manager.getAllocatedCPU() * thresholds.getUpperThreshold(), cloud_manager.getAllocatedCPU() * thresholds.getLowerThreshold());
+            /*GRA*/graphic2.update(cont, cloud_manager.getCPULoad(), 1, thresholds.getUpperThreshold(), thresholds.getLowerThreshold());
+            /*LOG*/gera_log(objname,"Main|monitora: Soma da carga de cpu de todos os hosts: " + cloud_manager.getUsedCPU() + " / Threshold maximo estabelecido: " + cloud_manager.getAllocatedCPU() * thresholds.getUpperThreshold() + " / Threshold minimo estabelecido: " + cloud_manager.getAllocatedCPU() * thresholds.getLowerThreshold());
+            /*LOG*/gera_log(objname,"Main: Realiza verificação de alguma violação dos thresholds...");
+            if ((evaluator.evaluate(cloud_manager.getCPULoad(), thresholds.getUpperThreshold(), thresholds.getLowerThreshold())) && (!resourcesPending)){
+                //analyze the cloud situation and if we have some violation we need deal with this and if we are not waiting for new resource allocation we can evaluate the cloud
+                /*LOG*/export_log(cont, time, System.currentTimeMillis(), cloud_manager.getTotalActiveHosts(), cloud_manager.getAllocatedCPU(), cloud_manager.getUsedCPU(), cloud_manager.getAllocatedMEM(), cloud_manager.getUsedMEM(), cloud_manager.getAllocatedCPU() * thresholds.getUpperThreshold(), cloud_manager.getAllocatedCPU() * thresholds.getLowerThreshold(), cloud_manager.getCPULoad(), evaluator.getDecisionLoad(), thresholds.getLowerThreshold(), thresholds.getUpperThreshold(), cloud_manager.getLastMonitorTimes());
+                if (evaluator.isHighAction()){//if we have a violation on the high threshold
+                    /*LOG*/gera_log(objname,"Main: Avaliador detectou alta carga...Verificando se SLA está no limite...");
+                    evaluator.reset(); //after deal with the problem/violation, re-initialize the parameters of evaluation
+                    thresholds.recalculateUpperThreshold(cloud_manager.getCPULoad()); //recalculate the upper threshold
+                    if(sla.canIncrease(cloud_manager.getTotalActiveHosts())){ //verify the SLA to know if we can increase resources
+                        /*LOG*/gera_log(objname,"Main: SLA não atingido...novo recurso pode ser alocado...");
+                        /*LOG*/gera_log(objname,"Main: Alocando recursos...");
+                        cloud_manager.increaseResources(); //increase one host and the number of vms informed in the parameters
                     } else {
-/*LOG*                  */gera_log(objname,"Main: Evaluator problem. We have violation but we do not know which.");
+                        /*LOG*/gera_log(objname,"Main: SLA no limite...nada pode ser feito...");
+                    }
+                } else if (evaluator.isLowAction()){ //if we have a violation on the low threshold
+                    /*LOG*/gera_log(objname,"Main: Avaliador detectou baixa carga...Verificando se SLA está no limite...");
+                    evaluator.reset(); //after deal with the problem/violation, re-initialize the parameters of evaluation
+                    thresholds.recalculateLowerThreshold(cloud_manager.getCPULoad()); //recalculate the lower threshold
+                    if(sla.canDecrease(cloud_manager.getTotalActiveHosts())){ //verify the SLA to know if we can decrease resources
+                        /*LOG*/gera_log(objname,"Main: SLA não atingido...novo recurso pode ser liberado...");
+                        /*LOG*/gera_log(objname,"Main: Liberando recursos...");
+                        cloud_manager.decreaseResources(); //decrease the last host added and the number its vms
+                    } else {
+                        /*LOG*/gera_log(objname,"Main: SLA no limite...nada pode ser feito...");
                     }
                 } else {
-/*LOG*              */gera_log(objname,"Main: Nenhum problema detectado pelo avaliador.");
-                }                    
+                        /*LOG*/gera_log(objname,"Main: Evaluator problem. We have violation but we do not know which.");
+                }
+            } else {
+                /*LOG*/gera_log(objname,"Main: Aguardando inicialização de recursos ou aguardando inicialização de recursos.");
+                /*LOG*/export_log(cont, time, System.currentTimeMillis(), cloud_manager.getTotalActiveHosts(), cloud_manager.getAllocatedCPU(), cloud_manager.getUsedCPU(), cloud_manager.getAllocatedMEM(), cloud_manager.getUsedMEM(), cloud_manager.getAllocatedCPU() * thresholds.getUpperThreshold(), cloud_manager.getAllocatedCPU() * thresholds.getLowerThreshold(), cloud_manager.getCPULoad(), evaluator.getDecisionLoad(), thresholds.getLowerThreshold(), thresholds.getUpperThreshold(), cloud_manager.getLastMonitorTimes());
+            }                    
+            /*LOG*/gera_log(objname,"Main: Aguarda intervalo de tempo...");
+            timeLoop = System.currentTimeMillis() - timen;
+            if (timeLoop < intervalo){
+                Thread.sleep(intervalo - timeLoop);
             }
-/*LOG*      */gera_log(objname,"Main: Aguarda intervalo de tempo...");
-            Thread.sleep(intervalo);
-            cont++;
         }
     }
 
@@ -496,7 +496,7 @@ public class AutoElastic implements Runnable {
             if ((evaluator.evaluate(cloud_manager.getCPULoad(), thresholds.getUpperThreshold(), thresholds.getLowerThreshold())) && (!resourcesPending)){
                 //analyze the cloud situation and if we have some violation we need deal with this and if we are not waiting for new resource allocation we can evaluate the cloud
                 times = times + ";" + System.currentTimeMillis(); //T7-AposAvaliarCarga
-                ///*LOG*/export_log(cont, tempo, System.currentTimeMillis(), cloud_manager.getTotalActiveHosts(), cloud_manager.getAllocatedCPU(), cloud_manager.getUsedCPU(), cloud_manager.getAllocatedMEM(), cloud_manager.getUsedMEM(), cloud_manager.getAllocatedCPU() * thresholds.getUpperThreshold(), cloud_manager.getAllocatedCPU() * thresholds.getLowerThreshold(), cloud_manager.getCPULoad(), evaluator.getDecisionLoad(), thresholds.getLowerThreshold(), thresholds.getUpperThreshold(), cloud_manager.getLastMonitorTimes());
+                /*LOG*/export_log(cont, tempo, System.currentTimeMillis(), cloud_manager.getTotalActiveHosts(), cloud_manager.getAllocatedCPU(), cloud_manager.getUsedCPU(), cloud_manager.getAllocatedMEM(), cloud_manager.getUsedMEM(), cloud_manager.getAllocatedCPU() * thresholds.getUpperThreshold(), cloud_manager.getAllocatedCPU() * thresholds.getLowerThreshold(), cloud_manager.getCPULoad(), evaluator.getDecisionLoad(), thresholds.getLowerThreshold(), thresholds.getUpperThreshold(), cloud_manager.getLastMonitorTimes());
                 //here we need deal with the violation
                 if (evaluator.isHighAction()){//if we have a violation on the high threshold
                     ///*LOG*/gera_log(objname,"Main: Avaliador detectou alta carga...Verificando se SLA está no limite...");
