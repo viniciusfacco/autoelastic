@@ -41,7 +41,7 @@ public class LiveThresholds extends StaticThresholds{
         } else {
             counter++;
         }
-        gera_log(objname, "Main|LiveThresholds|calculateThresholds: Threshold inferior/superior = " + super.lower_threshold + "/" + super.upper_threshold);
+        //gera_log(objname, "Main|LiveThresholds|calculateThresholds: Threshold inferior/superior = " + super.lower_threshold + "/" + super.upper_threshold);
         last_load = load;
     }
     

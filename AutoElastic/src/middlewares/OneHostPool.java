@@ -156,7 +156,7 @@ public class OneHostPool {
                 host_ativo.sync_host(); //sincroniza cada host
                 usedCPU = usedCPU + host_ativo.get_used_cpu(); //pega uso da cpu
                 usedMEM = usedMEM + host_ativo.get_used_mem(); //get used memory
-                gera_log(objname, "Main|OneHostPool|sync_hosts: Uso de CPU pelo host " + host_ativo.get_id() + " : " + host_ativo.get_used_cpu());
+                //gera_log(objname, "Main|OneHostPool|sync_hosts: Uso de CPU pelo host " + host_ativo.get_id() + " : " + host_ativo.get_used_cpu());
                 allocatedCPU = allocatedCPU + host_ativo.get_max_cpu(); //pega total de cpu
                 allocatedMEM = allocatedMEM + host_ativo.get_max_mem(); //get total memory
                 allMonitoringTimes += "," + host_ativo.get_last_mon_time(); //get the last_mon_time of the host and append in the attribute

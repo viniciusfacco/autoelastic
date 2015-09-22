@@ -63,7 +63,7 @@ public class SSHClient {
                     int i=in.read(tmp, 0, 1024);
                     if(i<0)break;
                     retorno = new String(tmp, 0, i);
-                    System.out.println(new String(tmp, 0, i));
+                    //System.out.println(new String(tmp, 0, i));
                 }
                 if(channel.isClosed()){
                     break;

@@ -73,10 +73,10 @@ public class OneCommunicator {
         }
         //if (envia_arquivo(arquivo.getAbsolutePath())) {
         if (ssh.sendFile(arquivo.getAbsolutePath(), remotedir_file_target)){
-            gera_log(objname,"Main|posso_liberar: Arquivo enviado com sucesso...");
+            //gera_log(objname,"Main|posso_liberar: Arquivo enviado com sucesso...");
             return true;
         } else {
-            gera_log(objname,"Main|posso_liberar: Arquivo não foi enviado...");
+            //gera_log(objname,"Main|posso_liberar: Arquivo não foi enviado...");
         }
         //aqui eu deveria ler o diretorio compartilhado para verificar se posso ou nao liberar
         //Thread.sleep(60000); //mas como nao implementei espero um tempo
@@ -90,11 +90,11 @@ public class OneCommunicator {
         if (ssh.fileExists(permission_decrease_file_name, remotedir_file_source)){
             ssh.deleteFile(permission_decrease_file_name, remotedir_file_source);
             libera = true; //liberação pode ser realizada
-            System.out.println("Main|VerificaLiberacao: Liberação de recursos pode ser realizada...");
-            gera_log(objname,"Main|VerificaLiberacao: Liberação de recursos pode ser realizada.");
+            //System.out.println("Main|VerificaLiberacao: Liberação de recursos pode ser realizada...");
+            //gera_log(objname,"Main|VerificaLiberacao: Liberação de recursos pode ser realizada.");
         } else {
             System.out.println("Recursos ainda não podem ser liberados.");
-            gera_log(objname,"Main|VerificaLiberacao: Recursos ainda não podem ser liberados.");
+            //gera_log(objname,"Main|VerificaLiberacao: Recursos ainda não podem ser liberados.");
             libera = false;
         }
         return libera;
@@ -112,10 +112,10 @@ public class OneCommunicator {
             escritor.write(file_content + "\n");
             //if (envia_arquivo(arquivo.getAbsolutePath())) {
             if (ssh.sendFile(arquivo.getAbsolutePath(), remotedir_file_target)){
-                gera_log(objname,"Main|notifica: Arquivo enviado com sucesso...");
+                //gera_log(objname,"Main|notifica: Arquivo enviado com sucesso...");
                 return true;
             } else {
-                gera_log(objname,"Main|notifica: Arquivo não foi enviado...");
+                //gera_log(objname,"Main|notifica: Arquivo não foi enviado...");
             }
         } catch (IOException ex) {
             Logger.getLogger(AutoElastic.class.getName()).log(Level.SEVERE, null, ex);
@@ -179,10 +179,10 @@ public class OneCommunicator {
                 channel.connect();
                 libera = true; //liberação pode ser realizada
                 System.out.println("Main|VerificaLiberacao: Liberação de recursos pode ser realizada...");
-                gera_log(objname,"Main|VerificaLiberacao: Liberação de recursos pode ser realizada.");
+                //gera_log(objname,"Main|VerificaLiberacao: Liberação de recursos pode ser realizada.");
             } else {
                 System.out.println("Recursos ainda não podem ser liberados.");
-                gera_log(objname,"Main|VerificaLiberacao: Recursos ainda não podem ser liberados.");
+                //gera_log(objname,"Main|VerificaLiberacao: Recursos ainda não podem ser liberados.");
                 libera = false;
             }
 

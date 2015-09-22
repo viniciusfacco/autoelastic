@@ -9,6 +9,7 @@
 package middlewares;
 
 import static autoelastic.AutoElastic.gera_log;
+import communication.SSHClient;
 import java.io.IOException;
 import java.util.Scanner;
 import java.util.logging.Level;
@@ -20,15 +21,18 @@ import org.opennebula.client.ClientConfigurationException;
 import org.xml.sax.SAXException;
 
 /**
- *
- * @author Vinicius
+ * Cloud Manager
+ * @author viniciusfacco
+ * 11/08/2015 - viniciusfacco
+ *            - removed sleep between VM allocations
+ *            - added method to set the SSHClient in the OneCommunicator
  */
 public class OneManager {
     
     private static final String objname = "middlewares.OneManager"; //name of the class to be used in the logs
     private Client oneClient; //cliente de conexão com o servidor opennebula
     private OneHostPool ohpool; //conjunto de hosts que serão monitorados e utilizados
-    public OneCommunicator messenger; //comunicador utilizado para realizar a comunicação de operações de elasticidade
+    private OneCommunicator messenger; //comunicador utilizado para realizar a comunicação de operações de elasticidade
     private final String user; //usuario para conexão com o OpenNebula
     private final String password; //senha para conexão com o OpenNebula
     private final String server_address; //IP do servidor OpenNebula
@@ -161,9 +165,10 @@ public class OneManager {
             for (int i = 0; i < vms_for_host; i++) {
                 last_vms[i] = new OneVM(vmtemplateid);
                 increaseVM(last_vms[i], hostid); //aloca vm nesse host
-                gera_log(objname,"Main: Nova VM alocada: " + last_vms[i].get_id());
+                //gera_log(objname,"Main: Nova VM alocada: " + last_vms[i].get_id());
                 ohpool.get_onehost(hostid).add_vm(last_vms[i]);
-                Thread.sleep(10000);
+                System.out.println("Alocando vm...");
+                //Thread.sleep(10000); //why?
             }
             waiting_vms = true;
             return true;
@@ -194,16 +199,17 @@ public class OneManager {
         return ov.deploy(oneClient, hid, log);
     }
     
-    public boolean isWaiting() throws ParserConfigurationException, SAXException, IOException, InterruptedException{
+    public boolean newResourcesPending() throws ParserConfigurationException, SAXException, IOException, InterruptedException{        
         if (waiting_vms){
+            last_vms[0].sync_vm();
+            last_vms[1].sync_vm();
             if (last_vms[0].get_ip().equalsIgnoreCase("") || last_vms[1].get_ip().equalsIgnoreCase("")) {
-                last_vms[0].sync_vm();
-                last_vms[1].sync_vm();
+                return false;
             } else {
                 if (ping(last_vms[0].get_ip()) && ping(last_vms[1].get_ip())){
                     ohpool.enableLastHost();
                     waiting_vms = false;
-                    gera_log(objname,"Notifica criação de novos recursos...");
+                    //gera_log(objname,"Notifica criação de novos recursos...");
                     messenger.notifyNewResources(last_vms[0].get_ip() + "\n" + last_vms[1].get_ip());
                 }
             }
@@ -237,6 +243,10 @@ public class OneManager {
         return online;
     }
     
+    public void setSSHClient(SSHClient sshClient) {
+        this.messenger.setSSHClient(sshClient);
+    }
+    
     //================================ Métodos não utilizados ========================================
     //================================ Implementação para futura nova versão =========================
     //instantiate "amounthosts" hosts with "vmsperhost" virtual machines each one / return an array with the IPs of the new virtual machines
@@ -259,11 +269,11 @@ public class OneManager {
         for(int i = 0; i < amounthosts; i++){ //for each new host
             hostid = instantiate_host(); //create a new host
             if (hostid > 0){ //if success and a new host was create
-                gera_log(objname,"Main: Novo host alocado: " + hostid); //log
-                gera_log(objname,"Main: Aloca nova VM no host ID " + hostid); //log
+                //gera_log(objname,"Main: Novo host alocado: " + hostid); //log
+                //gera_log(objname,"Main: Aloca nova VM no host ID " + hostid); //log
                 for (int j = 0; j < vmsperhost; j++){ //create vmsperhost new virtual machines
                     vmid = instantiate_vm(hostid, idtemplatevm); //create a new virtual machine in "hostid"
-                    gera_log(objname,"Main: Nova VM alocada: " + vmid); //log
+                    //gera_log(objname,"Main: Nova VM alocada: " + vmid); //log
                     ipvms[countvm] = ohpool.get_onehost(hostid).get_vm(0).get_ip(); //store the IP of this virtual machine
                     countvm++;
                 }

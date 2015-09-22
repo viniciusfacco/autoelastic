@@ -33,7 +33,7 @@ public class AgingFullEvaluator extends GenericEvaluator{
     @Override
     public boolean evaluate(float load, float upper_threshold, float lower_threshold){
         decision_load = (float) (decision_load * 0.5 + load * 0.5);
-        gera_log(objname, "Main|AginFullEvaluator|evaluate: Aging = " + decision_load);
+        //gera_log(objname, "Main|AginFullEvaluator|evaluate: Aging = " + decision_load);
         if (counter >= VIEW_SIZE - 1){
             //test if the aging is out of the range between the thresholds
             if (decision_load > upper_threshold) { //test if we have a violation on the higher threshold after aply the aging
