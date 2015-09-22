@@ -101,12 +101,22 @@ public class GenericEvaluator implements Evaluator{
         else return 0;
     }
     
+    /**
+     * Set the alert flags to false
+     */
+    @Override
+    public void resetFlags(){
+        high_alert = false;
+        low_alert = false;
+    }
+    
     //23/05/2014: reset the counters
     @Override
     public void reset(){
         counter = 0;
         high_alert = false;
         low_alert = false;
+        decision_load = 0;
     }
 
     @Override

@@ -22,6 +22,8 @@ public interface Evaluator {
     
     public byte whichAction();
     
+    public void resetFlags();
+    
     public void reset();
     
 }

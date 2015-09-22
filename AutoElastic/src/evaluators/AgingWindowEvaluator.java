@@ -84,4 +84,10 @@ public class AgingWindowEvaluator extends GenericEvaluator{
         return value / observ.size();
     }
     
+    @Override
+    public void reset(){
+        super.reset();
+        observ = new ArrayList<>();
+    }
+    
 }

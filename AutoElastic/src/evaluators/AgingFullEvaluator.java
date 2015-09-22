@@ -49,15 +49,5 @@ public class AgingFullEvaluator extends GenericEvaluator{
             counter++; //here, counter is used to define the observantions amount
         }
         return false;  
-    }
-    
-    /**
-     * Reset the flags.
-     */
-    @Override
-    public void reset(){
-        high_alert = false;
-        low_alert = false;
-    }
-    
+    }        
 }
