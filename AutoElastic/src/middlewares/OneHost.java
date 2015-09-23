@@ -50,9 +50,9 @@ public class OneHost {
     //private String transfer_manager; //preenchido quando onehost é criado - comentado por atualização de versão
     private boolean status; //flag que definirá se host já foi criado ou não no ambiente opennebula
     private ArrayList<OneVM> vms; //VMs alocadas no host
-    private float MAX_CPU;
+    private float MAX_CPU; //max is the total amount in the host
     private float USED_CPU;
-    private float MAX_MEM;
+    private float MAX_USAGE; //usage is the allocated
     private float USED_MEM;
     private long LAST_MON_TIME;
     private JTextArea log;
@@ -150,7 +150,7 @@ public class OneHost {
     }
     
     public float get_max_mem(){
-        return this.MAX_MEM;
+        return this.MAX_USAGE;
     }
     
     public long get_last_mon_time(){
@@ -192,11 +192,11 @@ public class OneHost {
         this.USED_CPU = Integer.parseInt(((Node)textUCPU.item(0)).getNodeValue().trim());
         //System.out.println("USED_CPU: " + this.USED_CPU);
         
-        //buscando elemento MAX_MEM no xml para tradução
-        NodeList MAXMEM = conjunto_parametros.getElementsByTagName("MAX_MEM");
+        //buscando elemento MAX_USAGE no xml para tradução
+        NodeList MAXMEM = conjunto_parametros.getElementsByTagName("MAX_USAGE");
         Element MMEM = (Element)MAXMEM.item(0);
         NodeList textMMEM = MMEM.getChildNodes();
-        this.MAX_MEM = Integer.parseInt(((Node)textMMEM.item(0)).getNodeValue().trim());
+        this.MAX_USAGE = Integer.parseInt(((Node)textMMEM.item(0)).getNodeValue().trim());
         //System.out.println("MAX_MEM: " + this.MAX_MEM);
         
         //buscando elemento USED_MEM no xml para tradução
