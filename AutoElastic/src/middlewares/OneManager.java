@@ -109,7 +109,7 @@ public class OneManager {
      * Return the load of the cloud based on CPU
      * @return [0 &lt load &lt 1]
      */
-        public float getCPULoad(){
+    public float getCPULoad(){
         float used = ohpool.get_used_CPU();
         float allocated = ohpool.get_allocated_CPU();        
         float load = used / allocated;
