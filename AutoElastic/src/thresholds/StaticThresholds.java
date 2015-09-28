@@ -7,8 +7,11 @@
 package thresholds;
 
 /**
- *
+ * Reviews
  * @author viniciusfacco
+ * 28/09/2015 - viniciusfacco
+ *            - removed methods recalculateLowerThreshold and recalculateUpperThreshold
+ *            - added method resetThresholds
  */
 public class StaticThresholds implements Thresholds{
     
@@ -31,18 +34,9 @@ public class StaticThresholds implements Thresholds{
     /**
      * StaticThresholds: do nothing.
      * LiveThresholds: set the lower threshold to (load/2).
-     * @param load - current system load
      */
     @Override
-    public void recalculateLowerThreshold(float load){}
-    
-    /**
-     * StaticThresholds: do nothing
-     * LiveThresholds: set the upper threshold to [1 - (1 - load)/2)].
-     * @param load - current system load
-     */
-    @Override
-    public void recalculateUpperThreshold(float load){}
+    public void resetThresholds(){}
     
     /**
      * Return the current upper threshold

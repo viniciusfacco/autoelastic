@@ -9,14 +9,15 @@ package thresholds;
 /**
  *
  * @author viniciusfacco
+ * 28/09/2015 - viniciusfacco
+ *            - removed methods recalculateLowerThreshold and recalculateUpperThreshold
+ *            - added method resetThresholds
  */
 public interface Thresholds {
     
     public void calculateThresholds(float load);  
     
-    public void recalculateLowerThreshold(float load);
-    
-    public void recalculateUpperThreshold(float load);
+    public void resetThresholds();
     
     public float getUpperThreshold();
     
