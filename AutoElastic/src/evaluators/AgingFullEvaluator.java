@@ -25,14 +25,12 @@ public class AgingFullEvaluator extends GenericEvaluator{
     
     /**
     * Return if the aging system identified if the factor is out of range between the thresholds.
-    * @param load - the current system load.
     * @param upper_threshold - the current upper threshold.
     * @param lower_threshold - the current lower threshold.
     * @return 
     */
     @Override
-    public boolean evaluate(float load, float upper_threshold, float lower_threshold){
-        decision_load = (float) (decision_load * 0.5 + load * 0.5);
+    public boolean evaluate(float upper_threshold, float lower_threshold){        
         //gera_log(objname, "Main|AginFullEvaluator|evaluate: Aging = " + decision_load);
         if (counter >= VIEW_SIZE - 1){
             //test if the aging is out of the range between the thresholds
@@ -44,10 +42,19 @@ public class AgingFullEvaluator extends GenericEvaluator{
                 high_alert = false;
                 low_alert = true;
                 return true; 
+            } else {
+                high_alert = false;
+                low_alert = false;
             }
         } else {
             counter++; //here, counter is used to define the observantions amount
         }
         return false;  
-    }        
+    }    
+    
+    @Override
+    public float computeLoad(float load){
+        decision_load = (float) (decision_load * 0.5 + load * 0.5);
+        return decision_load;
+    }
 }

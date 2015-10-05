@@ -41,8 +41,7 @@ public class GenericEvaluator implements Evaluator{
     
     //24/04/2014: método de avaliação que devolve true se houve uma sequência de VIEW_SIZE quebras seguidas em algum dos thresholds
     @Override
-    public boolean evaluate(float load, float upper_threshold, float lower_threshold){
-        decision_load = load;
+    public boolean evaluate(float upper_threshold, float lower_threshold){
         //----------------------------------------------------------------------
         //para realizar a avaliação primeiramente comparo a cpu com os thresholds
         if (decision_load > upper_threshold){        //verifico se violamos o limite superior
@@ -77,6 +76,17 @@ public class GenericEvaluator implements Evaluator{
         //}
         //----------------------------------------------------------------------
         return false;
+    }
+    
+    @Override
+    public float computeLoad(float load) {
+        decision_load = load;
+        return decision_load;
+    }
+    
+        @Override
+    public float getDecisionLoad() {
+        return decision_load;
     }
     
     //25/04/2014:método para retornar se há necessidade de realizar alguma ação para violação superior
@@ -117,11 +127,6 @@ public class GenericEvaluator implements Evaluator{
         high_alert = false;
         low_alert = false;
         decision_load = 0;
-    }
-
-    @Override
-    public float getDecisionLoad() {
-        return decision_load;
     }
     
 }

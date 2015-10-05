@@ -44,15 +44,7 @@ public class AgingWindowEvaluator extends GenericEvaluator{
      * @return 
      */
     @Override
-    public boolean evaluate(float load, float upper_threshold, float lower_threshold){
-        decision_load = 0;
-        observ.add(0, load); //inserte the new value in the first place in the list
-        //aply the aging concept if counter > VIEW_SIZE and the average if VIEW_SIZE < counter < 2
-        if (observ.size() >= VIEW_SIZE){ // if we do have the minimum of VIEW_SIZE values
-            decision_load = calc_aging(0); //calculate the aging initializing in the first position (the newer value)
-        } else if (observ.size() > 2){ // if the counter is betwen 3 and VIEW_SIZE we will calculate the average to define the factor
-            decision_load = average();
-        }
+    public boolean evaluate(float upper_threshold, float lower_threshold){        
         //test if the aging is out of the range between the thresholds
         if (decision_load > upper_threshold) { //test if we have a violation on the higher threshold after aply the aging
             high_alert = true; 
@@ -62,8 +54,24 @@ public class AgingWindowEvaluator extends GenericEvaluator{
             high_alert = false;
             low_alert = true;
             return true; 
+        } else {
+            high_alert = false;
+            low_alert = false;
         }
         return false;
+    }
+    
+    @Override
+    public float computeLoad(float load){
+        decision_load = 0;
+        observ.add(0, load); //inserte the new value in the first place in the list
+        //aply the aging concept if counter > VIEW_SIZE and the average if VIEW_SIZE < counter < 2
+        if (observ.size() >= VIEW_SIZE){ // if we do have the minimum of VIEW_SIZE values
+            decision_load = calc_aging(0); //calculate the aging initializing in the first position (the newer value)
+        } else if (observ.size() > 2){ // if the counter is betwen 3 and VIEW_SIZE we will calculate the average to define the factor
+            decision_load = average();
+        }
+        return decision_load;
     }
     
     //return the aging value for the VIEW_SIZE window

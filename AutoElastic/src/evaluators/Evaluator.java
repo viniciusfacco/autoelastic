@@ -12,7 +12,9 @@ package evaluators;
  */
 public interface Evaluator {
     
-    public boolean evaluate(float load, float upper_threshold, float lower_threshold);
+    public boolean evaluate(float upper_threshold, float lower_threshold);
+    
+    public float computeLoad(float load);
     
     public float getDecisionLoad();
     
