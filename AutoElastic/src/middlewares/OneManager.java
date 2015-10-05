@@ -247,6 +247,10 @@ public class OneManager {
         this.messenger.setSSHClient(sshClient);
     }
     
+    public void reset(){
+        this.waiting_vms = false;
+    }
+    
     //================================ Métodos não utilizados ========================================
     //================================ Implementação para futura nova versão =========================
     //instantiate "amounthosts" hosts with "vmsperhost" virtual machines each one / return an array with the IPs of the new virtual machines
