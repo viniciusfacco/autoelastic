@@ -64,6 +64,26 @@ public class LiveThresholds extends StaticThresholds{
     }
     
     /**
+     * Set the upper threshold = ((x - y) / 2) + z
+     * @param x
+     * @param y
+     * @param z
+     */
+    @Override
+    public void recalculateUpperThreshold(float x, float y, float z) {
+        current_upper_threshold = ((x - y)/2) + z;
+    }
+
+    /**
+     * Set the lower threshold = x / 2
+     * @param x
+     */
+    @Override
+    public void recalculateLowerThreshold(float x) {
+        current_lower_threshold = x / 2;
+    }
+    
+    /**
      * Return the current upper threshold
      * @return current current upper threshold
      */

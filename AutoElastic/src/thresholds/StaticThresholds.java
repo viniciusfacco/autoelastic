@@ -33,10 +33,16 @@ public class StaticThresholds implements Thresholds{
     
     /**
      * StaticThresholds: do nothing.
-     * LiveThresholds: set the lower threshold to (load/2).
+     * 
      */
     @Override
     public void resetThresholds(){}
+    
+    @Override
+    public void recalculateUpperThreshold(float x, float y, float z) {}
+
+    @Override
+    public void recalculateLowerThreshold(float x) {}
     
     /**
      * Return the current upper threshold
@@ -60,6 +66,5 @@ public class StaticThresholds implements Thresholds{
     public void reset(float uppert, float lowert) {
         upper_threshold = uppert;
         lower_threshold = lowert;
-    }
-    
+    }    
 }

@@ -19,6 +19,10 @@ public interface Thresholds {
     
     public void resetThresholds();
     
+    public void recalculateUpperThreshold(float x, float y, float z);
+    
+    public void recalculateLowerThreshold(float x);
+    
     public float getUpperThreshold();
     
     public float getLowerThreshold();
