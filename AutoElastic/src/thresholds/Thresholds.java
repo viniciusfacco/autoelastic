@@ -21,11 +21,15 @@ public interface Thresholds {
     
     public void recalculateUpperThreshold(float x, float y, float z);
     
-    public void recalculateLowerThreshold(float x);
+    public void recalculateLowerThreshold(float x, float y, float z);
     
     public float getUpperThreshold();
     
     public float getLowerThreshold();
+    
+    public void setUpperThreshold(float threshold);
+    
+    public void setLowerThreshold(float threshold);
 
     public void reset(float uppert, float lowert);
     

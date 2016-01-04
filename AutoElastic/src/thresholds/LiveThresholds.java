@@ -71,16 +71,18 @@ public class LiveThresholds extends StaticThresholds{
      */
     @Override
     public void recalculateUpperThreshold(float x, float y, float z) {
-        current_upper_threshold = ((x - y)/2) + z;
+        current_upper_threshold = (Math.abs(x - y)/2) + z;
     }
 
     /**
      * Set the lower threshold = x / 2
      * @param x
+     * @param y
+     * @param z
      */
     @Override
-    public void recalculateLowerThreshold(float x) {
-        current_lower_threshold = x / 2;
+    public void recalculateLowerThreshold(float x, float y, float z) {
+        current_lower_threshold = z - (Math.abs(x - y)/2);
     }
     
     /**
@@ -102,6 +104,16 @@ public class LiveThresholds extends StaticThresholds{
     }
     
     @Override
+    public void setUpperThreshold(float threshold){
+        current_upper_threshold = threshold;
+    }
+    
+    @Override
+    public void setLowerThreshold(float threshold){
+        current_lower_threshold = threshold;
+    }
+    
+    @Override
     public void reset(float uppert, float lowert) {
         upper_threshold = uppert;
         lower_threshold = lowert;
@@ -114,12 +126,15 @@ public class LiveThresholds extends StaticThresholds{
     
     // return a new value for the threshold using the value "live_value" to adapt the threshold
     private float calculateThreshold(float threshold){
-        if ((threshold - live_value) < 0){
+        //if ((threshold - live_value) < 0){
+        if ((threshold - (live_value + (live_value * 0.25))) < 0){//adding more 30% of variation
             return 0;
-        } else if ((threshold - live_value) > 1){
+        //} else if ((threshold - live_value) > 1){
+        } else if ((threshold - (live_value + (live_value * 0.25))) > 1){//adding more 30% of variation
             return 1;
         } else{
-            return (threshold - live_value);
+            //return (threshold - live_value);
+            return (float) (threshold - (live_value + (live_value * 0.25)));//adding more 30% of variation
         }
     }
     

@@ -42,7 +42,7 @@ public class StaticThresholds implements Thresholds{
     public void recalculateUpperThreshold(float x, float y, float z) {}
 
     @Override
-    public void recalculateLowerThreshold(float x) {}
+    public void recalculateLowerThreshold(float x, float y, float z) {}
     
     /**
      * Return the current upper threshold
@@ -60,6 +60,16 @@ public class StaticThresholds implements Thresholds{
     @Override
     public float getLowerThreshold() {
         return lower_threshold;
+    }
+        
+    @Override
+    public void setUpperThreshold(float threshold) {
+        upper_threshold = threshold;
+    }
+
+    @Override
+    public void setLowerThreshold(float threshold) {
+        lower_threshold = threshold;
     }
 
     @Override
