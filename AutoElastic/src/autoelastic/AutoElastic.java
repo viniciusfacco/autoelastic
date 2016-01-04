@@ -45,6 +45,8 @@ import thresholds.*;
  *            - method set_parameters ajusted to receive the name of the log
  *            - created a new boolean in the monitoring method and ajusted the logic when new resources are not online
  *            - added SSHClient object to the cloud manager in the inicialize method
+ * 04/01/2016 - viniciusfacco
+ *            - updated the monitoring method to use the new Live Thresholding algorithm with the class LiveThresholds
  */
 public class AutoElastic implements Runnable {
 
