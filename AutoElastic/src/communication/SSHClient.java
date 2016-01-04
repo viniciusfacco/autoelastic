@@ -15,6 +15,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Client SSH to realize remote operations. 
@@ -28,10 +30,41 @@ public class SSHClient {
     private final String user;
     private final String password;
     
+    private JSch jsch;
+    private Session session;
+    private UserInfo ui;
+    
     public SSHClient(String srv, String usr, String pwd){
         server = srv;
         user = usr;
         password = pwd;
+        jsch = new JSch();  
+        try {
+            session = jsch.getSession(user, server, 22);
+        } catch (JSchException ex) {
+            System.out.println("Problema ao solicitar sessão SSH.");
+            Logger.getLogger(SSHClient.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        ui = new ServerConnect(password);
+        session.setUserInfo(ui);
+        try {
+            session.connect();
+        } catch (JSchException ex) {
+            System.out.println("Problema ao realizar a conexão SSH.");
+            Logger.getLogger(SSHClient.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void connect(){
+        try {
+            session.connect();
+        } catch (JSchException ex) {
+            Logger.getLogger(SSHClient.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void disconnect(){
+        session.disconnect();
     }
     
     /**
@@ -45,11 +78,11 @@ public class SSHClient {
         retorno = "";
         
         try{      
-            JSch jsch = new JSch();  
-            Session session = jsch.getSession(user, server, 22);
-            UserInfo ui = new ServerConnect(password);
-            session.setUserInfo(ui);
-            session.connect();
+            //JSch jsch = new JSch();  
+            //Session session = jsch.getSession(user, server, 22);
+            //UserInfo ui = new ServerConnect(password);
+            //session.setUserInfo(ui);
+            //session.connect();
             String listar = "ls -l " + remote_dir;
             Channel channel=session.openChannel("exec");
             ((ChannelExec)channel).setCommand(listar);
@@ -70,14 +103,8 @@ public class SSHClient {
                 }
                 try{Thread.sleep(1000);}catch(Exception ee){}
             }
-
-            if (retorno.contains(remote_file_name)){ //se listagem conter arquivo de liberação
-                channel.disconnect();
-                session.disconnect();
-                return true;
-            } else {
-                return false;
-            }
+            channel.disconnect();            
+            return retorno.contains(remote_file_name); //se listagem conter arquivo de liberação
         }
         catch(Exception e){
             System.out.println(e);
@@ -93,11 +120,11 @@ public class SSHClient {
      */
     public boolean deleteFile(String file_name, String remote_dir){
         try{      
-            JSch jsch = new JSch();  
-            Session session = jsch.getSession(user, server, 22);
-            UserInfo ui = new ServerConnect(password);
-            session.setUserInfo(ui);
-            session.connect();
+            //JSch jsch = new JSch();  
+            //Session session = jsch.getSession(user, server, 22);
+            //UserInfo ui = new ServerConnect(password);
+            //session.setUserInfo(ui);
+            //session.connect();
             String remover = "rm " + remote_dir + file_name;
             Channel channel=session.openChannel("exec");
             ((ChannelExec)channel).setCommand(remover);
@@ -123,12 +150,12 @@ public class SSHClient {
         FileInputStream fis = null;
 
         try {
-            JSch jsch = new JSch();
-            Session session = jsch.getSession(user, server, 22);
+            //JSch jsch = new JSch();
+            //Session session = jsch.getSession(user, server, 22);
             // username and password will be given via UserInfo interface.
-            UserInfo ui = new ServerConnect(password);
-            session.setUserInfo(ui);
-            session.connect();
+            //UserInfo ui = new ServerConnect(password);
+            //session.setUserInfo(ui);
+            //session.connect();
             boolean ptimestamp = true;
             // exec 'scp -t destino' remotely
             String command = "scp " + (ptimestamp ? "-p" : "") + " -t " + remote_dir;
@@ -140,6 +167,7 @@ public class SSHClient {
                 channel.connect();
                 if (checkAck(in) != 0) {
                     //gera_log(objname,"System.exit(0);");
+                    channel.disconnect();
                     return false;
                 }
                 File _lfile = new File(filepath);
@@ -152,6 +180,7 @@ public class SSHClient {
                     out.flush();
                     if (checkAck(in) != 0) {
                         //gera_log(objname,"System.exit(0);");
+                        channel.disconnect();
                         return false;
                     }
                 }
@@ -169,6 +198,7 @@ public class SSHClient {
                 out.flush();
                 if (checkAck(in) != 0) {
                     //gera_log(objname,"System.exit(0);");
+                    channel.disconnect();
                     return false;
                 }
                 // send a content of arquivo
@@ -193,7 +223,7 @@ public class SSHClient {
                 }
             }
             channel.disconnect();
-            session.disconnect();
+            //session.disconnect();
         } catch (JSchException | IOException e) {
             //gera_log(objname,e.toString());
             System.out.println(e.toString());
