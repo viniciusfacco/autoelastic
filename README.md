@@ -8,4 +8,5 @@ AutoElastic is a PaaS-level elasticity model for high performance applications i
 AutoElastic’s approach provides elasticity by hiding all resource reconfiguration actions from programmers, executing without any modifications in the application’s code. In particular, AutoElastic deals with applications that do not use specific deadlines for concluding the subparts. It targets message-passing applications with explicit parallelism, which use send/receive and accept/connect directives. AutoElastic offers a mechanism to set up a new VM without blocking the HPC application and offers horizontal elasticity actions only when forecasting that the application will really maintain the current behavior in the near future.
 
 Author: Vinicius Facco Rodrigues
+
 Email: viniciusfacco@live.com
