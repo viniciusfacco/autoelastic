@@ -47,6 +47,8 @@ import thresholds.*;
  *            - added SSHClient object to the cloud manager in the inicialize method
  * 04/01/2016 - viniciusfacco
  *            - updated the monitoring method to use the new Live Thresholding algorithm with the class LiveThresholds
+ * 13/01/2016 - viniciusfacco
+ *            - fixed bug when using fixed threshold (after a threshold violation one of the thresholds was reset)
  */
 public class AutoElastic implements Runnable {
 
@@ -237,11 +239,9 @@ public class AutoElastic implements Runnable {
                 switch (recalculate_thresholds){
                     case 1://it means that the upper threshold was violated
                         thresholds.recalculateUpperThreshold(1,load_after,load_after);
-                        thresholds.setLowerThreshold(0);
                         break;
                     case 2://it means that the upper threshold was violated
                         thresholds.recalculateLowerThreshold(load_before,load_after,load_before);
-                        thresholds.setUpperThreshold(1);
                 }
                 recalculate_thresholds = 0;
             }            
@@ -357,7 +357,7 @@ public class AutoElastic implements Runnable {
     public void startLabMode(String srv, String usr, String pwd, String sla, String[] hosts, JTextArea lg) throws InterruptedException, IOException, ParserConfigurationException, SAXException, Exception{
         
         SSHClient ssh = new SSHClient(srv, usr, pwd);
-        String ip_vm_master = "10.210.14.82";//VM que vai rodar mestre e slave inicial. Processos devem ser iniciados manualmente aqui.
+        String ip_vm_master = "10.210.14.65";//VM que vai rodar mestre e slave inicial. Processos devem ser iniciados manualmente aqui.
         String server_message_start = "appstarted";
         String server_message_stop = "appstoped";
         String autoelastic_message_start = "startapp";
@@ -383,7 +383,7 @@ public class AutoElastic implements Runnable {
         AutoElastic.num_vms = 2;
         AutoElastic.viewsize = 6;
         AutoElastic.evaluatortype = "full_aging";
-        AutoElastic.thresholdtype = "live";
+        AutoElastic.thresholdtype = "static";
         AutoElastic.image_manager = "kvm";
         AutoElastic.virtual_machine_manager = "kvm";
         AutoElastic.virtual_network_manager = "dummy";
@@ -392,12 +392,12 @@ public class AutoElastic implements Runnable {
         inicialize();
         cloud_manager.setSSHClient(ssh);
         //int initial_hosts = 2;
-        int initial_hosts = 8;
-        int minimum_hosts = 8;
+        int initial_hosts = 1;
+        int minimum_hosts = 1;
         boolean letsgo = false;
-        String[] apps = {"ex+","ex-","des","asc"};//cargas que serao testadas
-        int[] upperthresholds = {100};//thresholds que serao testados
-        int[] lowerthresholds = {0};//thresholds que serao testados
+        String[] apps = {"ex-"};//cargas que serao testadas
+        int[] upperthresholds = {70,90};//thresholds que serao testados
+        int[] lowerthresholds = {30,50};//thresholds que serao testados
         for (String app : apps) {
             for (int uthreshold : upperthresholds){
                 for (int lthreshold : lowerthresholds){
@@ -549,13 +549,13 @@ public class AutoElastic implements Runnable {
                         //thresholds.setUpperThreshold(1);                                            //técnica 1
                         thresholds.recalculateUpperThreshold(1,load_after,load_after);              //técnica 2
                         //thresholds.recalculateUpperThreshold(load_before,load_after,load_before);   //técnica 3
-                        thresholds.setLowerThreshold(0);                                            //reseto o outro
+                        //thresholds.setLowerThreshold(0);                                            //reseto o outro - alterei para resetar dentro do recalculateUpperThreshold
                         break;
                     case 2://significa que a violação foi no threshold inferior
                         //thresholds.setLowerThreshold(0);                                            //técnica 4
                         //thresholds.recalculateLowerThreshold(load_after,0,load_after);              //técnica 5
                         thresholds.recalculateLowerThreshold(load_before,load_after,load_before);   //técnica 6
-                        thresholds.setUpperThreshold(1);                                            //reseto o outro
+                        //thresholds.setUpperThreshold(1);                                            //reseto o outro - alterei para resetar dentro do recalculateLowerThreshold
                 }
                 recalculate_thresholds = 0;
             }
