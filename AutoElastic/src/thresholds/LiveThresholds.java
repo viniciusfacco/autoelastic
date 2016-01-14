@@ -15,6 +15,8 @@ import static autoelastic.AutoElastic.gera_log;
  *            - changed the calculateThresholds implementation
  *            - removed methods recalculateLowerThreshold and recalculateUpperThreshold
  *            - added method resetThresholds
+ * 13/01/2016 - viniciusfacco
+ *            - fixed methods recalculateUpperThreshold and recalculateLowerThreshold to reset the contrary threshold
  */
 public class LiveThresholds extends StaticThresholds{
     
@@ -72,6 +74,7 @@ public class LiveThresholds extends StaticThresholds{
     @Override
     public void recalculateUpperThreshold(float x, float y, float z) {
         current_upper_threshold = (Math.abs(x - y)/2) + z;
+        current_lower_threshold = 0;
     }
 
     /**
@@ -83,6 +86,7 @@ public class LiveThresholds extends StaticThresholds{
     @Override
     public void recalculateLowerThreshold(float x, float y, float z) {
         current_lower_threshold = z - (Math.abs(x - y)/2);
+        current_upper_threshold = 1;
     }
     
     /**
