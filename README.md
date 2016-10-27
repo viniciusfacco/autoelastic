@@ -10,3 +10,14 @@ AutoElastic’s approach provides elasticity by hiding all resource reconfigurat
 Author: Vinicius Facco Rodrigues
 
 Email: viniciusfacco@live.com
+
+
+Use this SLA to define the limits of hosts in the cloud:
+
+<Agreement AgreementId="slaautoelastic">
+    <Name>AutoElasticSLA</Name>
+    <Terms>
+        <MaximalHosts>10</MaximalHosts>
+        <MinimalHosts>1</MinimalHosts>
+    </Terms>
+</Agreement>
