@@ -10,3 +10,12 @@ AutoElastic’s approach provides elasticity by hiding all resource reconfigurat
 Author: Vinicius Facco Rodrigues
 
 Email: viniciusfacco@live.com
+
+How to Use
+==========
+
+- Download the source code;
+- Download the file third-party-libs.rar
+- Compile the source code and run;
+
+The file third-party-libs.rar includes OpenNebula 4.12.1 API and additional libs.
