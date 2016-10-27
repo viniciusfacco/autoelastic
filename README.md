@@ -13,9 +13,7 @@ Email: viniciusfacco@live.com
 
 How to Use
 ==========
-
-- Download the source code
-- Download the file third-party-libs.rar
-- Compile the source code and run
-
-The file third-party-libs.rar includes OpenNebula 4.12.1 API and additional libs.
+- Source code: AutoElastic/src/\*
+- Main class: AutoElastic/src/autoelastic/AutoElastic.java
+- Libraries: third-party-libs.rar (includes OpenNebula 4.12.1 API and additional libs)
+- SLA file: autoelastic.xml. The current version of AutoElastic uses the parameteres "MaximalHosts" and "MinimalHosts" from the SLA. These values refer to the allowed physical machines in the cloud.
