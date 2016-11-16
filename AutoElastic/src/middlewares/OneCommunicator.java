@@ -34,6 +34,8 @@ import org.xml.sax.SAXException;
  * 06/08/2015 - viniciusfacco
  *            - added a new ssh object to manage the shared file system.
  *            - updated methos to use the new ssh object and removed old methods
+ * 16/11/2016 - viniciusfacco
+ *            - added method setParameters to set local and remote directories and name of the communication files
  */
 
 public class OneCommunicator {
@@ -43,12 +45,12 @@ public class OneCommunicator {
     private final String server;
     private final String user;
     private final String password;
-    private final String remotedir_file_source = "/var/lib/one/app/msg/";
-    private final String remotedir_file_target = "/var/lib/one/app/msg/";
-    private final String permission_decrease_file_name = "liberarecurso.txt";
-    private final String warning_deacrease_file_name = "poucacarga.txt";
-    private final String notify_increase_file_name = "novorecurso.txt";
-    private final String localdir_temp_files = "C:\\temp\\autoelastic\\";
+    private String remotedir_file_source = "/var/lib/one/app/msg/";
+    private String remotedir_file_target = "/var/lib/one/app/msg/";
+    private String permission_decrease_file_name = "liberarecurso.txt";
+    private String warning_deacrease_file_name = "poucacarga.txt";
+    private String notify_increase_file_name = "novorecurso.txt";
+    private String localdir_temp_files = "C:\\temp\\autoelastic\\";
     private SSHClient ssh;
     
     public OneCommunicator(String pserver, String puser, String ppassword, JTextArea plog){
@@ -57,6 +59,23 @@ public class OneCommunicator {
         password = ppassword;
         log = plog;
         ssh = null;
+    }
+    
+    //set parameters related with communication
+    public void setParameters(
+                        String pmsgwarningremove, 
+                        String pmsgcanremove, 
+                        String pmsgnewresources, 
+                        String plocaldirtemp, 
+                        String premotedirsource, 
+                        String premotedirtarget
+    ){
+        remotedir_file_source = premotedirsource;
+        remotedir_file_target = premotedirtarget;
+        warning_deacrease_file_name = pmsgwarningremove;
+        permission_decrease_file_name = pmsgcanremove;
+        notify_increase_file_name = pmsgnewresources;
+        localdir_temp_files = plocaldirtemp;
     }
     
     public void setSSHClient(SSHClient sshclient){

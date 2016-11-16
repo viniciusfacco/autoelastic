@@ -2,8 +2,6 @@
  * 25/04/2014
  * OneManager
  * - Classe destinada a fazer a a realizar operações e leituras no ambiente
- * 27/10/2014 - viniciusfacco
- *            - Upated to get allocatedMEM, usedMEM and allMonitoringTimes from the pool
  */
 
 package middlewares;
@@ -23,9 +21,13 @@ import org.xml.sax.SAXException;
 /**
  * Cloud Manager
  * @author viniciusfacco
+ * 27/10/2014 - viniciusfacco
+ *            - Upated to get allocatedMEM, usedMEM and allMonitoringTimes from the pool
  * 11/08/2015 - viniciusfacco
  *            - removed sleep between VM allocations
  *            - added method to set the SSHClient in the OneCommunicator
+ * 16/11/2016 - viniciusfacco
+ *            - added new parameters: psshuser, psshpassword, psshserver, pmsgwarningremove, pmsgcanremove, pmsgnewresources, plocaldirtemp, premotedirsource and premotedirtarget
  */
 public class OneManager {
     
@@ -51,6 +53,9 @@ public class OneManager {
     public OneManager(  String puser, 
                         String ppassword, 
                         String pserver_address, 
+                        String psshuser,
+                        String psshpassword,
+                        String psshserver,
                         String[] hosts, 
                         String pim, 
                         String pvmm, 
@@ -58,7 +63,14 @@ public class OneManager {
                         int pcid, 
                         JTextArea plog, 
                         int pvms_for_host, 
-                        int pvmtemplateid){
+                        int pvmtemplateid,
+                        String pmsgwarningremove, 
+                        String pmsgcanremove, 
+                        String pmsgnewresources, 
+                        String plocaldirtemp, 
+                        String premotedirsource, 
+                        String premotedirtarget
+    ){
         user = puser;
         password = ppassword;
         server_address = pserver_address;
@@ -71,7 +83,8 @@ public class OneManager {
         vms_for_host = pvms_for_host;
         vmtemplateid = pvmtemplateid;
         waiting_vms = false;
-        messenger = new OneCommunicator(pserver_address, puser, ppassword, plog);
+        messenger = new OneCommunicator(psshserver, psshuser, psshpassword, plog);
+        messenger.setParameters(premotedirsource, premotedirtarget, pmsgwarningremove, pmsgcanremove, pmsgnewresources, plocaldirtemp);
         last_vms = new OneVM[vms_for_host]; //array que vai receber as novas vms criadas
     }
     

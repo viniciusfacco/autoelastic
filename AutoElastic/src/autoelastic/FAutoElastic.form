@@ -56,7 +56,7 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Component id="jTabbedPane1" alignment="0" max="32767" attributes="0"/>
+              <Component id="jTabbedPane1" alignment="0" pref="0" max="32767" attributes="0"/>
               <Component id="jpMainButtons" alignment="0" max="32767" attributes="0"/>
               <Component id="jScrollPane1" alignment="0" max="32767" attributes="1"/>
               <Component id="jpUpperButtons" alignment="0" max="32767" attributes="0"/>
@@ -74,7 +74,7 @@
                   <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
                   <Component id="jpMainButtons" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jScrollPane1" pref="401" max="32767" attributes="0"/>
+                  <Component id="jScrollPane1" pref="393" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -161,7 +161,7 @@
                                   </Group>
                               </Group>
                           </Group>
-                          <EmptySpace pref="130" max="32767" attributes="0"/>
+                          <EmptySpace pref="131" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -552,7 +552,7 @@
                                   <Component id="jLabel17" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="jrbFixed" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace pref="64" max="32767" attributes="0"/>
+                              <EmptySpace pref="65" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -814,6 +814,174 @@
                 </Component>
               </SubComponents>
             </Container>
+            <Container class="javax.swing.JPanel" name="jpCommunication">
+              <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                </Property>
+              </Properties>
+              <Constraints>
+                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
+                  <JTabbedPaneConstraints tabName="Communication">
+                    <Property name="tabTitle" type="java.lang.String" value="Communication"/>
+                  </JTabbedPaneConstraints>
+                </Constraint>
+              </Constraints>
+
+              <Layout>
+                <DimensionLayout dim="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="jlRemoteDirTarget" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jlSSHServer" alignment="1" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jlSSHUser" alignment="1" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jlRemoteDirSource" alignment="1" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jlRemoteDirTarget1" alignment="1" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <Component id="jlSSHPassword" alignment="1" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="1" attributes="0">
+                              <Component id="jtRemoteDirTarget" alignment="0" max="32767" attributes="0"/>
+                              <Component id="jtRemoteDirSource" alignment="0" max="32767" attributes="0"/>
+                              <Group type="102" attributes="0">
+                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                      <Component id="jtSSHPassword" pref="139" max="32767" attributes="0"/>
+                                      <Component id="jtSSHUser" max="32767" attributes="0"/>
+                                      <Component id="jtSSHServer" alignment="1" max="32767" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace min="-2" pref="46" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="1" attributes="0">
+                                      <Component id="jlMsgWarningRemove" min="-2" max="-2" attributes="0"/>
+                                      <Component id="jlMsgCanRemove" min="-2" max="-2" attributes="0"/>
+                                      <Component id="jlMsgNewResources" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace min="-2" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="1" attributes="0">
+                                      <Component id="jtMsgCanRemove" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="jtMsgWarningRemove" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="jtMsgNewResources" pref="275" max="32767" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <Component id="jtLocalDirTemp" max="32767" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+                <DimensionLayout dim="1">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="jlSSHServer" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jtSSHServer" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jtMsgWarningRemove" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jlMsgWarningRemove" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="jtSSHUser" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jlSSHUser" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jtMsgCanRemove" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jlMsgCanRemove" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="jtSSHPassword" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jlSSHPassword" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jtMsgNewResources" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jlMsgNewResources" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="jtRemoteDirSource" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jlRemoteDirSource" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="jtRemoteDirTarget" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jlRemoteDirTarget" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="jtLocalDirTemp" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jlRemoteDirTarget1" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+              </Layout>
+              <SubComponents>
+                <Component class="javax.swing.JTextField" name="jtRemoteDirSource">
+                </Component>
+                <Component class="javax.swing.JTextField" name="jtRemoteDirTarget">
+                </Component>
+                <Component class="javax.swing.JTextField" name="jtMsgWarningRemove">
+                </Component>
+                <Component class="javax.swing.JTextField" name="jtMsgCanRemove">
+                </Component>
+                <Component class="javax.swing.JTextField" name="jtMsgNewResources">
+                </Component>
+                <Component class="javax.swing.JTextField" name="jtLocalDirTemp">
+                </Component>
+                <Component class="javax.swing.JTextField" name="jtSSHServer">
+                </Component>
+                <Component class="javax.swing.JTextField" name="jtSSHUser">
+                </Component>
+                <Component class="javax.swing.JTextField" name="jtSSHPassword">
+                </Component>
+                <Component class="javax.swing.JLabel" name="jlSSHServer">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="SSH Server"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="jlSSHUser">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="SSH User"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="jlSSHPassword">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="SSH Password"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="jlRemoteDirSource">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Message Soure Dir"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="jlRemoteDirTarget">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Message Target Dir"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="jlRemoteDirTarget1">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Local Temp Dir"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="jlMsgWarningRemove">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Warning Remove Resources Message"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="jlMsgCanRemove">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Permission to Remove Resources Message"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="jlMsgNewResources">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Notification of New Resources Message"/>
+                  </Properties>
+                </Component>
+              </SubComponents>
+            </Container>
             <Container class="javax.swing.JPanel" name="jpHosts">
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
@@ -832,7 +1000,7 @@
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
-                          <Component id="jScrollPane3" pref="691" max="32767" attributes="0"/>
+                          <Component id="jScrollPane3" pref="692" max="32767" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="jbDelHost" min="-2" pref="92" max="-2" attributes="0"/>
@@ -846,9 +1014,9 @@
                   <Group type="103" groupAlignment="1" attributes="0">
                       <Component id="jScrollPane3" pref="0" max="32767" attributes="0"/>
                       <Group type="102" attributes="0">
-                          <Component id="jbAddHost" pref="90" max="32767" attributes="0"/>
+                          <Component id="jbAddHost" pref="94" max="32767" attributes="0"/>
                           <EmptySpace min="-2" max="-2" attributes="0"/>
-                          <Component id="jbDelHost" pref="90" max="32767" attributes="0"/>
+                          <Component id="jbDelHost" pref="94" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -1007,7 +1175,7 @@
                     </DimensionLayout>
                     <DimensionLayout dim="1">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <EmptySpace min="0" pref="186" max="32767" attributes="0"/>
+                          <EmptySpace min="0" pref="194" max="32767" attributes="0"/>
                       </Group>
                     </DimensionLayout>
                   </Layout>
@@ -1022,7 +1190,7 @@
                   <Layout>
                     <DimensionLayout dim="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <EmptySpace min="0" pref="393" max="32767" attributes="0"/>
+                          <EmptySpace min="0" pref="394" max="32767" attributes="0"/>
                       </Group>
                     </DimensionLayout>
                     <DimensionLayout dim="1">
@@ -1331,7 +1499,7 @@
                   <Color blue="99" green="99" red="ff" type="rgb"/>
                 </Property>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Tahoma" size="24" style="1"/>
+                  <Font name="Tahoma" size="20" style="1"/>
                 </Property>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="66" green="66" red="66" type="rgb"/>

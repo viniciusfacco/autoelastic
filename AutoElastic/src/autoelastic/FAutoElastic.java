@@ -21,6 +21,9 @@ import org.xml.sax.SAXException;
  * @author viniciusfacco
  * 11/08/2015 - viniciusfacco
  *            - user can set the log name in the UI
+ * 16/11/2016 - viniciusfacco
+ *            - user can set notification parameters in the UI
+ *            - added a new tab called Communication with nine new parameters that the user can set
  */
 public class FAutoElastic extends javax.swing.JFrame {
 
@@ -92,6 +95,25 @@ public class FAutoElastic extends javax.swing.JFrame {
         jtfVmsPorHost = new javax.swing.JTextField();
         jLabel20 = new javax.swing.JLabel();
         jtfExecutionLogName = new javax.swing.JTextField();
+        jpCommunication = new javax.swing.JPanel();
+        jtRemoteDirSource = new javax.swing.JTextField();
+        jtRemoteDirTarget = new javax.swing.JTextField();
+        jtMsgWarningRemove = new javax.swing.JTextField();
+        jtMsgCanRemove = new javax.swing.JTextField();
+        jtMsgNewResources = new javax.swing.JTextField();
+        jtLocalDirTemp = new javax.swing.JTextField();
+        jtSSHServer = new javax.swing.JTextField();
+        jtSSHUser = new javax.swing.JTextField();
+        jtSSHPassword = new javax.swing.JTextField();
+        jlSSHServer = new javax.swing.JLabel();
+        jlSSHUser = new javax.swing.JLabel();
+        jlSSHPassword = new javax.swing.JLabel();
+        jlRemoteDirSource = new javax.swing.JLabel();
+        jlRemoteDirTarget = new javax.swing.JLabel();
+        jlRemoteDirTarget1 = new javax.swing.JLabel();
+        jlMsgWarningRemove = new javax.swing.JLabel();
+        jlMsgCanRemove = new javax.swing.JLabel();
+        jlMsgNewResources = new javax.swing.JLabel();
         jpHosts = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         jtHosts = new javax.swing.JTable();
@@ -236,7 +258,7 @@ public class FAutoElastic extends javax.swing.JFrame {
                         .addGroup(jpServerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jtfUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
                             .addComponent(jtfSenha))))
-                .addContainerGap(130, Short.MAX_VALUE))
+                .addContainerGap(131, Short.MAX_VALUE))
         );
         jpServerLayout.setVerticalGroup(
             jpServerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -398,7 +420,7 @@ public class FAutoElastic extends javax.swing.JFrame {
                     .addComponent(jrbLive)
                     .addComponent(jLabel17)
                     .addComponent(jrbFixed))
-                .addContainerGap(64, Short.MAX_VALUE))
+                .addContainerGap(65, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -598,6 +620,100 @@ public class FAutoElastic extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Parameters", jpParameters);
 
+        jpCommunication.setBackground(new java.awt.Color(255, 255, 255));
+
+        jlSSHServer.setText("SSH Server");
+
+        jlSSHUser.setText("SSH User");
+
+        jlSSHPassword.setText("SSH Password");
+
+        jlRemoteDirSource.setText("Message Soure Dir");
+
+        jlRemoteDirTarget.setText("Message Target Dir");
+
+        jlRemoteDirTarget1.setText("Local Temp Dir");
+
+        jlMsgWarningRemove.setText("Warning Remove Resources Message");
+
+        jlMsgCanRemove.setText("Permission to Remove Resources Message");
+
+        jlMsgNewResources.setText("Notification of New Resources Message");
+
+        javax.swing.GroupLayout jpCommunicationLayout = new javax.swing.GroupLayout(jpCommunication);
+        jpCommunication.setLayout(jpCommunicationLayout);
+        jpCommunicationLayout.setHorizontalGroup(
+            jpCommunicationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpCommunicationLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jpCommunicationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jpCommunicationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jlRemoteDirTarget)
+                        .addComponent(jlSSHServer, javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jlSSHUser, javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jlRemoteDirSource, javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jlRemoteDirTarget1, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addComponent(jlSSHPassword, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jpCommunicationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jtRemoteDirTarget, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jtRemoteDirSource, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jpCommunicationLayout.createSequentialGroup()
+                        .addGroup(jpCommunicationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jtSSHPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE)
+                            .addComponent(jtSSHUser)
+                            .addComponent(jtSSHServer, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addGap(46, 46, 46)
+                        .addGroup(jpCommunicationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jlMsgWarningRemove)
+                            .addComponent(jlMsgCanRemove)
+                            .addComponent(jlMsgNewResources))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jpCommunicationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jtMsgCanRemove, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jtMsgWarningRemove, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jtMsgNewResources, javax.swing.GroupLayout.DEFAULT_SIZE, 275, Short.MAX_VALUE)))
+                    .addComponent(jtLocalDirTemp))
+                .addGap(22, 22, 22))
+        );
+        jpCommunicationLayout.setVerticalGroup(
+            jpCommunicationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpCommunicationLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jpCommunicationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jlSSHServer)
+                    .addComponent(jtSSHServer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jtMsgWarningRemove, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jlMsgWarningRemove))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jpCommunicationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jtSSHUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jlSSHUser)
+                    .addComponent(jtMsgCanRemove, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jlMsgCanRemove))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jpCommunicationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jtSSHPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jlSSHPassword)
+                    .addComponent(jtMsgNewResources, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jlMsgNewResources))
+                .addGap(18, 18, 18)
+                .addGroup(jpCommunicationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jtRemoteDirSource, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jlRemoteDirSource))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jpCommunicationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jtRemoteDirTarget, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jlRemoteDirTarget))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jpCommunicationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jtLocalDirTemp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jlRemoteDirTarget1))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Communication", jpCommunication);
+
         jpHosts.setBackground(new java.awt.Color(255, 255, 255));
 
         jScrollPane3.setBackground(new java.awt.Color(255, 255, 255));
@@ -691,7 +807,7 @@ public class FAutoElastic extends javax.swing.JFrame {
         jpHostsLayout.setHorizontalGroup(
             jpHostsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpHostsLayout.createSequentialGroup()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 691, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 692, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jpHostsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jbDelHost, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -702,9 +818,9 @@ public class FAutoElastic extends javax.swing.JFrame {
             jpHostsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
             .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
             .addGroup(jpHostsLayout.createSequentialGroup()
-                .addComponent(jbAddHost, javax.swing.GroupLayout.DEFAULT_SIZE, 90, Short.MAX_VALUE)
+                .addComponent(jbAddHost, javax.swing.GroupLayout.DEFAULT_SIZE, 94, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jbDelHost, javax.swing.GroupLayout.DEFAULT_SIZE, 90, Short.MAX_VALUE))
+                .addComponent(jbDelHost, javax.swing.GroupLayout.DEFAULT_SIZE, 94, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Hosts", jpHosts);
@@ -728,7 +844,7 @@ public class FAutoElastic extends javax.swing.JFrame {
         );
         jpGraficoLineTotalLayout.setVerticalGroup(
             jpGraficoLineTotalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 186, Short.MAX_VALUE)
+            .addGap(0, 194, Short.MAX_VALUE)
         );
 
         jbGraphicLinePercent.setBackground(new java.awt.Color(255, 255, 255));
@@ -737,7 +853,7 @@ public class FAutoElastic extends javax.swing.JFrame {
         jbGraphicLinePercent.setLayout(jbGraphicLinePercentLayout);
         jbGraphicLinePercentLayout.setHorizontalGroup(
             jbGraphicLinePercentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 393, Short.MAX_VALUE)
+            .addGap(0, 394, Short.MAX_VALUE)
         );
         jbGraphicLinePercentLayout.setVerticalGroup(
             jbGraphicLinePercentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -973,7 +1089,7 @@ public class FAutoElastic extends javax.swing.JFrame {
         jLabel18.setText("AutoElastic");
 
         jbExit.setBackground(new java.awt.Color(255, 153, 153));
-        jbExit.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jbExit.setFont(new java.awt.Font("Tahoma", 1, 20)); // NOI18N
         jbExit.setForeground(new java.awt.Color(102, 102, 102));
         jbExit.setText("X");
         jbExit.setContentAreaFilled(false);
@@ -1043,7 +1159,7 @@ public class FAutoElastic extends javax.swing.JFrame {
         jpMain.setLayout(jpMainLayout);
         jpMainLayout.setHorizontalGroup(
             jpMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
             .addComponent(jpMainButtons, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jScrollPane1)
             .addComponent(jpUpperButtons, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -1060,7 +1176,7 @@ public class FAutoElastic extends javax.swing.JFrame {
                 .addGap(3, 3, 3)
                 .addComponent(jpMainButtons, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 401, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 393, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -1148,81 +1264,7 @@ public class FAutoElastic extends javax.swing.JFrame {
     }//GEN-LAST:event_jbPararActionPerformed
 
     private void jbExecutarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbExecutarActionPerformed
-
-        //limpo o log
-        jtaLog.setText("");
-
-        //se eu clicar em EXECUTAR testo se o SLA foi informado ou se ele existe
-        //if ((this.jtfSla.getText().equalsIgnoreCase("")) || (!new File(this.jtfSla.getText()).isFile())){
-        if (!new File(this.jtfSla.getText()).isFile()) {
-            //se o SLA não foi informado, então apresento um aviso
-            JOptionPane.showMessageDialog(null, "SLA não informado ou inexistente!", "ERRO", JOptionPane.ERROR_MESSAGE);
-        } else {
-            //se o SLA foi informado enão inicio a execução
-            //configuro os botões
-            jbParar.setEnabled(true);
-            jbParar.setBackground(new Color(51, 204, 255));
-            jbParar.setForeground(Color.white);
-            jbLimpar.setEnabled(false);
-            jbLimpar.setBackground(new Color(204, 204, 204));
-            jbLimpar.setForeground(new Color(214, 214, 214));
-            jbExecutar.setEnabled(false);
-            jbExecutar.setBackground(new Color(204, 204, 204));
-            jbExecutar.setForeground(new Color(214, 214, 214));
-
-            //este bloco eu pego o grid com os hosts e transformo em um array contendo cada host como String
-            DefaultTableModel model = (DefaultTableModel) jtHosts.getModel();
-            String hosts[] = new String[model.getRowCount()];
-            String host;
-            for (int i = 0; i < model.getRowCount(); i++) {
-                host = model.getDataVector().get(i).toString();
-                hosts[i] = host.replace("[", "").replace("]", "");
-            }
-
-            //seta parametros do gerenciador
-            autoelastic_manager.set_parameters(
-                    this.jtfFrontend.getText(),
-                    this.jtfUsuario.getText(),
-                    this.jtfSenha.getText(),
-                    this.jtfSla.getText(),
-                    this.jtfLogPath.getText(),
-                    this.jtfExecutionLogName.getText(),
-                    Integer.parseInt(this.jtfTemplateid.getText()),
-                    Integer.parseInt(this.jtfMonitoringInterval.getText()),
-                    Double.parseDouble(this.jtfThresholdMax.getText()) / 100,
-                    Double.parseDouble(this.jtfThresholdMin.getText()) / 100,
-                    Integer.parseInt(this.jtfVmsPorHost.getText()),
-                    this.bgEvaluators.getSelection().getActionCommand(),
-                    this.bgThresholdType.getSelection().getActionCommand(),
-                    Integer.parseInt(this.jtfMonitoringWindow.getText()),
-                    hosts,
-                    this.jtfIM.getText(),
-                    this.jtfVMM.getText(),
-                    this.jtfVNM.getText(),
-                    Integer.parseInt(this.jtfClusterId.getText()),
-                    this.jtaLog
-            );
-
-            if (this.jcbLabMode.isSelected()){
-                try {
-                    //if we selected the lab mode the parameters to be used will be others
-                    this.setVisible(false);
-                    autoelastic_manager.startLabMode(this.jtfFrontend.getText(), this.jtfUsuario.getText(), this.jtfSenha.getText(), this.jtfSla.getText(), hosts, jtaLog);
-                } catch (IOException ex) {
-                    Logger.getLogger(FAutoElastic.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (ParserConfigurationException ex) {
-                    Logger.getLogger(FAutoElastic.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (SAXException ex) {
-                    Logger.getLogger(FAutoElastic.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (Exception ex) {
-                    Logger.getLogger(FAutoElastic.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            } else {
-                //coloco o gerenciador dentro de uma Thread e inicio ele
-                th_gerenciador = new Thread(autoelastic_manager);
-                th_gerenciador.start();
-            }
-        }
+        executar();
     }//GEN-LAST:event_jbExecutarActionPerformed
 
     private void jbLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbLimparActionPerformed
@@ -1537,6 +1579,16 @@ public class FAutoElastic extends javax.swing.JFrame {
     private javax.swing.JButton jbParar;
     private javax.swing.JButton jbSaleLog;
     private javax.swing.JCheckBox jcbLabMode;
+    private javax.swing.JLabel jlMsgCanRemove;
+    private javax.swing.JLabel jlMsgNewResources;
+    private javax.swing.JLabel jlMsgWarningRemove;
+    private javax.swing.JLabel jlRemoteDirSource;
+    private javax.swing.JLabel jlRemoteDirTarget;
+    private javax.swing.JLabel jlRemoteDirTarget1;
+    private javax.swing.JLabel jlSSHPassword;
+    private javax.swing.JLabel jlSSHServer;
+    private javax.swing.JLabel jlSSHUser;
+    private javax.swing.JPanel jpCommunication;
     private javax.swing.JPanel jpGraficoLineTotal;
     private javax.swing.JPanel jpGraficos;
     private javax.swing.JPanel jpHosts;
@@ -1550,6 +1602,15 @@ public class FAutoElastic extends javax.swing.JFrame {
     private javax.swing.JRadioButton jrbGeneric;
     private javax.swing.JRadioButton jrbLive;
     private javax.swing.JTable jtHosts;
+    private javax.swing.JTextField jtLocalDirTemp;
+    private javax.swing.JTextField jtMsgCanRemove;
+    private javax.swing.JTextField jtMsgNewResources;
+    private javax.swing.JTextField jtMsgWarningRemove;
+    private javax.swing.JTextField jtRemoteDirSource;
+    private javax.swing.JTextField jtRemoteDirTarget;
+    private javax.swing.JTextField jtSSHPassword;
+    private javax.swing.JTextField jtSSHServer;
+    private javax.swing.JTextField jtSSHUser;
     private javax.swing.JTextArea jtaLog;
     private javax.swing.JTextField jtfClusterId;
     private javax.swing.JTextField jtfExecutionLogName;
@@ -1585,11 +1646,10 @@ public class FAutoElastic extends javax.swing.JFrame {
 
     private void variaveis_padroes() {
         //definir os parametros para o padrao
-        this.jtfFrontend.setText("10.210.7.116");
+        //this.jtfFrontend.setText("");
         this.jtfUsuario.setText("oneadmin");
-        this.jtfSenha.setText("nebula");
-        this.jtfSla.setText("C:\\Users\\Vinicius Facco\\Dropbox\\UNISINOS\\PIPCA\\Projetos\\AutoElastic\\autoelasticsla.xml");
-        this.jtfLogPath.setText("C:\\Temp\\autoelastic\\");
+        //this.jtfSenha.setText("");
+        this.jtfSla.setText("autoelasticsla.xml");
         this.jtfExecutionLogName.setText("");
         this.jtfMonitoringInterval.setText("15");
         this.jtfMonitoringWindow.setText("6");
@@ -1602,6 +1662,11 @@ public class FAutoElastic extends javax.swing.JFrame {
         this.jtfVNM.setText("dummy");
         this.jtfClusterId.setText("0");
         this.jtaLog.setText("");
+        this.jtMsgWarningRemove.setText("poucacarga.txt");
+        this.jtMsgCanRemove.setText("liberarecurso.txt");
+        this.jtMsgNewResources.setText("novorecurso.txt");
+        this.jtRemoteDirSource.setText("/var/lib/one/app/msg/");
+        this.jtRemoteDirTarget.setText("/var/lib/one/app/msg/");
     }
 
     private String seleciona_arquivo() {
@@ -1671,6 +1736,92 @@ public class FAutoElastic extends javax.swing.JFrame {
         this.setExtendedState(MAXIMIZED_BOTH);//maximoza janela        
         variaveis_padroes();//inicializo todos os parâmetros para o padrão
         this.setIconImage(new javax.swing.ImageIcon(getClass().getResource("/images/icone64x64.png")).getImage());
+    }
+
+    private void executar() {
+        //limpo o log
+        jtaLog.setText("");
+
+        //se eu clicar em EXECUTAR testo se o SLA foi informado ou se ele existe
+        //if ((this.jtfSla.getText().equalsIgnoreCase("")) || (!new File(this.jtfSla.getText()).isFile())){
+        if (!new File(this.jtfSla.getText()).isFile()) {
+            //se o SLA não foi informado, então apresento um aviso
+            JOptionPane.showMessageDialog(null, "SLA não informado ou inexistente!", "ERRO", JOptionPane.ERROR_MESSAGE);
+        } else {
+            //se o SLA foi informado enão inicio a execução
+            //configuro os botões
+            jbParar.setEnabled(true);
+            jbParar.setBackground(new Color(51, 204, 255));
+            jbParar.setForeground(Color.white);
+            jbLimpar.setEnabled(false);
+            jbLimpar.setBackground(new Color(204, 204, 204));
+            jbLimpar.setForeground(new Color(214, 214, 214));
+            jbExecutar.setEnabled(false);
+            jbExecutar.setBackground(new Color(204, 204, 204));
+            jbExecutar.setForeground(new Color(214, 214, 214));
+
+            //este bloco eu pego o grid com os hosts e transformo em um array contendo cada host como String
+            DefaultTableModel model = (DefaultTableModel) jtHosts.getModel();
+            String hosts[] = new String[model.getRowCount()];
+            String host;
+            for (int i = 0; i < model.getRowCount(); i++) {
+                host = model.getDataVector().get(i).toString();
+                hosts[i] = host.replace("[", "").replace("]", "");
+            }
+
+            //seta parametros do gerenciador
+            autoelastic_manager.set_parameters(
+                    this.jtfFrontend.getText(),
+                    this.jtfUsuario.getText(),
+                    this.jtfSenha.getText(),
+                    this.jtfSla.getText(),
+                    this.jtfLogPath.getText(),
+                    this.jtfExecutionLogName.getText(),
+                    Integer.parseInt(this.jtfTemplateid.getText()),
+                    Integer.parseInt(this.jtfMonitoringInterval.getText()),
+                    Double.parseDouble(this.jtfThresholdMax.getText()) / 100,
+                    Double.parseDouble(this.jtfThresholdMin.getText()) / 100,
+                    Integer.parseInt(this.jtfVmsPorHost.getText()),
+                    this.bgEvaluators.getSelection().getActionCommand(),
+                    this.bgThresholdType.getSelection().getActionCommand(),
+                    Integer.parseInt(this.jtfMonitoringWindow.getText()),
+                    hosts,
+                    this.jtfIM.getText(),
+                    this.jtfVMM.getText(),
+                    this.jtfVNM.getText(),
+                    Integer.parseInt(this.jtfClusterId.getText()),
+                    this.jtSSHServer.getText(),
+                    this.jtSSHUser.getText(),
+                    this.jtSSHPassword.getText(),
+                    this.jtMsgWarningRemove.getText(),
+                    this.jtMsgCanRemove.getText(),
+                    this.jtMsgNewResources.getText(),
+                    this.jtLocalDirTemp.getText(),
+                    this.jtRemoteDirSource.getText(),
+                    this.jtRemoteDirTarget.getText(),
+                    this.jtaLog
+            );
+
+            if (this.jcbLabMode.isSelected()){
+                try {
+                    //if we selected the lab mode the parameters to be used will be others
+                    this.setVisible(false);
+                    autoelastic_manager.startLabMode(this.jtfFrontend.getText(), this.jtfUsuario.getText(), this.jtfSenha.getText(), this.jtfSla.getText(), hosts, jtaLog);
+                } catch (IOException ex) {
+                    Logger.getLogger(FAutoElastic.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ParserConfigurationException ex) {
+                    Logger.getLogger(FAutoElastic.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (SAXException ex) {
+                    Logger.getLogger(FAutoElastic.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (Exception ex) {
+                    Logger.getLogger(FAutoElastic.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else {
+                //coloco o gerenciador dentro de uma Thread e inicio ele
+                th_gerenciador = new Thread(autoelastic_manager);
+                th_gerenciador.start();
+            }
+        }
     }
 
 }

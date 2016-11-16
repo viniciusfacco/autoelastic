@@ -49,6 +49,8 @@ import thresholds.*;
  *            - updated the monitoring method to use the new Live Thresholding algorithm with the class LiveThresholds
  * 13/01/2016 - viniciusfacco
  *            - fixed bug when using fixed threshold (after a threshold violation one of the thresholds was reset)
+ * 16/11/2016 - viniciusfacco
+ *            - added new parameters to set in the OneCommunicator through the OneManager
  */
 public class AutoElastic implements Runnable {
 
@@ -81,6 +83,15 @@ public class AutoElastic implements Runnable {
     private static String virtual_machine_manager;
     private static String virtual_network_manager;
     private static int cluster_id;
+    private static String sshserver;
+    private static String sshuser;
+    private static String sshpassword;
+    private static String msgwarningremove;
+    private static String msgcanremove;
+    private static String msgnewresources;
+    private static String localdirtemp;
+    private static String remotedirsource;
+    private static String remotedirtarget;
     
     public AutoElastic(JPanel pgraphic1, JPanel pgraphic2){
         graphic1 = new Graphic(pgraphic1, "CPU Usage (Total)");
@@ -108,6 +119,15 @@ public class AutoElastic implements Runnable {
      * @param pvmm - cloud virtual machine manager type
      * @param pvnm - cloud virtual network manager type
      * @param pcid - cloud cluster id
+     * @param psshserver - server where is the shared data area
+     * @param psshuser - user to connect to the sshserver
+     * @param psshpassword - password to connect the ssh server
+     * @param pmsgwarningremove - message that will be send by autoelastic to warn that resources will be removed
+     * @param pmsgcanremove - message that autoelastic will wait to remove resources
+     * @param pmsgnewresources - message that will be send by autoelastic informing that there are new resources available
+     * @param plocaldirtemp - local directory to temporary files
+     * @param premotedirsource - remote directory from where messages will be read
+     * @param premotedirtarget - remote directory to where messages will be send
      * @param plog - component to receive the log messages
      */
     public void set_parameters(String pfrontend, 
@@ -129,6 +149,15 @@ public class AutoElastic implements Runnable {
                        String pvmm,
                        String pvnm,
                        int pcid,
+                       String psshserver,
+                       String psshuser,
+                       String psshpassword,
+                       String pmsgwarningremove,
+                       String pmsgcanremove,
+                       String pmsgnewresources,
+                       String plocaldirtemp,
+                       String premotedirsource,
+                       String premotedirtarget,
                        JTextArea plog) {
         
         frontend = pfrontend;
@@ -153,6 +182,15 @@ public class AutoElastic implements Runnable {
         graphic1.initialize();
         graphic2.initialize();
         logtitle = plogname;
+        sshserver = psshserver;
+        sshuser = psshuser;
+        sshpassword = psshpassword;
+        msgwarningremove = pmsgwarningremove;
+        msgcanremove = pmsgcanremove;
+        msgnewresources = pmsgnewresources;
+        localdirtemp = plocaldirtemp;
+        remotedirsource = premotedirsource;
+        remotedirtarget = premotedirtarget;
         gera_log(objname,"Main: Construindo...");
     }
 
@@ -297,7 +335,28 @@ public class AutoElastic implements Runnable {
     //inicialize all objects and parameters
     private void inicialize() throws ParserConfigurationException, SAXException, IOException {
         //create a new cloud manager with OpenNebula
-        cloud_manager = new OneManager(usuario, senha, frontend, iphosts, image_manager, virtual_machine_manager, virtual_network_manager, cluster_id, log, num_vms, vmtemplateid);            
+        cloud_manager = new OneManager(
+                usuario, 
+                senha, 
+                frontend, 
+                sshuser, 
+                sshpassword, 
+                sshserver, 
+                iphosts, 
+                image_manager, 
+                virtual_machine_manager, 
+                virtual_network_manager, 
+                cluster_id, 
+                log, 
+                num_vms, 
+                vmtemplateid, 
+                msgwarningremove, 
+                msgcanremove, 
+                msgnewresources, 
+                localdirtemp, 
+                remotedirsource, 
+                remotedirtarget
+        );            
         //connect with the cloud server
         if (cloud_manager.serverConnect()){
             gera_log(objname,"Conexão realizada com o servidor: " + frontend);
