@@ -84,7 +84,7 @@ public class OneManager {
         vmtemplateid = pvmtemplateid;
         waiting_vms = false;
         messenger = new OneCommunicator(psshserver, psshuser, psshpassword, plog);
-        messenger.setParameters(premotedirsource, premotedirtarget, pmsgwarningremove, pmsgcanremove, pmsgnewresources, plocaldirtemp);
+        messenger.setParameters(pmsgwarningremove, pmsgcanremove, pmsgnewresources, plocaldirtemp, premotedirsource, premotedirtarget);
         last_vms = new OneVM[vms_for_host]; //array que vai receber as novas vms criadas
     }
     
