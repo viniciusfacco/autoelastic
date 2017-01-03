@@ -655,7 +655,7 @@ public class FAutoElastic extends javax.swing.JFrame {
 
         jlSSHPassword.setText("SSH Password");
 
-        jlRemoteDirSource.setText("Message Soure Dir");
+        jlRemoteDirSource.setText("Message Source Dir");
 
         jlRemoteDirTarget.setText("Message Target Dir");
 
@@ -675,12 +675,13 @@ public class FAutoElastic extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jpCommunicationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jpCommunicationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jlRemoteDirTarget)
-                        .addComponent(jlSSHUser, javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(jlRemoteDirSource, javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(jlRemoteDirTarget1, javax.swing.GroupLayout.Alignment.TRAILING))
-                    .addComponent(jlSSHPassword, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jlSSHServer, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addGroup(jpCommunicationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jlRemoteDirTarget)
+                            .addComponent(jlSSHUser, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jlRemoteDirTarget1, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addComponent(jlSSHPassword, javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jlSSHServer, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addComponent(jlRemoteDirSource))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jpCommunicationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jtRemoteDirTarget, javax.swing.GroupLayout.Alignment.LEADING)
@@ -699,7 +700,7 @@ public class FAutoElastic extends javax.swing.JFrame {
                         .addGroup(jpCommunicationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jtMsgCanRemove, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jtMsgWarningRemove, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jtMsgNewResources, javax.swing.GroupLayout.DEFAULT_SIZE, 401, Short.MAX_VALUE)))
+                            .addComponent(jtMsgNewResources, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)))
                     .addComponent(jtLocalDirTemp))
                 .addGap(22, 22, 22))
         );

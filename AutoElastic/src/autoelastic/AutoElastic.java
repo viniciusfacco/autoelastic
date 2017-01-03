@@ -572,7 +572,7 @@ public class AutoElastic implements Runnable {
         System.out.println("FIM!");
     }
 
-    //monitoring almost equal the other  monitoring(), but here the ssh is used to know when stoip the monitoring
+    //monitoring almost equal the other  monitoring(), but here the ssh is used to know when stop the monitoring
     private String monitoring(SSHClient ssh, String message, String remotedir) throws InterruptedException, IOException, Exception {
         int tempo; //tempo decorrido
         int cont = 0; //contador de verificações
