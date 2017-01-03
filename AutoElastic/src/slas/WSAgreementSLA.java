@@ -77,12 +77,18 @@ public class WSAgreementSLA {
         return active_hosts > this.MinimalHosts;
     }
     
-    //return the value of the high threshold
+    /**
+     *
+     * @return Returns the value of the high threshold which is the maximal number of hosts allowed.
+     */
     public int getHighThreshold(){
         return MaximalHosts;
     }
     
-    //return the value of the low threshold
+    /**
+     *
+     * @return Returns the value of the low threshold which is the minimum number of hosts allowed.
+     */
     public int getLowThreshold(){
         return MaximalHosts;
     }
