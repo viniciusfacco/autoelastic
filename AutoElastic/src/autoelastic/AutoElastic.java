@@ -51,6 +51,8 @@ import thresholds.*;
  *            - fixed bug when using fixed threshold (after a threshold violation one of the thresholds was reset)
  * 16/11/2016 - viniciusfacco
  *            - added new parameters to set in the OneCommunicator through the OneManager
+ * 03/01/2017 - viniciusfacco
+ *            - implemented read only mode in the monitoring and innitialize methods
  */
 public class AutoElastic implements Runnable {
 
@@ -92,6 +94,7 @@ public class AutoElastic implements Runnable {
     private static String localdirtemp;
     private static String remotedirsource;
     private static String remotedirtarget;
+    private static boolean readonly;
     
     public AutoElastic(JPanel pgraphic1, JPanel pgraphic2){
         graphic1 = new Graphic(pgraphic1, "CPU Usage (Total)");
@@ -129,6 +132,7 @@ public class AutoElastic implements Runnable {
      * @param premotedirsource - remote directory from where messages will be read
      * @param premotedirtarget - remote directory to where messages will be send
      * @param plog - component to receive the log messages
+     * @param preadonly - read only mode flag (if true autoelastic only reorganize resources locally)
      */
     public void set_parameters(String pfrontend, 
                        String pusuario, 
@@ -158,7 +162,8 @@ public class AutoElastic implements Runnable {
                        String plocaldirtemp,
                        String premotedirsource,
                        String premotedirtarget,
-                       JTextArea plog) {
+                       JTextArea plog,
+                       boolean preadonly) {
         
         frontend = pfrontend;
         usuario = pusuario;
@@ -191,6 +196,7 @@ public class AutoElastic implements Runnable {
         localdirtemp = plocaldirtemp;
         remotedirsource = premotedirsource;
         remotedirtarget = premotedirtarget;
+        readonly = preadonly;
         gera_log(objname,"Main: Construindo...");
     }
 
@@ -292,7 +298,11 @@ public class AutoElastic implements Runnable {
                     if(sla.canIncrease(cloud_manager.getTotalActiveHosts())){ //verify the SLA to know if we can increase resources
                         /*LOG*/gera_log(objname,"Main: SLA não atingido...novo recurso pode ser alocado...");
                         /*LOG*/gera_log(objname,"Main: Alocando recursos...");
-                        cloud_manager.increaseResources(); //increase one host and the number of vms informed in the parameters
+                        if (!readonly){//if not readonly proceed the normal elasticity
+                            cloud_manager.increaseResources();//increase one host and the number of vms informed in the parameters
+                        } else {//if readonly then proceed only local elasticity 
+                            cloud_manager.increaseReadOnlyResources();// add a host in the monitoring pool without add it in the cloud
+                        }
                         resourcesPending = true;
                     } else {
                         /*LOG*/gera_log(objname,"Main: SLA no limite...nada pode ser feito...");
@@ -303,7 +313,11 @@ public class AutoElastic implements Runnable {
                     if(sla.canDecrease(cloud_manager.getTotalActiveHosts())){ //verify the SLA to know if we can decrease resources
                         /*LOG*/gera_log(objname,"Main: SLA não atingido...novo recurso pode ser liberado...");
                         /*LOG*/gera_log(objname,"Main: Liberando recursos...");
-                        cloud_manager.decreaseResources(); //decrease the last host added and the number its vms
+                        if (!readonly){//if not readonly proceed the normal elasticity
+                            cloud_manager.decreaseResources(); //decrease the last host added and the number its vms
+                        } else {//if readonly then proceed only local elasticity 
+                            cloud_manager.decreaseReadOnlyResources();// remove a host in the monitoring pool without remove it in the cloud
+                        }
                         recalculate_thresholds = 2;
                         load_before = evaluator.getDecisionLoad();
                     } else {
@@ -392,6 +406,10 @@ public class AutoElastic implements Runnable {
                 break;
             case "live":
                 thresholds = new LiveThresholds(uppert, lowert);
+        }
+        //now, if we are in the readonly mode, we will remove hosts and leave only the minimum hosts
+        if (readonly){
+            cloud_manager.organizeReadOnlyMode(sla.getLowThreshold());
         }
         export_log(0,0,0,0,0,0,0,0,0,0,0,0,0,0,"Contador,Tempo,Tempo Milisegundos,Total Hosts Ativos,Total CPU Alocada,Total CPU Usada,Total RAM Alocada,Total RAM Usada,CPU Limite Superior,CPU Limite Inferior,% Carga de CPU,Load Calculado,Threshold Inferior,Threshold Superior,Tempos de Monitoramento");
     }

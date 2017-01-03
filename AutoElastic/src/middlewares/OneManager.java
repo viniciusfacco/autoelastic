@@ -28,6 +28,8 @@ import org.xml.sax.SAXException;
  *            - added method to set the SSHClient in the OneCommunicator
  * 16/11/2016 - viniciusfacco
  *            - added new parameters: psshuser, psshpassword, psshserver, pmsgwarningremove, pmsgcanremove, pmsgnewresources, plocaldirtemp, premotedirsource and premotedirtarget
+ * 03/01/2017 - viniciusfacco
+ *            - added organizeReadOnlyMode, increaseReadOnlyResources and decreaseReadOnlyResources methods for Read Only mode
  */
 public class OneManager {
     
@@ -173,7 +175,7 @@ public class OneManager {
      */
     public boolean increaseResources() throws InterruptedException, Exception{
         //int hostid = ohpool.allocatesHostNow(oneClient); //allocates the host and it will be active immediatly
-        int hostid = ohpool.allocatesHost(oneClient);      //allocates the host and it will be active after resorces be online
+        int hostid = ohpool.allocateHost(oneClient);      //allocates the host and it will be active after resorces be online
         if (hostid > 0){
             for (int i = 0; i < vms_for_host; i++) {
                 last_vms[i] = new OneVM(vmtemplateid);
@@ -191,7 +193,7 @@ public class OneManager {
     
     //método que remove um host e suas máquinas virtuais no ambiente
     public boolean decreaseResources() throws InterruptedException, IOException{
-        if (messenger.notifyDecrease()){
+        if (messenger.notifyDecrease(ohpool.getLastActiveHost())){
             while(!messenger.canDecrease()){}
             return ohpool.remove_host(oneClient);//remove último host criado e suas vms também
         }
@@ -264,6 +266,29 @@ public class OneManager {
         this.waiting_vms = false;
     }
     
+    //remove host from the monitoring pool leaving only "lowThreshold" hosts
+    public void organizeReadOnlyMode(int lowThreshold) {
+        for (int i = 0; i <= ohpool.get_total_ativos() - lowThreshold; i++){
+            ohpool.removeReadOnlyHost();
+        }
+    }
+    
+    public boolean increaseReadOnlyResources(){
+        ohpool.allocateReadOnlyHost();
+        try {
+            messenger.notifyNewResources(ohpool.getLastActiveHost());
+        } catch (ParserConfigurationException | SAXException | IOException | InterruptedException ex) {Logger.getLogger(OneManager.class.getName()).log(Level.SEVERE, null, ex);}
+        return true;
+    }
+    
+    public boolean decreaseReadOnlyResources() throws InterruptedException, IOException{
+        if (messenger.notifyDecrease(ohpool.getLastActiveHost())){
+            while(!messenger.canDecrease()){}
+            return ohpool.removeReadOnlyHost();
+        }
+        return false;
+    }
+    
     //================================ Métodos não utilizados ========================================
     //================================ Implementação para futura nova versão =========================
     //instantiate "amounthosts" hosts with "vmsperhost" virtual machines each one / return an array with the IPs of the new virtual machines
@@ -314,11 +339,11 @@ public class OneManager {
     private int instantiate_host(){
         int hostid = 0;
         try {
-            hostid = ohpool.allocatesHostNow(oneClient); //create a new host in the "ohpool"
+            hostid = ohpool.allocateHostNow(oneClient); //create a new host in the "ohpool"
         } catch (Exception ex) {
             Logger.getLogger(OneManager.class.getName()).log(Level.SEVERE, null, ex);
         }
         return hostid;
     }
-    
+   
 }

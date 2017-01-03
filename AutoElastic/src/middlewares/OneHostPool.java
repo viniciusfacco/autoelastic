@@ -25,6 +25,9 @@ import org.xml.sax.SAXException;
  * 04/08/2015 - viniciusfacco
  *            - Renamed the method aloca_host to allocatesHostNow
  *            - Created two new methods to allocate hosts: allocatesHost and enableLastHost
+ * 03/01/2017 - viniciusfacco
+ *            - added allocateReadOnlyHost and removeReadOnlyHost methods for Read Only mode
+ *            - added getLastActiveHost method to return the last added host name 
  */
 public class OneHostPool {
     
@@ -85,6 +88,10 @@ public class OneHostPool {
         return this.hosts_ativos.size();
     }
     
+    public String getLastActiveHost(){
+        return hosts_ativos.get(hosts_ativos.size() - 1).get_name();
+    }
+    
     //return the host with specific id from the actives or inactives hosts
     public OneHost get_onehost(int id){
         OneHost onehost = null;
@@ -102,7 +109,7 @@ public class OneHostPool {
     }
     
     //when this method is used, automatically allocated host becomes part of the set of active hosts
-    public int allocatesHostNow(Client oc) throws Exception{
+    public int allocateHostNow(Client oc) throws Exception{
         if (!hosts_inativos.isEmpty()){
             OneHost host;
             hosts_inativos.get(0).create(oc);
@@ -114,7 +121,7 @@ public class OneHostPool {
     }
     
     //when this method is used, a new host is allocated but it is still not considered part of set of active hosts
-    public int allocatesHost(Client oc) throws Exception{
+    public int allocateHost(Client oc) throws Exception{
         if (!hosts_inativos.isEmpty()){
             OneHost host;
             host = hosts_inativos.get(0);
@@ -197,5 +204,16 @@ public class OneHostPool {
             }
         }
     }
-
+    
+    //add a new host to the monitoring pool
+    public boolean allocateReadOnlyHost(){
+        hosts_ativos.add(hosts_inativos.remove(0));
+        return true;
+    }
+    
+    //remove the last host from the monitoring pool
+    public boolean removeReadOnlyHost(){
+        hosts_inativos.add(hosts_ativos.remove(hosts_ativos.size() - 1));
+        return true;
+    }
 }

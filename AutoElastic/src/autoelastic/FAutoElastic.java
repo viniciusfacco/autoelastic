@@ -24,6 +24,8 @@ import org.xml.sax.SAXException;
  * 16/11/2016 - viniciusfacco
  *            - user can set notification parameters in the UI
  *            - added a new tab called Communication with nine new parameters that the user can set
+ * 03/01/2017 - viniciusfacco
+ *            - added Read Only flag
  */
 public class FAutoElastic extends javax.swing.JFrame {
 
@@ -45,6 +47,7 @@ public class FAutoElastic extends javax.swing.JFrame {
 
         bgEvaluators = new javax.swing.ButtonGroup();
         bgThresholdType = new javax.swing.ButtonGroup();
+        jCheckBox1 = new javax.swing.JCheckBox();
         jpMain = new javax.swing.JPanel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jpServer = new javax.swing.JPanel();
@@ -133,7 +136,10 @@ public class FAutoElastic extends javax.swing.JFrame {
         jcbLabMode = new javax.swing.JCheckBox();
         jbMinimize = new javax.swing.JButton();
         jbExit = new javax.swing.JButton();
+        jcbReadOnly = new javax.swing.JCheckBox();
         jSeparator1 = new javax.swing.JSeparator();
+
+        jCheckBox1.setText("jCheckBox1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("AutoElastic");
@@ -1155,6 +1161,11 @@ public class FAutoElastic extends javax.swing.JFrame {
             }
         });
 
+        jcbReadOnly.setBackground(new java.awt.Color(250, 250, 250));
+        jcbReadOnly.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        jcbReadOnly.setForeground(new java.awt.Color(51, 204, 255));
+        jcbReadOnly.setText("Read Only");
+
         javax.swing.GroupLayout jpUpperButtonsLayout = new javax.swing.GroupLayout(jpUpperButtons);
         jpUpperButtons.setLayout(jpUpperButtonsLayout);
         jpUpperButtonsLayout.setHorizontalGroup(
@@ -1164,8 +1175,10 @@ public class FAutoElastic extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jbAbout, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jcbLabMode)
-                .addGap(92, 92, 92)
+                .addGroup(jpUpperButtonsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jcbReadOnly)
+                    .addComponent(jcbLabMode))
+                .addGap(103, 103, 103)
                 .addComponent(jLabel18, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(244, 244, 244)
                 .addComponent(jbMinimize)
@@ -1176,11 +1189,14 @@ public class FAutoElastic extends javax.swing.JFrame {
             jpUpperButtonsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jbSaleLog, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jbAbout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jbExit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jpUpperButtonsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                .addComponent(jcbLabMode, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jbMinimize, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel18))
-            .addComponent(jbExit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpUpperButtonsLayout.createSequentialGroup()
+                .addComponent(jcbReadOnly, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jcbLabMode, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jpMainLayout = new javax.swing.GroupLayout(jpMain);
@@ -1190,7 +1206,7 @@ public class FAutoElastic extends javax.swing.JFrame {
             .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
             .addComponent(jpMainButtons, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jScrollPane1)
-            .addComponent(jpUpperButtons, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jpUpperButtons, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
             .addComponent(jSeparator1)
         );
         jpMainLayout.setVerticalGroup(
@@ -1566,6 +1582,7 @@ public class FAutoElastic extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup bgEvaluators;
     private javax.swing.ButtonGroup bgThresholdType;
+    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1606,6 +1623,7 @@ public class FAutoElastic extends javax.swing.JFrame {
     private javax.swing.JButton jbParar;
     private javax.swing.JButton jbSaleLog;
     private javax.swing.JCheckBox jcbLabMode;
+    private javax.swing.JCheckBox jcbReadOnly;
     private javax.swing.JLabel jlMsgCanRemove;
     private javax.swing.JLabel jlMsgNewResources;
     private javax.swing.JLabel jlMsgWarningRemove;
@@ -1825,7 +1843,8 @@ public class FAutoElastic extends javax.swing.JFrame {
                     this.jtLocalDirTemp.getText(),
                     this.jtRemoteDirSource.getText(),
                     this.jtRemoteDirTarget.getText(),
-                    this.jtaLog
+                    this.jtaLog,
+                    this.jcbReadOnly.isSelected()
             );
 
             if (this.jcbLabMode.isSelected()){
