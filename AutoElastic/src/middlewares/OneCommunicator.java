@@ -36,6 +36,8 @@ import org.xml.sax.SAXException;
  *            - updated methos to use the new ssh object and removed old methods
  * 16/11/2016 - viniciusfacco
  *            - added method setParameters to set local and remote directories and name of the communication files
+ * 03/01/2017 - viniciusfacco
+ *            - added parameter "message" in the notifyDecrease method
  */
 
 public class OneCommunicator {
@@ -92,11 +94,11 @@ public class OneCommunicator {
     
     
     //método que verifica se é possível liberar recursos
-    public boolean notifyDecrease() throws InterruptedException, IOException {
+    public boolean notifyDecrease(String message) throws InterruptedException, IOException {
         File arquivo = new File(localdir_temp_files + warning_deacrease_file_name);
         try (
             BufferedWriter escritor = new BufferedWriter(new FileWriter(arquivo))) {
-            escritor.write("pouca_carga");
+            escritor.write(message);
         }
         //if (envia_arquivo(arquivo.getAbsolutePath())) {
         if (ssh.sendFile(arquivo.getAbsolutePath(), remotedir_file_target)){
