@@ -9,6 +9,7 @@ package middlewares;
 import static autoelastic.AutoElastic.gera_log;
 import communication.SSHClient;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -47,10 +48,11 @@ public class OneManager {
     private static String virtual_network_manager;
     private final int cluster_id;
     private final JTextArea log;
-    private final int vms_for_host;
+    private final int vms_per_operation;
     private final int vmtemplateid;
     private boolean waiting_vms;
     private final OneVM[] last_vms;
+    private ArrayList<OneVM> vms; //VMs alocadas no host
     
     public OneManager(  String puser, 
                         String ppassword, 
@@ -82,12 +84,13 @@ public class OneManager {
         virtual_network_manager = pvnm;
         cluster_id = pcid;
         log = plog;
-        vms_for_host = pvms_for_host;
+        vms_per_operation = pvms_for_host;
         vmtemplateid = pvmtemplateid;
         waiting_vms = false;
         messenger = new OneCommunicator(psshserver, psshuser, psshpassword, plog);
         messenger.setParameters(pmsgwarningremove, pmsgcanremove, pmsgnewresources, plocaldirtemp, premotedirsource, premotedirtarget);
-        last_vms = new OneVM[vms_for_host]; //array que vai receber as novas vms criadas
+        last_vms = new OneVM[vms_per_operation]; //array que vai receber as novas vms criadas
+        vms = new ArrayList();
     }
     
     public boolean serverConnect(){
@@ -167,6 +170,14 @@ public class OneManager {
         return ohpool.get_total_ativos();
     }
     
+    public void increaseResources(boolean managehosts) throws Exception {
+        if (managehosts){
+            increaseResources();
+        } else {
+            increaseVirtualMachines();
+        }
+    }
+
     /**
      * Create a new host with virtual machines.
      * @return
@@ -177,7 +188,7 @@ public class OneManager {
         //int hostid = ohpool.allocatesHostNow(oneClient); //allocates the host and it will be active immediatly
         int hostid = ohpool.allocateHost(oneClient);      //allocates the host and it will be active after resorces be online
         if (hostid > 0){
-            for (int i = 0; i < vms_for_host; i++) {
+            for (int i = 0; i < vms_per_operation; i++) {
                 last_vms[i] = new OneVM(vmtemplateid);
                 increaseVM(last_vms[i], hostid); //aloca vm nesse host
                 //gera_log(objname,"Main: Nova VM alocada: " + last_vms[i].get_id());
@@ -191,6 +202,28 @@ public class OneManager {
         return false;
     }
     
+    /**
+     * Instantiate new virtual machine(s) in the cloud.
+     */
+    public void increaseVirtualMachines(){
+        int vmid;
+        for (int i = 0; i < this.vms_per_operation; i++){
+            last_vms[i] = new OneVM(vmtemplateid);
+            vmid = last_vms[i].instantiate(oneClient, log);
+            gera_log(objname,"increaseVirtualMachines: VM ID " + vmid + " instantiated.");
+            vms.add(0,last_vms[i]);
+        }
+        waiting_vms = true;
+    }
+    
+    public void decreaseResources(boolean managehosts) throws InterruptedException, IOException {
+        if (managehosts){
+            decreaseResources();
+        } else {
+            decreaseVirtualMachines();
+        }
+    }
+        
     //método que remove um host e suas máquinas virtuais no ambiente
     public boolean decreaseResources() throws InterruptedException, IOException{
         if (messenger.notifyDecrease(ohpool.getLastActiveHost())){
@@ -198,6 +231,24 @@ public class OneManager {
             return ohpool.remove_host(oneClient);//remove último host criado e suas vms também
         }
         return false;
+    }
+    
+    /**
+     * Delete virtual machine(s) from the cloud.
+     * @throws InterruptedException
+     * @throws IOException
+     */
+    public void decreaseVirtualMachines() throws InterruptedException, IOException{
+        String message = "";
+        for (int i = 0; i < vms_per_operation; i++){
+            message = message + vms.get(i).get_ip() + "\n";
+        }
+        if (messenger.notifyDecrease(message)){
+            while(!messenger.canDecrease()){}
+            for (int i = 0; i < vms_per_operation; i++){
+                vms.remove(0).delete();
+            }
+        }
     }
     
     /**
@@ -215,25 +266,25 @@ public class OneManager {
     }
     
     public boolean newResourcesPending() throws ParserConfigurationException, SAXException, IOException, InterruptedException{        
+        String message = "";
         if (waiting_vms){
-            last_vms[0].sync_vm();
-            last_vms[1].sync_vm();
-            if (last_vms[0].get_ip().equalsIgnoreCase("") || last_vms[1].get_ip().equalsIgnoreCase("")) {
-                return false;
-            } else {
-                if (ping(last_vms[0].get_ip()) && ping(last_vms[1].get_ip())){
-                    ohpool.enableLastHost();
-                    waiting_vms = false;
-                    //gera_log(objname,"Notifica criação de novos recursos...");
-                    messenger.notifyNewResources(last_vms[0].get_ip() + "\n" + last_vms[1].get_ip());
+            for (int i = 0; i < this.vms_per_operation; i++){
+                last_vms[i].sync_vm();
+                if (!ping(last_vms[i].get_ip())){
+                    return waiting_vms;
                 }
+                message = message + last_vms[i].get_ip() + "\n";
             }
+            waiting_vms = false;
+            //gera_log(objname,"Notifica criação de novos recursos...");
+            messenger.notifyNewResources(message);
         }
         return waiting_vms;
     }
     
     //ping :)
     private boolean ping(String ip) {
+        if (ip.equalsIgnoreCase("")){return false;}
         String resposta;
         int fim;
         boolean online = false;
@@ -268,7 +319,7 @@ public class OneManager {
     
     //remove host from the monitoring pool leaving only "lowThreshold" hosts
     public void organizeReadOnlyMode(int lowThreshold) {
-        for (int i = 0; i <= ohpool.get_total_ativos() - lowThreshold; i++){
+        for (int i = lowThreshold; i <= ohpool.get_total_ativos(); i++){
             ohpool.removeReadOnlyHost();
         }
     }
@@ -345,5 +396,24 @@ public class OneManager {
         }
         return hostid;
     }
-   
+
+    /*
+    public boolean newResourcesPending() throws ParserConfigurationException, SAXException, IOException, InterruptedException{        
+        if (waiting_vms){
+            last_vms[0].sync_vm();
+            last_vms[1].sync_vm();
+            if (last_vms[0].get_ip().equalsIgnoreCase("") || last_vms[1].get_ip().equalsIgnoreCase("")) {
+                return false;
+            } else {
+                if (ping(last_vms[0].get_ip()) && ping(last_vms[1].get_ip())){
+                    ohpool.enableLastHost();
+                    waiting_vms = false;
+                    //gera_log(objname,"Notifica criação de novos recursos...");
+                    messenger.notifyNewResources(last_vms[0].get_ip() + "\n" + last_vms[1].get_ip());
+                }
+            }
+        }
+        return waiting_vms;
+    }*/
+
 }
