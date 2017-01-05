@@ -78,14 +78,14 @@ public class OneCommunicator {
         permission_decrease_file_name = pmsgcanremove;
         notify_increase_file_name = pmsgnewresources;
         localdir_temp_files = plocaldirtemp;
-        gera_log(objname,
-                  "remotedir_file_source\n" + remotedir_file_source 
-                + "remotedir_file_target\n" + remotedir_file_target
-                + "warning_deacrease_file_name\n" + warning_deacrease_file_name
-                + "permission_decrease_file_name\n" + permission_decrease_file_name
-                + "notify_increase_file_name\n" + notify_increase_file_name
-                + "localdir_temp_files\n" + localdir_temp_files
-        );
+        //gera_log(objname,
+        //          "remotedir_file_source\n" + remotedir_file_source 
+        //        + "remotedir_file_target\n" + remotedir_file_target
+        //        + "warning_deacrease_file_name\n" + warning_deacrease_file_name
+        //        + "permission_decrease_file_name\n" + permission_decrease_file_name
+        //        + "notify_increase_file_name\n" + notify_increase_file_name
+        //        + "localdir_temp_files\n" + localdir_temp_files
+        //);
     }
     
     public void setSSHClient(SSHClient sshclient){
