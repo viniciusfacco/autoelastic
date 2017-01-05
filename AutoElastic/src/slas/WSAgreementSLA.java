@@ -90,6 +90,6 @@ public class WSAgreementSLA {
      * @return Returns the value of the low threshold which is the minimum number of hosts allowed.
      */
     public int getLowThreshold(){
-        return MaximalHosts;
+        return MinimalHosts;
     }
 }
