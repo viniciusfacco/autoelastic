@@ -95,6 +95,7 @@ public class AutoElastic implements Runnable {
     private static String remotedirsource;
     private static String remotedirtarget;
     private static boolean readonly;
+    private static boolean managehosts;
     
     public AutoElastic(JPanel pgraphic1, JPanel pgraphic2){
         graphic1 = new Graphic(pgraphic1, "CPU Usage (Total)");
@@ -133,6 +134,7 @@ public class AutoElastic implements Runnable {
      * @param premotedirtarget - remote directory to where messages will be send
      * @param plog - component to receive the log messages
      * @param preadonly - read only mode flag (if true autoelastic only reorganize resources locally)
+     * @param pmanagehosts - flag for managing hosts when reorganizing resources
      */
     public void set_parameters(String pfrontend, 
                        String pusuario, 
@@ -163,7 +165,8 @@ public class AutoElastic implements Runnable {
                        String premotedirsource,
                        String premotedirtarget,
                        JTextArea plog,
-                       boolean preadonly) {
+                       boolean preadonly,
+                       boolean pmanagehosts) {
         
         frontend = pfrontend;
         usuario = pusuario;
@@ -197,6 +200,7 @@ public class AutoElastic implements Runnable {
         remotedirsource = premotedirsource;
         remotedirtarget = premotedirtarget;
         readonly = preadonly;
+        managehosts = pmanagehosts;
         gera_log(objname,"Main: Construindo...");
     }
 
@@ -299,7 +303,7 @@ public class AutoElastic implements Runnable {
                         /*LOG*/gera_log(objname,"Main: SLA não atingido...novo recurso pode ser alocado...");
                         /*LOG*/gera_log(objname,"Main: Alocando recursos...");
                         if (!readonly){//if not readonly proceed the normal elasticity
-                            cloud_manager.increaseResources();//increase one host and the number of vms informed in the parameters
+                            cloud_manager.increaseResources(managehosts);//increase one host and the number of vms informed in the parameters
                         } else {//if readonly then proceed only local elasticity 
                             cloud_manager.increaseReadOnlyResources();// add a host in the monitoring pool without add it in the cloud
                         }
@@ -314,7 +318,7 @@ public class AutoElastic implements Runnable {
                         /*LOG*/gera_log(objname,"Main: SLA não atingido...novo recurso pode ser liberado...");
                         /*LOG*/gera_log(objname,"Main: Liberando recursos...");
                         if (!readonly){//if not readonly proceed the normal elasticity
-                            cloud_manager.decreaseResources(); //decrease the last host added and the number its vms
+                            cloud_manager.decreaseResources(managehosts); //decrease the last host added and the number its vms
                         } else {//if readonly then proceed only local elasticity 
                             cloud_manager.decreaseReadOnlyResources();// remove a host in the monitoring pool without remove it in the cloud
                         }

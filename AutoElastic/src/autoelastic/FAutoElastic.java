@@ -96,6 +96,11 @@ public class FAutoElastic extends javax.swing.JFrame {
         jtfVmsPorHost = new javax.swing.JTextField();
         jLabel20 = new javax.swing.JLabel();
         jtfExecutionLogName = new javax.swing.JTextField();
+        jPanel5 = new javax.swing.JPanel();
+        jcbReadOnly = new javax.swing.JCheckBox();
+        jcbLabMode = new javax.swing.JCheckBox();
+        jLabel2 = new javax.swing.JLabel();
+        jcbManageHosts = new javax.swing.JCheckBox();
         jpCommunication = new javax.swing.JPanel();
         jtRemoteDirSource = new javax.swing.JTextField();
         jtRemoteDirTarget = new javax.swing.JTextField();
@@ -133,10 +138,8 @@ public class FAutoElastic extends javax.swing.JFrame {
         jbSaleLog = new javax.swing.JButton();
         jbAbout = new javax.swing.JButton();
         jLabel18 = new javax.swing.JLabel();
-        jcbLabMode = new javax.swing.JCheckBox();
         jbMinimize = new javax.swing.JButton();
         jbExit = new javax.swing.JButton();
-        jcbReadOnly = new javax.swing.JCheckBox();
         jSeparator1 = new javax.swing.JSeparator();
 
         jCheckBox1.setText("jCheckBox1");
@@ -248,7 +251,7 @@ public class FAutoElastic extends javax.swing.JFrame {
                             .addGroup(jpServerLayout.createSequentialGroup()
                                 .addComponent(jLabel12)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jtfVMM, javax.swing.GroupLayout.DEFAULT_SIZE, 359, Short.MAX_VALUE))))
+                                .addComponent(jtfVMM))))
                     .addGroup(jpServerLayout.createSequentialGroup()
                         .addGroup(jpServerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jpServerLayout.createSequentialGroup()
@@ -348,6 +351,7 @@ public class FAutoElastic extends javax.swing.JFrame {
         });
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setPreferredSize(new java.awt.Dimension(180, 104));
 
         jLabel16.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         jLabel16.setText("Evaluation Algorithm");
@@ -385,22 +389,24 @@ public class FAutoElastic extends javax.swing.JFrame {
                     .addComponent(jrbAging, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jRadioButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jrbGeneric, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(92, Short.MAX_VALUE))
+                .addContainerGap(53, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
                 .addComponent(jLabel16)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jrbAging)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jRadioButton1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jrbGeneric))
+                .addComponent(jrbGeneric)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel2.setPreferredSize(new java.awt.Dimension(180, 104));
 
         jLabel17.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         jLabel17.setText("Threshold Type");
@@ -430,7 +436,7 @@ public class FAutoElastic extends javax.swing.JFrame {
                     .addComponent(jrbLive)
                     .addComponent(jLabel17)
                     .addComponent(jrbFixed))
-                .addContainerGap(101, Short.MAX_VALUE))
+                .addContainerGap(91, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -441,10 +447,11 @@ public class FAutoElastic extends javax.swing.JFrame {
                 .addComponent(jrbFixed)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jrbLive)
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel3.setPreferredSize(new java.awt.Dimension(180, 104));
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         jLabel5.setText("Upper Threshold");
@@ -491,7 +498,7 @@ public class FAutoElastic extends javax.swing.JFrame {
                     .addComponent(jtfMonitoringWindow, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
                     .addComponent(jtfThresholdMin)
                     .addComponent(jtfThresholdMax))
-                .addContainerGap(92, Short.MAX_VALUE))
+                .addContainerGap(37, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -512,6 +519,7 @@ public class FAutoElastic extends javax.swing.JFrame {
         );
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel4.setPreferredSize(new java.awt.Dimension(180, 104));
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         jLabel3.setText("VM Template ID");
@@ -558,7 +566,7 @@ public class FAutoElastic extends javax.swing.JFrame {
                     .addComponent(jtfMonitoringInterval, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
                     .addComponent(jtfTemplateid, javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jtfVmsPorHost, javax.swing.GroupLayout.Alignment.LEADING))
-                .addContainerGap(92, Short.MAX_VALUE))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -583,32 +591,84 @@ public class FAutoElastic extends javax.swing.JFrame {
 
         jtfExecutionLogName.setToolTipText("Word that AutoElastic Manager uses in the execution log name.");
 
+        jPanel5.setBackground(new java.awt.Color(255, 255, 255));
+
+        jcbReadOnly.setBackground(new java.awt.Color(255, 255, 255));
+        jcbReadOnly.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        jcbReadOnly.setForeground(new java.awt.Color(51, 204, 255));
+        jcbReadOnly.setText("Read Only");
+
+        jcbLabMode.setBackground(new java.awt.Color(255, 255, 255));
+        jcbLabMode.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        jcbLabMode.setForeground(new java.awt.Color(51, 204, 255));
+        jcbLabMode.setText("Laboratory Mode");
+        jcbLabMode.setToolTipText("Check this box to run in automated laboratory mode.");
+        jcbLabMode.setFocusable(false);
+
+        jLabel2.setText("General");
+
+        jcbManageHosts.setBackground(new java.awt.Color(255, 255, 255));
+        jcbManageHosts.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        jcbManageHosts.setForeground(new java.awt.Color(51, 204, 255));
+        jcbManageHosts.setText("Manage Hosts");
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jcbManageHosts)
+                    .addComponent(jcbReadOnly)
+                    .addComponent(jcbLabMode)
+                    .addComponent(jLabel2))
+                .addContainerGap(38, Short.MAX_VALUE))
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel2)
+                .addGap(7, 7, 7)
+                .addComponent(jcbLabMode)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jcbReadOnly, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jcbManageHosts)
+                .addContainerGap(12, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout jpParametersLayout = new javax.swing.GroupLayout(jpParameters);
         jpParameters.setLayout(jpParametersLayout);
         jpParametersLayout.setHorizontalGroup(
             jpParametersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpParametersLayout.createSequentialGroup()
-                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jpParametersLayout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(jpParametersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel15)
-                    .addComponent(jbBuscarSLA, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jpParametersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jtfSla)
                     .addGroup(jpParametersLayout.createSequentialGroup()
-                        .addComponent(jtfLogPath)
-                        .addGap(63, 63, 63)
-                        .addComponent(jLabel20)
-                        .addGap(18, 18, 18)
-                        .addComponent(jtfExecutionLogName)))
+                        .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 183, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jpParametersLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jpParametersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel15)
+                            .addComponent(jbBuscarSLA, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jpParametersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jtfSla)
+                            .addGroup(jpParametersLayout.createSequentialGroup()
+                                .addComponent(jtfLogPath)
+                                .addGap(63, 63, 63)
+                                .addComponent(jLabel20)
+                                .addGap(18, 18, 18)
+                                .addComponent(jtfExecutionLogName)))))
                 .addContainerGap())
         );
         jpParametersLayout.setVerticalGroup(
@@ -626,11 +686,12 @@ public class FAutoElastic extends javax.swing.JFrame {
                     .addComponent(jtfExecutionLogName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jpParametersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 0, 0))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE)
+                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(5, 5, 5))
         );
 
         jTabbedPane1.addTab("Parameters", jpParameters);
@@ -706,7 +767,7 @@ public class FAutoElastic extends javax.swing.JFrame {
                         .addGroup(jpCommunicationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jtMsgCanRemove, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jtMsgWarningRemove, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jtMsgNewResources, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)))
+                            .addComponent(jtMsgNewResources)))
                     .addComponent(jtLocalDirTemp))
                 .addGap(22, 22, 22))
         );
@@ -842,7 +903,7 @@ public class FAutoElastic extends javax.swing.JFrame {
         jpHostsLayout.setHorizontalGroup(
             jpHostsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpHostsLayout.createSequentialGroup()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 818, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 829, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jpHostsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jbDelHost, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -853,9 +914,9 @@ public class FAutoElastic extends javax.swing.JFrame {
             jpHostsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
             .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
             .addGroup(jpHostsLayout.createSequentialGroup()
-                .addComponent(jbAddHost, javax.swing.GroupLayout.DEFAULT_SIZE, 94, Short.MAX_VALUE)
+                .addComponent(jbAddHost, javax.swing.GroupLayout.DEFAULT_SIZE, 95, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jbDelHost, javax.swing.GroupLayout.DEFAULT_SIZE, 95, Short.MAX_VALUE))
+                .addComponent(jbDelHost, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Hosts", jpHosts);
@@ -875,11 +936,11 @@ public class FAutoElastic extends javax.swing.JFrame {
         jpGraficoLineTotal.setLayout(jpGraficoLineTotalLayout);
         jpGraficoLineTotalLayout.setHorizontalGroup(
             jpGraficoLineTotalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 458, Short.MAX_VALUE)
+            .addGap(0, 463, Short.MAX_VALUE)
         );
         jpGraficoLineTotalLayout.setVerticalGroup(
             jpGraficoLineTotalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 195, Short.MAX_VALUE)
+            .addGap(0, 197, Short.MAX_VALUE)
         );
 
         jbGraphicLinePercent.setBackground(new java.awt.Color(255, 255, 255));
@@ -888,7 +949,7 @@ public class FAutoElastic extends javax.swing.JFrame {
         jbGraphicLinePercent.setLayout(jbGraphicLinePercentLayout);
         jbGraphicLinePercentLayout.setHorizontalGroup(
             jbGraphicLinePercentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 458, Short.MAX_VALUE)
+            .addGap(0, 464, Short.MAX_VALUE)
         );
         jbGraphicLinePercentLayout.setVerticalGroup(
             jbGraphicLinePercentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1095,13 +1156,6 @@ public class FAutoElastic extends javax.swing.JFrame {
         jLabel18.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel18.setText("AutoElastic Manager");
 
-        jcbLabMode.setBackground(new java.awt.Color(250, 250, 250));
-        jcbLabMode.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        jcbLabMode.setForeground(new java.awt.Color(51, 204, 255));
-        jcbLabMode.setText("Laboratory Mode");
-        jcbLabMode.setToolTipText("Check this box to run in automated laboratory mode.");
-        jcbLabMode.setFocusable(false);
-
         jbMinimize.setBackground(new java.awt.Color(51, 204, 255));
         jbMinimize.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jbMinimize.setForeground(new java.awt.Color(102, 102, 102));
@@ -1161,11 +1215,6 @@ public class FAutoElastic extends javax.swing.JFrame {
             }
         });
 
-        jcbReadOnly.setBackground(new java.awt.Color(250, 250, 250));
-        jcbReadOnly.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        jcbReadOnly.setForeground(new java.awt.Color(51, 204, 255));
-        jcbReadOnly.setText("Read Only");
-
         javax.swing.GroupLayout jpUpperButtonsLayout = new javax.swing.GroupLayout(jpUpperButtons);
         jpUpperButtons.setLayout(jpUpperButtonsLayout);
         jpUpperButtonsLayout.setHorizontalGroup(
@@ -1174,11 +1223,7 @@ public class FAutoElastic extends javax.swing.JFrame {
                 .addComponent(jbSaleLog, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jbAbout, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jpUpperButtonsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jcbReadOnly)
-                    .addComponent(jcbLabMode))
-                .addGap(103, 103, 103)
+                .addGap(222, 222, 222)
                 .addComponent(jLabel18, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(244, 244, 244)
                 .addComponent(jbMinimize)
@@ -1193,10 +1238,6 @@ public class FAutoElastic extends javax.swing.JFrame {
             .addGroup(jpUpperButtonsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                 .addComponent(jbMinimize, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel18))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpUpperButtonsLayout.createSequentialGroup()
-                .addComponent(jcbReadOnly, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jcbLabMode, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jpMainLayout = new javax.swing.GroupLayout(jpMain);
@@ -1206,7 +1247,7 @@ public class FAutoElastic extends javax.swing.JFrame {
             .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
             .addComponent(jpMainButtons, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jScrollPane1)
-            .addComponent(jpUpperButtons, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+            .addComponent(jpUpperButtons, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jSeparator1)
         );
         jpMainLayout.setVerticalGroup(
@@ -1220,7 +1261,7 @@ public class FAutoElastic extends javax.swing.JFrame {
                 .addGap(0, 0, 0)
                 .addComponent(jpMainButtons, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 324, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 322, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -1467,6 +1508,34 @@ public class FAutoElastic extends javax.swing.JFrame {
         jbAddHost.setBackground(new Color(41, 194, 255));
     }//GEN-LAST:event_jbAddHostMouseEntered
 
+    private void jtfClusterIdFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtfClusterIdFocusGained
+        jtfClusterId.selectAll();
+    }//GEN-LAST:event_jtfClusterIdFocusGained
+
+    private void jtfVNMFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtfVNMFocusGained
+        jtfVNM.selectAll();
+    }//GEN-LAST:event_jtfVNMFocusGained
+
+    private void jtfVMMFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtfVMMFocusGained
+        jtfVMM.selectAll();
+    }//GEN-LAST:event_jtfVMMFocusGained
+
+    private void jtfIMFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtfIMFocusGained
+        jtfIM.selectAll();
+    }//GEN-LAST:event_jtfIMFocusGained
+
+    private void jtfSenhaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtfSenhaFocusGained
+        jtfSenha.selectAll();
+    }//GEN-LAST:event_jtfSenhaFocusGained
+
+    private void jtfUsuarioFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtfUsuarioFocusGained
+        jtfUsuario.selectAll();
+    }//GEN-LAST:event_jtfUsuarioFocusGained
+
+    private void jtfFrontendFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtfFrontendFocusGained
+        jtfFrontend.selectAll();
+    }//GEN-LAST:event_jtfFrontendFocusGained
+
     private void jtfVmsPorHostFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtfVmsPorHostFocusGained
         jtfVmsPorHost.selectAll();
     }//GEN-LAST:event_jtfVmsPorHostFocusGained
@@ -1515,34 +1584,6 @@ public class FAutoElastic extends javax.swing.JFrame {
     private void jbBuscarSLAMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbBuscarSLAMouseEntered
         jbBuscarSLA.setBackground(new Color(41, 194, 255));
     }//GEN-LAST:event_jbBuscarSLAMouseEntered
-
-    private void jtfClusterIdFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtfClusterIdFocusGained
-        jtfClusterId.selectAll();
-    }//GEN-LAST:event_jtfClusterIdFocusGained
-
-    private void jtfVNMFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtfVNMFocusGained
-        jtfVNM.selectAll();
-    }//GEN-LAST:event_jtfVNMFocusGained
-
-    private void jtfVMMFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtfVMMFocusGained
-        jtfVMM.selectAll();
-    }//GEN-LAST:event_jtfVMMFocusGained
-
-    private void jtfIMFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtfIMFocusGained
-        jtfIM.selectAll();
-    }//GEN-LAST:event_jtfIMFocusGained
-
-    private void jtfSenhaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtfSenhaFocusGained
-        jtfSenha.selectAll();
-    }//GEN-LAST:event_jtfSenhaFocusGained
-
-    private void jtfUsuarioFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtfUsuarioFocusGained
-        jtfUsuario.selectAll();
-    }//GEN-LAST:event_jtfUsuarioFocusGained
-
-    private void jtfFrontendFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtfFrontendFocusGained
-        jtfFrontend.selectAll();
-    }//GEN-LAST:event_jtfFrontendFocusGained
 
     /**
      * @param args the command line arguments
@@ -1593,6 +1634,7 @@ public class FAutoElastic extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -1605,6 +1647,7 @@ public class FAutoElastic extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
@@ -1623,6 +1666,7 @@ public class FAutoElastic extends javax.swing.JFrame {
     private javax.swing.JButton jbParar;
     private javax.swing.JButton jbSaleLog;
     private javax.swing.JCheckBox jcbLabMode;
+    private javax.swing.JCheckBox jcbManageHosts;
     private javax.swing.JCheckBox jcbReadOnly;
     private javax.swing.JLabel jlMsgCanRemove;
     private javax.swing.JLabel jlMsgNewResources;
@@ -1711,6 +1755,7 @@ public class FAutoElastic extends javax.swing.JFrame {
         this.jtMsgNewResources.setText("novorecurso.txt");
         this.jtRemoteDirSource.setText("/var/lib/one/app/msg/");
         this.jtRemoteDirTarget.setText("/var/lib/one/app/msg/");
+        this.jcbManageHosts.setSelected(true);
     }
 
     private String seleciona_arquivo() {
@@ -1844,7 +1889,8 @@ public class FAutoElastic extends javax.swing.JFrame {
                     this.jtRemoteDirSource.getText(),
                     this.jtRemoteDirTarget.getText(),
                     this.jtaLog,
-                    this.jcbReadOnly.isSelected()
+                    this.jcbReadOnly.isSelected(),
+                    this.jcbManageHosts.isSelected()
             );
 
             if (this.jcbLabMode.isSelected()){

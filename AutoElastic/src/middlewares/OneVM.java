@@ -56,6 +56,23 @@ public class OneVM {
         return this.id;
     }
     
+    /**
+     * This method instantiate a new virtual machine.
+     * @param oc Cloud handler
+     * @param plog Log area
+     * @return The VM ID
+     */
+    public int instantiate(Client oc, JTextArea plog){
+        Template vmtemplate = new Template(this.templateid, oc);
+        OneResponse rc = vmtemplate.instantiate();
+        log = plog;
+        if (!rc.isError()){
+            this.id = Integer.parseInt(rc.getMessage());
+            this.vm = new VirtualMachine(this.id, oc);
+        }
+        return this.id;
+    }
+    
     public boolean delete(){
         //this.vm.finalizeVM();
         //this.vm.cancel();
