@@ -171,6 +171,7 @@ public class OneHostPool {
                 gera_log(objname,e.getMessage());
             }
         }
+        gera_log(objname,"sync_hosts:" + hosts_ativos.size() + " host(s) updated.");
     }
     
     //>verifica e cria os hosts no gerenciador que já estão rodando no opennebula
