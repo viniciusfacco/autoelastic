@@ -99,6 +99,7 @@ public class OneCommunicator {
         try (
             BufferedWriter escritor = new BufferedWriter(new FileWriter(arquivo))) {
             escritor.write(message);
+            escritor.flush();
         }
         //if (envia_arquivo(arquivo.getAbsolutePath())) {
         if (ssh.sendFile(arquivo.getAbsolutePath(), remotedir_file_target)){
@@ -139,6 +140,7 @@ public class OneCommunicator {
             File arquivo = new File(localdir_temp_files + notify_increase_file_name);
             BufferedWriter escritor = new BufferedWriter(new FileWriter(arquivo));
             escritor.write(file_content + "\n");
+            escritor.flush();
             //if (envia_arquivo(arquivo.getAbsolutePath())) {
             if (ssh.sendFile(arquivo.getAbsolutePath(), remotedir_file_target)){
                 //gera_log(objname,"Main|notifica: Arquivo enviado com sucesso...");
