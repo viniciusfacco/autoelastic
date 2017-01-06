@@ -332,7 +332,7 @@ public class AutoElastic implements Runnable {
                         /*LOG*/gera_log(objname,"Main: Evaluator problem. We have violation but we do not know which.");
                 }
             } else {
-                /*LOG*/gera_log(objname,"Main: Aguardando inicialização de recursos ou aguardando inicialização de recursos.");
+                /*LOG*/gera_log(objname,"Main: Nenhuma ação necessária detectada/permitida.");
                 /*LOG*/export_log(cont, time, System.currentTimeMillis(), cloud_manager.getTotalActiveHosts(), cloud_manager.getAllocatedCPU(), cloud_manager.getUsedCPU(), cloud_manager.getAllocatedMEM(), cloud_manager.getUsedMEM(), cloud_manager.getAllocatedCPU() * thresholds.getUpperThreshold(), cloud_manager.getAllocatedCPU() * thresholds.getLowerThreshold(), cloud_manager.getCPULoad(), evaluator.getDecisionLoad(), thresholds.getLowerThreshold(), thresholds.getUpperThreshold(), cloud_manager.getLastMonitorTimes());
             }
             if (resourcesPending){//if there are resources being initialized, so we make sure they are already online to be added and recalculate the thresholds (Live Thresholding)
