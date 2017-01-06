@@ -26,6 +26,7 @@ public class About extends javax.swing.JFrame {
         initComponents();
         this.centraliza_tela();
         this.jl_email.setCursor(new Cursor(Cursor.HAND_CURSOR));  
+        this.jl_site.setCursor(new Cursor(Cursor.HAND_CURSOR));  
         this.setIconImage(new javax.swing.ImageIcon(getClass().getResource("/images/icone64x64.png")).getImage());
     }
 
@@ -40,26 +41,25 @@ public class About extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jlIcone = new javax.swing.JLabel();
-        jl_app = new javax.swing.JLabel();
         jl_version = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jta_description = new javax.swing.JTextArea();
         jl_name = new javax.swing.JLabel();
         jl_email = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
+        jl_site = new javax.swing.JLabel();
 
         setTitle("About");
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
+        jlIcone.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jlIcone.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icone64x64.png"))); // NOI18N
 
-        jl_app.setFont(new java.awt.Font("Century Gothic", 1, 36)); // NOI18N
-        jl_app.setText("AutoElastic");
-
         jl_version.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
-        jl_version.setText("Version 2.1");
+        jl_version.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jl_version.setText("Version 2.2");
 
         jta_description.setEditable(false);
         jta_description.setBackground(new java.awt.Color(240, 240, 240));
@@ -79,7 +79,7 @@ public class About extends javax.swing.JFrame {
         jl_email.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         jl_email.setForeground(new java.awt.Color(0, 0, 255));
         jl_email.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jl_email.setText("<html><u>viniciusfacco@live.com<u/></html>");
+        jl_email.setText("<html><u>vfrodrigues@unisinos.br<u/></html>");
         jl_email.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jl_emailMouseClicked(evt);
@@ -94,57 +94,49 @@ public class About extends javax.swing.JFrame {
             }
         });
 
+        jl_site.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        jl_site.setForeground(new java.awt.Color(0, 0, 255));
+        jl_site.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jl_site.setText("<html><u>http://www.autoelastic.com<u/></html>");
+        jl_site.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jl_siteMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(25, 25, 25)
-                        .addComponent(jlIcone)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jl_app))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(72, 72, 72)
-                                .addComponent(jl_version)))
-                        .addGap(0, 38, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jl_name, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jl_email)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(jlIcone, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jl_version, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jl_site, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jl_name, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jl_email, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1))
                 .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addGap(141, 141, 141))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jl_app)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jl_version))
-                    .addComponent(jlIcone))
-                .addGap(21, 21, 21)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jlIcone)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jl_version)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jl_site, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jl_name)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jl_email, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26)
+                .addGap(18, 18, 18)
                 .addComponent(jButton1)
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -167,15 +159,24 @@ public class About extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jl_emailMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jl_emailMouseClicked
-        // TODO add your handling code here:
         Desktop desk = java.awt.Desktop.getDesktop();       
         try {      
-            desk.browse(new java.net.URI("mailto:viniciusfacco@live.com"));      
+            desk.browse(new java.net.URI("mailto:vfrodrigues@unisinos.br"));      
         } catch (Exception e) {      
             e.printStackTrace();      
         }
         this.jl_email.setForeground(new java.awt.Color(102, 0, 153));
     }//GEN-LAST:event_jl_emailMouseClicked
+
+    private void jl_siteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jl_siteMouseClicked
+        Desktop desk = java.awt.Desktop.getDesktop();       
+        try {      
+            desk.browse(new java.net.URI("http://www.autoelastic.com"));      
+        } catch (Exception e) {      
+            e.printStackTrace();      
+        }
+        this.jl_email.setForeground(new java.awt.Color(102, 0, 153));
+    }//GEN-LAST:event_jl_siteMouseClicked
     
     private void centraliza_tela() {
         // Centraliza a janela de abertura no centro do desktop.  
@@ -230,9 +231,9 @@ public class About extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel jlIcone;
-    private javax.swing.JLabel jl_app;
     private javax.swing.JLabel jl_email;
     private javax.swing.JLabel jl_name;
+    private javax.swing.JLabel jl_site;
     private javax.swing.JLabel jl_version;
     private javax.swing.JTextArea jta_description;
     // End of variables declaration//GEN-END:variables
