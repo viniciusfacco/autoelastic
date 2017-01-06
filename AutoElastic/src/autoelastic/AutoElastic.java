@@ -280,8 +280,8 @@ public class AutoElastic implements Runnable {
             /*GRA*/graphic1.update(cont, cloud_manager.getUsedCPU(), cloud_manager.getAllocatedCPU(), cloud_manager.getAllocatedCPU() * thresholds.getUpperThreshold(), cloud_manager.getAllocatedCPU() * thresholds.getLowerThreshold());
             /*GRA*/graphic2.update(cont, cloud_manager.getCPULoad(), 1, thresholds.getUpperThreshold(), thresholds.getLowerThreshold());
             /*LOG*/gera_log(objname,"Main|monitora: Soma da carga de cpu de todos os hosts: " + cloud_manager.getUsedCPU() + " / Threshold maximo estabelecido: " + cloud_manager.getAllocatedCPU() * thresholds.getUpperThreshold() + " / Threshold minimo estabelecido: " + cloud_manager.getAllocatedCPU() * thresholds.getLowerThreshold());
-            /*LOG*/gera_log(objname,"Main: Realiza verificação de alguma violação dos thresholds...");
             evaluator.computeLoad(cloud_manager.getCPULoad());            
+            /*LOG*/gera_log(objname,"Main|monitora: Load calculado: " + evaluator.getDecisionLoad() + " / Upper threshold: " + thresholds.getUpperThreshold() + " / Lower threshold: " + thresholds.getLowerThreshold());
             if (recalculate_thresholds > 0){//if this flag is greater than 0, then we must recalculate the thresholds (Live Thresholding)
                 load_after = evaluator.getDecisionLoad();//get the new load with the new resources
                 switch (recalculate_thresholds){
@@ -292,7 +292,8 @@ public class AutoElastic implements Runnable {
                         thresholds.recalculateLowerThreshold(load_before,load_after,load_before);
                 }
                 recalculate_thresholds = 0;
-            }            
+            }
+            /*LOG*/gera_log(objname,"Main: Realiza verificação de alguma violação dos thresholds...");
             if ((evaluator.evaluate(thresholds.getUpperThreshold(), thresholds.getLowerThreshold())) && (!resourcesPending)){
                 //analyze the cloud situation and if we have some violation we need deal with this and if we are not waiting for new resource allocation we can evaluate the cloud
                 /*LOG*/export_log(cont, time, System.currentTimeMillis(), cloud_manager.getTotalActiveHosts(), cloud_manager.getAllocatedCPU(), cloud_manager.getUsedCPU(), cloud_manager.getAllocatedMEM(), cloud_manager.getUsedMEM(), cloud_manager.getAllocatedCPU() * thresholds.getUpperThreshold(), cloud_manager.getAllocatedCPU() * thresholds.getLowerThreshold(), cloud_manager.getCPULoad(), evaluator.getDecisionLoad(), thresholds.getLowerThreshold(), thresholds.getUpperThreshold(), cloud_manager.getLastMonitorTimes());
