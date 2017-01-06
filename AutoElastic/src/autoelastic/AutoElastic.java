@@ -313,7 +313,7 @@ public class AutoElastic implements Runnable {
                         /*LOG*/gera_log(objname,"Main: SLA não atingido...novo recurso pode ser alocado...");
                         /*LOG*/gera_log(objname,"Main: Alocando recursos...");
                         if (!readonly){//if not readonly proceed the normal elasticity
-                            cloud_manager.increaseResources(managehosts);//increase one host and the number of vms informed in the parameters
+                            cloud_manager.increaseResources();//increase one host and the number of vms informed in the parameters
                         } else {//if readonly then proceed only local elasticity 
                             cloud_manager.increaseReadOnlyResources();// add a host in the monitoring pool without add it in the cloud
                         }
@@ -328,7 +328,7 @@ public class AutoElastic implements Runnable {
                         /*LOG*/gera_log(objname,"Main: SLA não atingido...novo recurso pode ser liberado...");
                         /*LOG*/gera_log(objname,"Main: Liberando recursos...");
                         if (!readonly){//if not readonly proceed the normal elasticity
-                            cloud_manager.decreaseResources(managehosts); //decrease the last host added and the number its vms
+                            cloud_manager.decreaseResources(); //decrease the last host added and the number its vms
                         } else {//if readonly then proceed only local elasticity 
                             cloud_manager.decreaseReadOnlyResources();// remove a host in the monitoring pool without remove it in the cloud
                         }
@@ -388,7 +388,7 @@ public class AutoElastic implements Runnable {
                 remotedirtarget
         );            
         //connect with the cloud server
-        if (cloud_manager.serverConnect()){
+        if (cloud_manager.serverConnect(managehosts)){
             gera_log(objname,"Conexão realizada com o servidor: " + frontend);
             monitoring = true; //if connection ok, then we can monitor
         } else {

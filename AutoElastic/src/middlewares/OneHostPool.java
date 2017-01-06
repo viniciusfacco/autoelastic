@@ -20,14 +20,16 @@ import org.xml.sax.SAXException;
 /**
  *
  * @author vinicius.rodrigues
- * 27/10/2014 - viniciusfacco
- *            - Upated to save allocatedMEM, usedMEM and allMonitoringTimes
- * 04/08/2015 - viniciusfacco
- *            - Renamed the method aloca_host to allocatesHostNow
- *            - Created two new methods to allocate hosts: allocatesHost and enableLastHost
- * 03/01/2017 - viniciusfacco
- *            - added allocateReadOnlyHost and removeReadOnlyHost methods for Read Only mode
- *            - added getLastActiveHost method to return the last added host name 
+ *27/10/2014 - viniciusfacco
+ *           - Upated to save allocatedMEM, usedMEM and allMonitoringTimes
+ *04/08/2015 - viniciusfacco
+ *           - Renamed the method aloca_host to allocatesHostNow
+ *           - Created two new methods to allocate hosts: allocatesHost and enableLastHost
+ *03/01/2017 - viniciusfacco
+ *           - added allocateReadOnlyHost and removeReadOnlyHost methods for Read Only mode
+ *           - added getLastActiveResource method to return the last added host name 
+ *06/01/2017 - viniciusfacco
+ *           - added support for managing only hosts (not ready)          
  */
 public class OneHostPool {
     
@@ -35,22 +37,37 @@ public class OneHostPool {
     private static final String objname = "middlewares.OneHostPool"; //name of the class to be used in the logs
     private ArrayList<OneHost> hosts_ativos;
     private ArrayList<OneHost> hosts_inativos;
-    private float usedCPU;        //soma do uso de cpu de todos os hosts ativos
-    private float allocatedCPU;   //soma do total de cpu de todos os hosts ativos
-    private float usedMEM;        //soma do uso de memória de todos os hosts ativos
-    private float allocatedMEM;   //soma do total de memória de todos os hosts ativos
-    private String allMonitoringTimes; //string with all LAST_MON_TIME's of the used hosts in the pool
+    private ArrayList<OneVM> virtualMachines;
+    private float hostUsedCPU;        //soma do uso de cpu de todos os hosts ativos
+    private float hostAllCPU;         //soma do total de cpu de todos os hosts ativos
+    private float hostUsedMEM;        //soma do uso de memória de todos os hosts ativos
+    private float hostAllMEM;         //soma do total de memória de todos os hosts ativos
+    private String hostAllMonitoringTimes; //string with all LAST_MON_TIME's of the used hosts in the pool
+    private float vmUsedCPU;          //sum of all virtual machines used CPU 
+    private float vmAllCPU;           //sum of all virtual machines available CPU
+    private float vmUsedMEM;          //sum of all virtual machines used MEM 
+    private float vmAllMEM;           //sum of all virtual machines available MEM
+    private String vmAllMonitoringTimes; //string with all LAST_POOL's of the used hosts in the pool
     private JTextArea log;
     private final String IM;
     private final String VMM;
     private final String VNM;
     private final int CLUSTER_ID;
     private final HostPool hostpool;
-    
-    public OneHostPool(Client oc, String[] ips, JTextArea plog, String im, String vmm, String vnm, int cluster_id){
+    private final boolean managehosts;
+        
+    public OneHostPool(Client oc, 
+                        String[] ips, 
+                        JTextArea plog, 
+                        String im, 
+                        String vmm, 
+                        String vnm, 
+                        int cluster_id,
+                        boolean pmanagehost){
         hosts_inativos = new ArrayList();
         hosts_ativos = new ArrayList();
         log = plog;
+        managehosts = pmanagehost;
         IM = im;
         VMM = vmm;
         VNM = vnm;
@@ -72,31 +89,59 @@ public class OneHostPool {
     }
     
     public float get_used_CPU(){
-        return this.usedCPU;
+        if (managehosts){
+            return this.hostUsedCPU;
+        } else {
+            return this.vmUsedCPU;
+        }
     }
     
     public float get_allocated_CPU(){
-        return this.allocatedCPU;
+        if (managehosts){
+            return this.hostAllCPU;
+        } else {
+            return this.vmAllCPU;
+        }
     }
     
     public float get_used_MEM(){
-        return this.usedMEM;
+        if (managehosts){
+            return this.hostUsedMEM;
+        } else {
+            return this.vmUsedMEM;
+        }
     }
     
     public float get_allocated_MEM(){
-        return this.allocatedMEM;
+        if (managehosts){
+            return this.hostAllMEM;
+        } else {
+            return this.vmAllMEM;
+        }
     }
     
     public String get_last_monitor_times(){
-        return this.allMonitoringTimes;
+        if (managehosts){
+            return this.hostAllMonitoringTimes;
+        } else {
+            return this.vmAllMonitoringTimes;
+        }
     }
     
     public int get_total_ativos(){
-        return this.hosts_ativos.size();
+         if (managehosts){
+             return this.hosts_ativos.size();
+         } else {
+             return this.virtualMachines.size();
+         }
     }
     
-    public String getLastActiveHost(){
-        return hosts_ativos.get(hosts_ativos.size() - 1).get_name();
+    public String getLastActiveResource(){
+        if (managehosts){
+            return hosts_ativos.get(hosts_ativos.size() - 1).get_name();
+        } else {
+            return virtualMachines.get(virtualMachines.size() - 1).get_ip();
+        }
     }
     
     //return the host with specific id from the actives or inactives hosts
@@ -159,21 +204,21 @@ public class OneHostPool {
     
     //synchronize the counters of the pool
     public void sync_hosts(){
-        allocatedCPU = 0;
-        usedCPU = 0;
-        allocatedMEM = 0;
-        usedMEM = 0;
-        allMonitoringTimes = "";
+        hostAllCPU = 0;
+        hostUsedCPU = 0;
+        hostAllMEM = 0;
+        hostUsedMEM = 0;
+        hostAllMonitoringTimes = "";
         for (OneHost host_ativo : hosts_ativos) {
             //percorre todos os hosts ativos
             try {
                 host_ativo.sync_host(); //sincroniza cada host
-                usedCPU = usedCPU + host_ativo.get_used_cpu(); //pega uso da cpu
-                usedMEM = usedMEM + host_ativo.get_used_mem(); //get used memory
+                hostUsedCPU = hostUsedCPU + host_ativo.get_used_cpu(); //pega uso da cpu
+                hostUsedMEM = hostUsedMEM + host_ativo.get_used_mem(); //get used memory
                 //gera_log(objname, "Main|OneHostPool|sync_hosts: Uso de CPU pelo host " + host_ativo.get_id() + " : " + host_ativo.get_used_cpu());
-                allocatedCPU = allocatedCPU + host_ativo.get_max_cpu(); //pega total de cpu
-                allocatedMEM = allocatedMEM + host_ativo.get_max_mem(); //get total memory
-                allMonitoringTimes += ";" + host_ativo.get_last_mon_time(); //get the last_mon_time of the host and append in the attribute
+                hostAllCPU = hostAllCPU + host_ativo.get_max_cpu(); //pega total de cpu
+                hostAllMEM = hostAllMEM + host_ativo.get_max_mem(); //get total memory
+                hostAllMonitoringTimes += ";" + host_ativo.get_last_mon_time(); //get the last_mon_time of the host and append in the attribute
                 gera_log(objname,"sync_hosts: Host " + host_ativo.get_name() + " atualizado.");
             }catch (ParserConfigurationException | SAXException | IOException e) {
                 gera_log(objname,e.getMessage());
