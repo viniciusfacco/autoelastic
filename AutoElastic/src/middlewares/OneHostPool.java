@@ -167,11 +167,12 @@ public class OneHostPool {
                 allocatedCPU = allocatedCPU + host_ativo.get_max_cpu(); //pega total de cpu
                 allocatedMEM = allocatedMEM + host_ativo.get_max_mem(); //get total memory
                 allMonitoringTimes += ";" + host_ativo.get_last_mon_time(); //get the last_mon_time of the host and append in the attribute
+                gera_log(objname,"sync_hosts: Host " + host_ativo.get_name() + " atualizado.");
             }catch (ParserConfigurationException | SAXException | IOException e) {
                 gera_log(objname,e.getMessage());
             }
         }
-        gera_log(objname,"sync_hosts:" + hosts_ativos.size() + " host(s) updated.");
+        gera_log(objname,"sync_hosts:" + hosts_ativos.size() + " host(s) atualizados.");
     }
     
     //>verifica e cria os hosts no gerenciador que já estão rodando no opennebula
