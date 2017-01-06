@@ -60,7 +60,11 @@ public class OneHostPool {
             //hosts[i] = new OneHost(ips[i], "im_kvm", "vmm_kvm", "dummy", "tm_ssh");
             //hosts_inativos.add(new OneHost(ips[i], "kvm", "kvm", "dummy", 100, log));
             //hosts_inativos.add(new OneHost(ips[i], "im_kvm", "vmm_kvm", "dummy", "tm_ssh")); comentado por atualização de versão
-            hosts_inativos.add(new OneHost(ips[i], IM, VMM, VNM, CLUSTER_ID, log));
+            if (!ips[i].equalsIgnoreCase("")){
+                hosts_inativos.add(new OneHost(ips[i], IM, VMM, VNM, CLUSTER_ID, log));
+            } else {
+                gera_log(objname,"OneHostPool: Nome de host vazio identificado.");
+            }
             hosts = hosts + "IP: " + ips[i] + " | ";
         }
         gera_log(objname,"OneHostPool: Hosts recebidos " + hosts);
