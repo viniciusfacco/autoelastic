@@ -53,6 +53,8 @@ import thresholds.*;
  *            - added new parameters to set in the OneCommunicator through the OneManager
  * 03/01/2017 - viniciusfacco
  *            - implemented read only mode in the monitoring and innitialize methods
+ * 06/01/2017 - viniciusfacco
+ *            - implemented cooldown period after each elasticity operation
  */
 public class AutoElastic implements Runnable {
 
@@ -96,6 +98,7 @@ public class AutoElastic implements Runnable {
     private static String remotedirtarget;
     private static boolean readonly;
     private static boolean managehosts;
+    private static int cooldown;
     
     public AutoElastic(JPanel pgraphic1, JPanel pgraphic2){
         graphic1 = new Graphic(pgraphic1, "CPU Usage (Total)");
@@ -166,7 +169,8 @@ public class AutoElastic implements Runnable {
                        String premotedirtarget,
                        JTextArea plog,
                        boolean preadonly,
-                       boolean pmanagehosts) {
+                       boolean pmanagehosts,
+                       int pcooldown){
         
         frontend = pfrontend;
         usuario = pusuario;
@@ -201,6 +205,7 @@ public class AutoElastic implements Runnable {
         remotedirtarget = premotedirtarget;
         readonly = preadonly;
         managehosts = pmanagehosts;
+        cooldown = pcooldown;
         gera_log(objname,"Main: Construindo...");
     }
 
@@ -265,6 +270,7 @@ public class AutoElastic implements Runnable {
         boolean resourcesPending = false;           //flag to inform if the system are waiting for new resources
         int time;                                   //elapsed time
         int cont = 0;                               //counter of verifications
+        int cooldowncont = 0;                       //cooldown counter
         long timeLoop;                              //time to execute the entire loop        
         long time0 = System.currentTimeMillis();    //initial time
         byte recalculate_thresholds = 0;            //flag to sinalize that the thresholds must be recalculated
@@ -273,6 +279,7 @@ public class AutoElastic implements Runnable {
         while (monitoring){                 
             cont++;
             time = (int) ((timen - time0)/1000);
+            cooldowncont--;
             /*LOG*/gera_log(objname,"Main: " + cont + " Time: " + time + "s" + " | " + timen);
             /*LOG*/gera_log(objname,"Main: Sincronizando hosts...");
             cloud_manager.syncData(); //synchronize data of the cloud
@@ -294,8 +301,10 @@ public class AutoElastic implements Runnable {
                 recalculate_thresholds = 0;
             }
             /*LOG*/gera_log(objname,"Main: Realiza verificação de alguma violação dos thresholds...");
-            if ((evaluator.evaluate(thresholds.getUpperThreshold(), thresholds.getLowerThreshold())) && (!resourcesPending)){
-                //analyze the cloud situation and if we have some violation we need deal with this and if we are not waiting for new resource allocation we can evaluate the cloud
+            if ((evaluator.evaluate(thresholds.getUpperThreshold(), thresholds.getLowerThreshold())) && (!resourcesPending) && (cooldowncont < 0)){
+                //analyze the cloud situation and if we have some violation we need deal with this 
+                    //and if we are not waiting for new resource allocation we can evaluate the cloud
+                    //and if we are not in a cooldown period
                 /*LOG*/export_log(cont, time, System.currentTimeMillis(), cloud_manager.getTotalActiveHosts(), cloud_manager.getAllocatedCPU(), cloud_manager.getUsedCPU(), cloud_manager.getAllocatedMEM(), cloud_manager.getUsedMEM(), cloud_manager.getAllocatedCPU() * thresholds.getUpperThreshold(), cloud_manager.getAllocatedCPU() * thresholds.getLowerThreshold(), cloud_manager.getCPULoad(), evaluator.getDecisionLoad(), thresholds.getLowerThreshold(), thresholds.getUpperThreshold(), cloud_manager.getLastMonitorTimes());
                 if (evaluator.isHighAction()){//if we have a violation on the high threshold
                     /*LOG*/gera_log(objname,"Main: Avaliador detectou alta carga...Verificando se SLA está no limite...");
@@ -323,6 +332,7 @@ public class AutoElastic implements Runnable {
                         } else {//if readonly then proceed only local elasticity 
                             cloud_manager.decreaseReadOnlyResources();// remove a host in the monitoring pool without remove it in the cloud
                         }
+                        cooldowncont = cooldown;//set a cooldown period
                         recalculate_thresholds = 2;
                         load_before = evaluator.getDecisionLoad();
                     } else {
@@ -340,6 +350,7 @@ public class AutoElastic implements Runnable {
                 resourcesPending = cloud_manager.newResourcesPending(); //we must check before sleep if we have to deliver resources, thus these resources will only be considered at the next observation
                 if (!resourcesPending){//if we delivered the resources, in the next observations we must recalculate the thresholds
                     recalculate_thresholds = 1;
+                    cooldowncont = cooldown; //as we delivered resources, set the cooldown period
                 }
             }
             /*LOG*/gera_log(objname,"Main: Aguarda intervalo de tempo...");
