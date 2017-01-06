@@ -229,6 +229,7 @@
                   </Properties>
                   <Events>
                     <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="jtfFrontendFocusGained"/>
+                    <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="jtfFrontendFocusLost"/>
                   </Events>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel9">
@@ -245,6 +246,7 @@
                   </Properties>
                   <Events>
                     <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="jtfUsuarioFocusGained"/>
+                    <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="jtfUsuarioFocusLost"/>
                   </Events>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel10">
@@ -261,6 +263,7 @@
                   </Properties>
                   <Events>
                     <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="jtfSenhaFocusGained"/>
+                    <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="jtfSenhaFocusLost"/>
                   </Events>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel11">
@@ -460,6 +463,7 @@
                   </Properties>
                   <Events>
                     <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="jtfLogPathFocusGained"/>
+                    <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="jtfLogPathFocusLost"/>
                   </Events>
                 </Component>
                 <Container class="javax.swing.JPanel" name="jPanel1">
@@ -991,13 +995,13 @@
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="1" attributes="0">
-                              <Component id="jtRemoteDirTarget" alignment="0" max="32767" attributes="0"/>
-                              <Component id="jtRemoteDirSource" alignment="0" max="32767" attributes="0"/>
+                              <Component id="jtfRemoteDirTarget" alignment="0" max="32767" attributes="0"/>
+                              <Component id="jtfRemoteDirSource" alignment="0" max="32767" attributes="0"/>
                               <Group type="102" attributes="0">
                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                      <Component id="jtSSHPassword" pref="139" max="32767" attributes="0"/>
-                                      <Component id="jtSSHUser" max="32767" attributes="0"/>
-                                      <Component id="jtSSHServer" alignment="1" max="32767" attributes="0"/>
+                                      <Component id="jtfSSHPassword" pref="139" max="32767" attributes="0"/>
+                                      <Component id="jtfSSHUser" max="32767" attributes="0"/>
+                                      <Component id="jtfSSHServer" alignment="1" max="32767" attributes="0"/>
                                   </Group>
                                   <EmptySpace min="-2" pref="46" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="1" attributes="0">
@@ -1007,12 +1011,12 @@
                                   </Group>
                                   <EmptySpace min="-2" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="1" attributes="0">
-                                      <Component id="jtMsgCanRemove" alignment="0" max="32767" attributes="0"/>
-                                      <Component id="jtMsgWarningRemove" alignment="0" max="32767" attributes="0"/>
-                                      <Component id="jtMsgNewResources" max="32767" attributes="0"/>
+                                      <Component id="jtfMsgCanRemove" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="jtfMsgWarningRemove" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="jtfMsgNewResources" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
-                              <Component id="jtLocalDirTemp" max="32767" attributes="0"/>
+                              <Component id="jtfLocalDirTemp" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
                       </Group>
@@ -1024,37 +1028,37 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="jlSSHServer" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jtSSHServer" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jtMsgWarningRemove" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jtfSSHServer" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jtfMsgWarningRemove" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jlMsgWarningRemove" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jtSSHUser" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jtfSSHUser" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jlSSHUser" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jtMsgCanRemove" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jtfMsgCanRemove" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jlMsgCanRemove" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jtSSHPassword" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jtfSSHPassword" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jlSSHPassword" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jtMsgNewResources" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jtfMsgNewResources" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jlMsgNewResources" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jtRemoteDirSource" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jtfRemoteDirSource" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jlRemoteDirSource" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jtRemoteDirTarget" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jtfRemoteDirTarget" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jlRemoteDirTarget" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jtLocalDirTemp" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jtfLocalDirTemp" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jlRemoteDirTarget1" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="32767" attributes="0"/>
@@ -1063,47 +1067,50 @@
                 </DimensionLayout>
               </Layout>
               <SubComponents>
-                <Component class="javax.swing.JTextField" name="jtRemoteDirSource">
+                <Component class="javax.swing.JTextField" name="jtfRemoteDirSource">
                   <Properties>
                     <Property name="toolTipText" type="java.lang.String" value="Data Server directory where AutoElastic Manager reads message files. (must end with &quot;/&quot;)"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="jtfRemoteDirSourceFocusLost"/>
+                  </Events>
                 </Component>
-                <Component class="javax.swing.JTextField" name="jtRemoteDirTarget">
+                <Component class="javax.swing.JTextField" name="jtfRemoteDirTarget">
                   <Properties>
                     <Property name="toolTipText" type="java.lang.String" value="Data Server directory where AutoElastic Manager creates message files. (must end with &quot;/&quot;)"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="jtMsgWarningRemove">
+                <Component class="javax.swing.JTextField" name="jtfMsgWarningRemove">
                   <Properties>
                     <Property name="toolTipText" type="java.lang.String" value="Name of the file that AutoElastic Manager creates inside Message Target Dir to inform that he will remove resources."/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="jtMsgCanRemove">
+                <Component class="javax.swing.JTextField" name="jtfMsgCanRemove">
                   <Properties>
                     <Property name="toolTipText" type="java.lang.String" value="Name of the file that AutoElastic Manager reads from Message Source Dir to get permission to remove resources."/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="jtMsgNewResources">
+                <Component class="javax.swing.JTextField" name="jtfMsgNewResources">
                   <Properties>
                     <Property name="toolTipText" type="java.lang.String" value="Name of the file that AutoElastic Manager creates inside Message Target Dir to inform that new resouces are online."/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="jtLocalDirTemp">
+                <Component class="javax.swing.JTextField" name="jtfLocalDirTemp">
                   <Properties>
                     <Property name="toolTipText" type="java.lang.String" value="Local directory where AutoElastic Manager creates message files to send to Data Server. (must end with &quot;/&quot;)"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="jtSSHServer">
+                <Component class="javax.swing.JTextField" name="jtfSSHServer">
                   <Properties>
                     <Property name="toolTipText" type="java.lang.String" value="Server address to access a shared memory area (NFS)."/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="jtSSHUser">
+                <Component class="javax.swing.JTextField" name="jtfSSHUser">
                   <Properties>
                     <Property name="toolTipText" type="java.lang.String" value="User to access the (NFS) server."/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="jtSSHPassword">
+                <Component class="javax.swing.JTextField" name="jtfSSHPassword">
                   <Properties>
                     <Property name="toolTipText" type="java.lang.String" value="User password to access the (NFS) server."/>
                   </Properties>
@@ -1214,19 +1221,8 @@
                           <Font name="Segoe UI" size="12" style="0"/>
                         </Property>
                         <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                          <Table columnCount="1" rowCount="10">
-                            <Column editable="true" title="Hosts" type="java.lang.String">
-                              <Data value="10.210.1.88"/>
-                              <Data value="10.210.2.164"/>
-                              <Data value="10.210.5.57"/>
-                              <Data value="10.210.5.120"/>
-                              <Data value="10.210.6.232"/>
-                              <Data value="10.210.7.129"/>
-                              <Data value="10.210.7.130"/>
-                              <Data value="10.210.7.131"/>
-                              <Data value="10.210.7.230"/>
-                              <Data value="10.210.7.231"/>
-                            </Column>
+                          <Table columnCount="1" rowCount="0">
+                            <Column editable="true" title="Hosts" type="java.lang.String"/>
                           </Table>
                         </Property>
                         <Property name="toolTipText" type="java.lang.String" value="List of host addresses that AutoElastic Manager can use in the cloud."/>

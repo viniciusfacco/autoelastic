@@ -277,11 +277,11 @@ public class AutoElastic implements Runnable {
             /*LOG*/gera_log(objname,"Main: Sincronizando hosts...");
             cloud_manager.syncData(); //synchronize data of the cloud
             thresholds.calculateThresholds(cloud_manager.getCPULoad()); //recalculate the thresholds
-            /*GRA*/graphic1.update(cont, cloud_manager.getUsedCPU(), cloud_manager.getAllocatedCPU(), cloud_manager.getAllocatedCPU() * thresholds.getUpperThreshold(), cloud_manager.getAllocatedCPU() * thresholds.getLowerThreshold());
-            /*GRA*/graphic2.update(cont, cloud_manager.getCPULoad(), 1, thresholds.getUpperThreshold(), thresholds.getLowerThreshold());
             /*LOG*/gera_log(objname,"Main|monitora: Soma da carga de cpu de todos os hosts: " + cloud_manager.getUsedCPU() + " / Threshold maximo estabelecido: " + cloud_manager.getAllocatedCPU() * thresholds.getUpperThreshold() + " / Threshold minimo estabelecido: " + cloud_manager.getAllocatedCPU() * thresholds.getLowerThreshold());
             evaluator.computeLoad(cloud_manager.getCPULoad());            
             /*LOG*/gera_log(objname,"Main|monitora: Load calculado: " + evaluator.getDecisionLoad() + " / Upper threshold: " + thresholds.getUpperThreshold() + " / Lower threshold: " + thresholds.getLowerThreshold());
+            /*GRA*/graphic1.update(cont, cloud_manager.getUsedCPU(), cloud_manager.getAllocatedCPU(), cloud_manager.getAllocatedCPU() * thresholds.getUpperThreshold(), cloud_manager.getAllocatedCPU() * thresholds.getLowerThreshold(), cloud_manager.getAllocatedCPU() * evaluator.getDecisionLoad());
+            /*GRA*/graphic2.update(cont, cloud_manager.getCPULoad(), 1, thresholds.getUpperThreshold(), thresholds.getLowerThreshold(), evaluator.getDecisionLoad());            
             if (recalculate_thresholds > 0){//if this flag is greater than 0, then we must recalculate the thresholds (Live Thresholding)
                 load_after = evaluator.getDecisionLoad();//get the new load with the new resources
                 switch (recalculate_thresholds){

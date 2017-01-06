@@ -31,7 +31,7 @@ public class Graphic {
     
     public Graphic(JPanel painelline, String title){
         grafico = painelline;   
-        legendas = new String[] {"Used CPU","Available CPU","Upper Threshold","Lower Threshold"};
+        legendas = new String[] {"Used CPU","Total CPU","Up. Threshold","Lo. Threshold", "Load"};
         dataset = new DefaultCategoryDataset();
         //popula_dataset();
         criaGraficoLine(grafico, title);
@@ -105,11 +105,12 @@ public class Graphic {
         grafico.repaint();
     }
     
-    public void update(int contador, float cpu_utilizada, float cpu_disponivel, float threshold_max, float threshold_min){
+    public void update(int contador, float cpu_utilizada, float cpu_disponivel, float threshold_max, float threshold_min, float load){
         dataset.addValue(cpu_utilizada, legendas[0], Integer.toString(contador));
         dataset.addValue(cpu_disponivel, legendas[1], Integer.toString(contador));
         dataset.addValue(threshold_max, legendas[2], Integer.toString(contador));
         dataset.addValue(threshold_min, legendas[3], Integer.toString(contador)); 
+        dataset.addValue(load, legendas[4], Integer.toString(contador)); 
         //termometro.setUpperBound(cpu_disponivel);
         //valuedataset.setValue(cpu_utilizada);
         //termometro.setSubrange(ThermometerPlot.WARNING, threshold_min, threshold_max);

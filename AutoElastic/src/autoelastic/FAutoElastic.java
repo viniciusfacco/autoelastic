@@ -102,15 +102,15 @@ public class FAutoElastic extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jcbManageHosts = new javax.swing.JCheckBox();
         jpCommunication = new javax.swing.JPanel();
-        jtRemoteDirSource = new javax.swing.JTextField();
-        jtRemoteDirTarget = new javax.swing.JTextField();
-        jtMsgWarningRemove = new javax.swing.JTextField();
-        jtMsgCanRemove = new javax.swing.JTextField();
-        jtMsgNewResources = new javax.swing.JTextField();
-        jtLocalDirTemp = new javax.swing.JTextField();
-        jtSSHServer = new javax.swing.JTextField();
-        jtSSHUser = new javax.swing.JTextField();
-        jtSSHPassword = new javax.swing.JTextField();
+        jtfRemoteDirSource = new javax.swing.JTextField();
+        jtfRemoteDirTarget = new javax.swing.JTextField();
+        jtfMsgWarningRemove = new javax.swing.JTextField();
+        jtfMsgCanRemove = new javax.swing.JTextField();
+        jtfMsgNewResources = new javax.swing.JTextField();
+        jtfLocalDirTemp = new javax.swing.JTextField();
+        jtfSSHServer = new javax.swing.JTextField();
+        jtfSSHUser = new javax.swing.JTextField();
+        jtfSSHPassword = new javax.swing.JTextField();
         jlSSHServer = new javax.swing.JLabel();
         jlSSHUser = new javax.swing.JLabel();
         jlSSHPassword = new javax.swing.JLabel();
@@ -164,6 +164,9 @@ public class FAutoElastic extends javax.swing.JFrame {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 jtfFrontendFocusGained(evt);
             }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jtfFrontendFocusLost(evt);
+            }
         });
 
         jLabel9.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
@@ -174,6 +177,9 @@ public class FAutoElastic extends javax.swing.JFrame {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 jtfUsuarioFocusGained(evt);
             }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jtfUsuarioFocusLost(evt);
+            }
         });
 
         jLabel10.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
@@ -183,6 +189,9 @@ public class FAutoElastic extends javax.swing.JFrame {
         jtfSenha.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 jtfSenhaFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jtfSenhaFocusLost(evt);
             }
         });
 
@@ -347,6 +356,9 @@ public class FAutoElastic extends javax.swing.JFrame {
         jtfLogPath.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 jtfLogPathFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jtfLogPathFocusLost(evt);
             }
         });
 
@@ -698,23 +710,28 @@ public class FAutoElastic extends javax.swing.JFrame {
 
         jpCommunication.setBackground(new java.awt.Color(255, 255, 255));
 
-        jtRemoteDirSource.setToolTipText("Data Server directory where AutoElastic Manager reads message files. (must end with \"/\")");
+        jtfRemoteDirSource.setToolTipText("Data Server directory where AutoElastic Manager reads message files. (must end with \"/\")");
+        jtfRemoteDirSource.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jtfRemoteDirSourceFocusLost(evt);
+            }
+        });
 
-        jtRemoteDirTarget.setToolTipText("Data Server directory where AutoElastic Manager creates message files. (must end with \"/\")");
+        jtfRemoteDirTarget.setToolTipText("Data Server directory where AutoElastic Manager creates message files. (must end with \"/\")");
 
-        jtMsgWarningRemove.setToolTipText("Name of the file that AutoElastic Manager creates inside Message Target Dir to inform that he will remove resources.");
+        jtfMsgWarningRemove.setToolTipText("Name of the file that AutoElastic Manager creates inside Message Target Dir to inform that he will remove resources.");
 
-        jtMsgCanRemove.setToolTipText("Name of the file that AutoElastic Manager reads from Message Source Dir to get permission to remove resources.");
+        jtfMsgCanRemove.setToolTipText("Name of the file that AutoElastic Manager reads from Message Source Dir to get permission to remove resources.");
 
-        jtMsgNewResources.setToolTipText("Name of the file that AutoElastic Manager creates inside Message Target Dir to inform that new resouces are online.");
+        jtfMsgNewResources.setToolTipText("Name of the file that AutoElastic Manager creates inside Message Target Dir to inform that new resouces are online.");
 
-        jtLocalDirTemp.setToolTipText("Local directory where AutoElastic Manager creates message files to send to Data Server. (must end with \"/\")");
+        jtfLocalDirTemp.setToolTipText("Local directory where AutoElastic Manager creates message files to send to Data Server. (must end with \"/\")");
 
-        jtSSHServer.setToolTipText("Server address to access a shared memory area (NFS).");
+        jtfSSHServer.setToolTipText("Server address to access a shared memory area (NFS).");
 
-        jtSSHUser.setToolTipText("User to access the (NFS) server.");
+        jtfSSHUser.setToolTipText("User to access the (NFS) server.");
 
-        jtSSHPassword.setToolTipText("User password to access the (NFS) server.");
+        jtfSSHPassword.setToolTipText("User password to access the (NFS) server.");
 
         jlSSHServer.setText("Data Server");
 
@@ -751,13 +768,13 @@ public class FAutoElastic extends javax.swing.JFrame {
                     .addComponent(jlRemoteDirSource))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jpCommunicationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jtRemoteDirTarget, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jtRemoteDirSource, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jtfRemoteDirTarget, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jtfRemoteDirSource, javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jpCommunicationLayout.createSequentialGroup()
                         .addGroup(jpCommunicationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jtSSHPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE)
-                            .addComponent(jtSSHUser)
-                            .addComponent(jtSSHServer, javax.swing.GroupLayout.Alignment.TRAILING))
+                            .addComponent(jtfSSHPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE)
+                            .addComponent(jtfSSHUser)
+                            .addComponent(jtfSSHServer, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addGap(46, 46, 46)
                         .addGroup(jpCommunicationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jlMsgWarningRemove)
@@ -765,10 +782,10 @@ public class FAutoElastic extends javax.swing.JFrame {
                             .addComponent(jlMsgNewResources))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jpCommunicationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jtMsgCanRemove, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jtMsgWarningRemove, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jtMsgNewResources)))
-                    .addComponent(jtLocalDirTemp))
+                            .addComponent(jtfMsgCanRemove, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jtfMsgWarningRemove, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jtfMsgNewResources)))
+                    .addComponent(jtfLocalDirTemp))
                 .addGap(22, 22, 22))
         );
         jpCommunicationLayout.setVerticalGroup(
@@ -777,32 +794,32 @@ public class FAutoElastic extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jpCommunicationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jlSSHServer)
-                    .addComponent(jtSSHServer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jtMsgWarningRemove, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jtfSSHServer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jtfMsgWarningRemove, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jlMsgWarningRemove))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jpCommunicationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jtSSHUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jtfSSHUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jlSSHUser)
-                    .addComponent(jtMsgCanRemove, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jtfMsgCanRemove, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jlMsgCanRemove))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jpCommunicationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jtSSHPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jtfSSHPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jlSSHPassword)
-                    .addComponent(jtMsgNewResources, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jtfMsgNewResources, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jlMsgNewResources))
                 .addGap(18, 18, 18)
                 .addGroup(jpCommunicationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jtRemoteDirSource, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jtfRemoteDirSource, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jlRemoteDirSource))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jpCommunicationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jtRemoteDirTarget, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jtfRemoteDirTarget, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jlRemoteDirTarget))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jpCommunicationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jtLocalDirTemp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jtfLocalDirTemp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jlRemoteDirTarget1))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -817,16 +834,7 @@ public class FAutoElastic extends javax.swing.JFrame {
         jtHosts.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         jtHosts.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"10.210.1.88"},
-                {"10.210.2.164"},
-                {"10.210.5.57"},
-                {"10.210.5.120"},
-                {"10.210.6.232"},
-                {"10.210.7.129"},
-                {"10.210.7.130"},
-                {"10.210.7.131"},
-                {"10.210.7.230"},
-                {"10.210.7.231"}
+
             },
             new String [] {
                 "Hosts"
@@ -1585,6 +1593,26 @@ public class FAutoElastic extends javax.swing.JFrame {
         jbBuscarSLA.setBackground(new Color(41, 194, 255));
     }//GEN-LAST:event_jbBuscarSLAMouseEntered
 
+    private void jtfFrontendFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtfFrontendFocusLost
+        this.jtfSSHServer.setText(this.jtfFrontend.getText());
+    }//GEN-LAST:event_jtfFrontendFocusLost
+
+    private void jtfSenhaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtfSenhaFocusLost
+        this.jtfSSHPassword.setText(this.jtfSenha.getText());
+    }//GEN-LAST:event_jtfSenhaFocusLost
+
+    private void jtfRemoteDirSourceFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtfRemoteDirSourceFocusLost
+        this.jtfRemoteDirTarget.setText(this.jtfRemoteDirSource.getText());
+    }//GEN-LAST:event_jtfRemoteDirSourceFocusLost
+
+    private void jtfUsuarioFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtfUsuarioFocusLost
+        this.jtfSSHUser.setText(this.jtfUsuario.getText());
+    }//GEN-LAST:event_jtfUsuarioFocusLost
+
+    private void jtfLogPathFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtfLogPathFocusLost
+        this.jtfLocalDirTemp.setText(this.jtfLogPath.getText());
+    }//GEN-LAST:event_jtfLogPathFocusLost
+
     /**
      * @param args the command line arguments
      */
@@ -1691,23 +1719,23 @@ public class FAutoElastic extends javax.swing.JFrame {
     private javax.swing.JRadioButton jrbGeneric;
     private javax.swing.JRadioButton jrbLive;
     private javax.swing.JTable jtHosts;
-    private javax.swing.JTextField jtLocalDirTemp;
-    private javax.swing.JTextField jtMsgCanRemove;
-    private javax.swing.JTextField jtMsgNewResources;
-    private javax.swing.JTextField jtMsgWarningRemove;
-    private javax.swing.JTextField jtRemoteDirSource;
-    private javax.swing.JTextField jtRemoteDirTarget;
-    private javax.swing.JTextField jtSSHPassword;
-    private javax.swing.JTextField jtSSHServer;
-    private javax.swing.JTextField jtSSHUser;
     private javax.swing.JTextArea jtaLog;
     private javax.swing.JTextField jtfClusterId;
     private javax.swing.JTextField jtfExecutionLogName;
     private javax.swing.JTextField jtfFrontend;
     private javax.swing.JTextField jtfIM;
+    private javax.swing.JTextField jtfLocalDirTemp;
     private javax.swing.JTextField jtfLogPath;
     private javax.swing.JTextField jtfMonitoringInterval;
     private javax.swing.JTextField jtfMonitoringWindow;
+    private javax.swing.JTextField jtfMsgCanRemove;
+    private javax.swing.JTextField jtfMsgNewResources;
+    private javax.swing.JTextField jtfMsgWarningRemove;
+    private javax.swing.JTextField jtfRemoteDirSource;
+    private javax.swing.JTextField jtfRemoteDirTarget;
+    private javax.swing.JTextField jtfSSHPassword;
+    private javax.swing.JTextField jtfSSHServer;
+    private javax.swing.JTextField jtfSSHUser;
     private javax.swing.JTextField jtfSenha;
     private javax.swing.JTextField jtfSla;
     private javax.swing.JTextField jtfTemplateid;
@@ -1750,11 +1778,11 @@ public class FAutoElastic extends javax.swing.JFrame {
         this.jtfVNM.setText("dummy");
         this.jtfClusterId.setText("0");
         this.jtaLog.setText("");
-        this.jtMsgWarningRemove.setText("poucacarga.txt");
-        this.jtMsgCanRemove.setText("liberarecurso.txt");
-        this.jtMsgNewResources.setText("novorecurso.txt");
-        this.jtRemoteDirSource.setText("/var/lib/one/app/msg/");
-        this.jtRemoteDirTarget.setText("/var/lib/one/app/msg/");
+        this.jtfMsgWarningRemove.setText("poucacarga.txt");
+        this.jtfMsgCanRemove.setText("liberarecurso.txt");
+        this.jtfMsgNewResources.setText("novorecurso.txt");
+        this.jtfRemoteDirSource.setText("/var/lib/one/app/msg/");
+        this.jtfRemoteDirTarget.setText("/var/lib/one/app/msg/");
         this.jcbManageHosts.setSelected(true);
     }
 
@@ -1859,8 +1887,7 @@ public class FAutoElastic extends javax.swing.JFrame {
             }
 
             //seta parametros do gerenciador
-            autoelastic_manager.set_parameters(
-                    this.jtfFrontend.getText(),
+            autoelastic_manager.set_parameters(this.jtfFrontend.getText(),
                     this.jtfUsuario.getText(),
                     this.jtfSenha.getText(),
                     this.jtfSla.getText(),
@@ -1879,15 +1906,15 @@ public class FAutoElastic extends javax.swing.JFrame {
                     this.jtfVMM.getText(),
                     this.jtfVNM.getText(),
                     Integer.parseInt(this.jtfClusterId.getText()),
-                    this.jtSSHServer.getText(),
-                    this.jtSSHUser.getText(),
-                    this.jtSSHPassword.getText(),
-                    this.jtMsgWarningRemove.getText(),
-                    this.jtMsgCanRemove.getText(),
-                    this.jtMsgNewResources.getText(),
-                    this.jtLocalDirTemp.getText(),
-                    this.jtRemoteDirSource.getText(),
-                    this.jtRemoteDirTarget.getText(),
+                    this.jtfSSHServer.getText(),
+                    this.jtfSSHUser.getText(),
+                    this.jtfSSHPassword.getText(),
+                    this.jtfMsgWarningRemove.getText(),
+                    this.jtfMsgCanRemove.getText(),
+                    this.jtfMsgNewResources.getText(),
+                    this.jtfLocalDirTemp.getText(),
+                    this.jtfRemoteDirSource.getText(),
+                    this.jtfRemoteDirTarget.getText(),
                     this.jtaLog,
                     this.jcbReadOnly.isSelected(),
                     this.jcbManageHosts.isSelected()
