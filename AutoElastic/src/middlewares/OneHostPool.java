@@ -55,12 +55,15 @@ public class OneHostPool {
         VMM = vmm;
         VNM = vnm;
         CLUSTER_ID = cluster_id;
+        String hosts = "";
         for (int i = 0; i < ips.length; i++){
             //hosts[i] = new OneHost(ips[i], "im_kvm", "vmm_kvm", "dummy", "tm_ssh");
             //hosts_inativos.add(new OneHost(ips[i], "kvm", "kvm", "dummy", 100, log));
             //hosts_inativos.add(new OneHost(ips[i], "im_kvm", "vmm_kvm", "dummy", "tm_ssh")); comentado por atualização de versão
             hosts_inativos.add(new OneHost(ips[i], IM, VMM, VNM, CLUSTER_ID, log));
+            hosts = hosts + "IP: " + ips[i] + " | ";
         }
+        gera_log(objname,"OneHostPool: Hosts recebidos " + hosts);
         this.hostpool = new HostPool(oc);
     }
     
