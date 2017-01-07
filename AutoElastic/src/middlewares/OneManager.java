@@ -269,7 +269,9 @@ public class OneManager {
     
     //remove host from the monitoring pool leaving only "lowThreshold" hosts
     public void organizeReadOnlyMode(int lowThreshold) {
-        for (int i = lowThreshold; i <= ohpool.get_total_ativos(); i++){
+        int hosts = ohpool.get_total_ativos();
+        for (int i = lowThreshold; i < hosts; i++){
+            gera_log(objname,"organizeReadOnlyMode: removendo host " + i + " de " + hosts + ".");
             ohpool.removeReadOnlyHost();
         }
     }
