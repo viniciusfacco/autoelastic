@@ -309,7 +309,7 @@ public class AutoElastic implements Runnable {
                 if (evaluator.isHighAction()){//if we have a violation on the high threshold
                     /*LOG*/gera_log(objname,"Main: Avaliador detectou alta carga...Verificando se SLA está no limite...");
                     evaluator.resetFlags(); //after deal with the problem/violation, re-initialize the parameters of evaluation
-                    if(sla.canIncrease(cloud_manager.getTotalActiveHosts())){ //verify the SLA to know if we can increase resources
+                    if(sla.canIncrease(cloud_manager.getTotalActiveHosts(), managehosts)){ //verify the SLA to know if we can increase resources
                         /*LOG*/gera_log(objname,"Main: SLA não atingido...novo recurso pode ser alocado...");
                         /*LOG*/gera_log(objname,"Main: Alocando recursos...");
                         if (!readonly){//if not readonly proceed the normal elasticity
@@ -324,7 +324,7 @@ public class AutoElastic implements Runnable {
                 } else if (evaluator.isLowAction()){ //if we have a violation on the low threshold
                     /*LOG*/gera_log(objname,"Main: Avaliador detectou baixa carga...Verificando se SLA está no limite...");
                     evaluator.resetFlags(); //after deal with the problem/violation, re-initialize the parameters of evaluation
-                    if(sla.canDecrease(cloud_manager.getTotalActiveHosts())){ //verify the SLA to know if we can decrease resources
+                    if(sla.canDecrease(cloud_manager.getTotalActiveHosts(), managehosts)){ //verify the SLA to know if we can decrease resources
                         /*LOG*/gera_log(objname,"Main: SLA não atingido...novo recurso pode ser liberado...");
                         /*LOG*/gera_log(objname,"Main: Liberando recursos...");
                         if (!readonly){//if not readonly proceed the normal elasticity
@@ -426,7 +426,7 @@ public class AutoElastic implements Runnable {
         }
         //now, if we are in the readonly mode, we will remove hosts and leave only the minimum hosts
         if (readonly){
-            cloud_manager.organizeReadOnlyMode(sla.getLowThreshold());
+            cloud_manager.organizeReadOnlyMode(sla.getLowThreshold(managehosts));
         }
         export_log(0,0,0,0,0,0,0,0,0,0,0,0,0,0,"Contador,Tempo,Tempo Milisegundos,Total Hosts Ativos,Total CPU Alocada,Total CPU Usada,Total RAM Alocada,Total RAM Usada,CPU Limite Superior,CPU Limite Inferior,% Carga de CPU,Load Calculado,Threshold Inferior,Threshold Superior,Tempos de Monitoramento");
     }
@@ -661,7 +661,7 @@ public class AutoElastic implements Runnable {
                 if (evaluator.isHighAction()){//if we have a violation on the high threshold
                     ///*LOG*/gera_log(objname,"Main: Avaliador detectou alta carga...Verificando se SLA está no limite...");
                     evaluator.resetFlags(); //after deal with the problem/violation, re-initialize the parameters of evaluation
-                    if(sla.canIncrease(cloud_manager.getTotalActiveHosts())){ //verify the SLA to know if we can increase resources
+                    if(sla.canIncrease(cloud_manager.getTotalActiveHosts(), managehosts)){ //verify the SLA to know if we can increase resources
                         ///*LOG*/gera_log(objname,"Main: SLA não atingido...novo recurso pode ser alocado...");
                         ///*LOG*/gera_log(objname,"Main: Alocando recursos...");
                         times = times + ";" + System.currentTimeMillis(); //T7-AntesDeAlocar
@@ -675,7 +675,7 @@ public class AutoElastic implements Runnable {
                 } else if (evaluator.isLowAction()){ //if we have a violation on the low threshold
                     ///*LOG*/gera_log(objname,"Main: Avaliador detectou baixa carga...Verificando se SLA está no limite...");
                     evaluator.resetFlags(); //after deal with the problem/violation, re-initialize the parameters of evaluation                    
-                    if(sla.canDecrease(cloud_manager.getTotalActiveHosts())){ //verify the SLA to know if we can decrease resources
+                    if(sla.canDecrease(cloud_manager.getTotalActiveHosts(), managehosts)){ //verify the SLA to know if we can decrease resources
                         ///*LOG*/gera_log(objname,"Main: SLA não atingido...novo recurso pode ser liberado...");
                         ///*LOG*/gera_log(objname,"Main: Liberando recursos...");
                         times = times + ";;;" + System.currentTimeMillis(); //T7 e T8 vazios + T9-AntesDeDesalocar
