@@ -31,6 +31,10 @@ import org.xml.sax.SAXException;
  *            - added new parameters: psshuser, psshpassword, psshserver, pmsgwarningremove, pmsgcanremove, pmsgnewresources, plocaldirtemp, premotedirsource and premotedirtarget
  * 03/01/2017 - viniciusfacco
  *            - added organizeReadOnlyMode, increaseReadOnlyResources and decreaseReadOnlyResources methods for Read Only mode
+ * 18/01/2017 - @viniciusfacco
+ *            - added funcionality to monitor only virtual machines if necessary
+ *            - added fkag managehosts
+ *            - fixed bug in newResourcesPending to enable resources in the monitoring after they get online
  */
 public class OneManager {
     
@@ -49,9 +53,11 @@ public class OneManager {
     private final int cluster_id;
     private final JTextArea log;
     private final int vms_per_operation;
+    private final int hosts_per_operation = 1;
     private final int vmtemplateid;
     private boolean waiting_vms;
-    private final OneVM[] last_vms;
+    private ArrayList<OneVM> new_vms;
+    private final boolean managehosts;
     
     public OneManager(  String puser, 
                         String ppassword, 
@@ -72,12 +78,14 @@ public class OneManager {
                         String pmsgnewresources, 
                         String plocaldirtemp, 
                         String premotedirsource, 
-                        String premotedirtarget
+                        String premotedirtarget,
+                        boolean pmanagehosts
     ){
         user = puser;
         password = ppassword;
         server_address = pserver_address;
         iphosts = hosts;
+        managehosts = pmanagehosts;
         image_manager = pim;
         virtual_machine_manager = pvmm;
         virtual_network_manager = pvnm;
@@ -88,28 +96,33 @@ public class OneManager {
         waiting_vms = false;
         messenger = new OneCommunicator(psshserver, psshuser, psshpassword, plog);
         messenger.setParameters(pmsgwarningremove, pmsgcanremove, pmsgnewresources, plocaldirtemp, premotedirsource, premotedirtarget);
-        last_vms = new OneVM[vms_per_operation]; //array que vai receber as novas vms criadas
     }
     
-    public boolean serverConnect(boolean managehosts){
+    public boolean serverConnect(){
         try {
             //> realiza conexão com o front-end
             oneClient = new Client(user + ":" + password, "http://" + server_address + ":" + server_port + "/RPC2");
             if (oneClient.get_version().getMessage() != null){ //try to get the version. if null is because we do not have connection with the server
                 gera_log(objname,"Versão do OpenNebula: " + oneClient.get_version().getMessage());
                 //>criação dos hosts que podem ser utilizados
-                ohpool = new OneHostPool(oneClient, iphosts, log, image_manager, virtual_machine_manager, virtual_network_manager, cluster_id, managehosts);
+                ohpool = new OneHostPool(
+                        oneClient, 
+                        iphosts, 
+                        log, 
+                        image_manager, 
+                        virtual_machine_manager, 
+                        virtual_network_manager, 
+                        cluster_id, 
+                        managehosts);
                 //>verifica e cria os hosts no gerenciador que já estão rodando no opennebula
-                ohpool.atualiza_hosts(oneClient);
+                //ohpool.atualiza_hosts(oneClient);
                 return true;            
             } else {
                 return false;
             }
         } catch (ClientConfigurationException ex) {
             Logger.getLogger(OneManager.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SAXException ex) {
-            Logger.getLogger(OneManager.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
+        } catch (SAXException | IOException ex) {
             Logger.getLogger(OneManager.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
             Logger.getLogger(OneManager.class.getName()).log(Level.SEVERE, null, ex);
@@ -118,7 +131,7 @@ public class OneManager {
     }
     
     public void syncData(){
-        ohpool.sync_hosts(); //sincroniza dados dos hosts
+        ohpool.syncResources(); //sincroniza dados dos hosts
     }
     
     /**
@@ -175,28 +188,43 @@ public class OneManager {
      * @throws Exception
      */
     public boolean increaseResources() throws InterruptedException, Exception{
-        //int hostid = ohpool.allocatesHostNow(oneClient); //allocates the host and it will be active immediatly
-        int hostid = ohpool.allocateHost(oneClient);      //allocates the host and it will be active after resorces be online
-        if (hostid > 0){
-            for (int i = 0; i < vms_per_operation; i++) {
-                last_vms[i] = new OneVM(vmtemplateid);
-                increaseVM(last_vms[i], hostid); //aloca vm nesse host
-                //gera_log(objname,"Main: Nova VM alocada: " + last_vms[i].get_id());
-                ohpool.get_onehost(hostid).add_vm(last_vms[i]);
-                System.out.println("Alocando vm...");
-                //Thread.sleep(10000); //why?
+        waiting_vms = false;
+        new_vms = new ArrayList();
+        if (managehosts){
+            int hostid;
+            for (int i = 0; i < hosts_per_operation; i++){
+                //hostid = ohpool.allocatesHostNow(oneClient); //allocates the host and it will be active immediatly
+                hostid = ohpool.allocateResource(oneClient);      //allocates the host and it will be active after resorces be online
+                if (hostid > 0){
+                    for (int j = 0; j < vms_per_operation; j++) {
+                        new_vms.add(0,new OneVM(vmtemplateid));
+                        new_vms.get(0).deploy(oneClient, hostid, log);//aloca vm nesse host
+                        //gera_log(objname,"Main: Nova VM alocada: " + last_vms[i].getID());
+                        ohpool.get_onehost(hostid).add_vm(new_vms.get(0));
+                        waiting_vms = true;
+                        System.out.println("Allocating vm " + j);
+                        //Thread.sleep(10000); //why?
+                    }
+                } else {
+                    System.out.println("Problem to allocate host " + i);
+                }
             }
-            waiting_vms = true;
-            return true;
+        } else {
+            for (int i = 0; i < vms_per_operation; i++){
+                new_vms.add(0,new OneVM(vmtemplateid));
+                new_vms.get(0).instantiate(oneClient, log);
+                waiting_vms = true;
+                System.out.println("Instantiating vm " + i);
+            }
         }
-        return false;
+        return waiting_vms;
     }
         
     //método que remove um host e suas máquinas virtuais no ambiente
     public boolean decreaseResources() throws InterruptedException, IOException{
-        if (messenger.notifyDecrease(ohpool.getLastActiveResource())){
+        if (messenger.notifyDecrease(ohpool.getLastActiveResources(vms_per_operation, hosts_per_operation))){
             while(!messenger.canDecrease()){}
-            return ohpool.remove_host(oneClient);//remove último host criado e suas vms também
+            return ohpool.removeResource(oneClient, vms_per_operation, hosts_per_operation);//remove último host criado e suas vms também
         }
         return false;
     }
@@ -207,27 +235,34 @@ public class OneManager {
      * @throws InterruptedException
      */
     public boolean decreaseResourcesHard() throws InterruptedException{
-        return ohpool.remove_host(oneClient);//remove último host criado e suas vms também
-    }
-    
-    //método que aloca máquina virtual em host específico
-    private int increaseVM(OneVM ov, int hid) {
-        return ov.deploy(oneClient, hid, log);
+        return ohpool.removeResource(oneClient, vms_per_operation, hosts_per_operation);//remove último host criado e suas vms também
     }
     
     public boolean newResourcesPending() throws ParserConfigurationException, SAXException, IOException, InterruptedException{        
         String message = "";
         if (waiting_vms){
-            for (int i = 0; i < this.vms_per_operation; i++){
-                last_vms[i].sync_vm();
-                if (!ping(last_vms[i].get_ip())){
+            for (int i = 0; i < new_vms.size(); i++){
+                new_vms.get(i).syncInfo();
+                if (!ping(new_vms.get(i).getIP())){
                     return waiting_vms;
                 }
-                message = message + last_vms[i].get_ip() + "\n";
+                message = message + new_vms.get(i).getIP() + "\n";
             }
             waiting_vms = false;
             //gera_log(objname,"Notifica criação de novos recursos...");
             messenger.notifyNewResources(message);
+            
+            //now lets activate this new resources in the monitoring
+            if(managehosts){ //if we are monitoring hosts then lets enable the added hosts
+                for (int i = 0; i < hosts_per_operation; i++){
+                    ohpool.enableLastHost();
+                }
+            } else { //if we are monitoring only virtual machines lets add them to monitoring
+                for (int i = 0; i < new_vms.size(); i++){
+                    ohpool.addVM(new_vms.get(i));
+                }
+            }
+            new_vms = null;
         }
         return waiting_vms;
     }
@@ -279,13 +314,13 @@ public class OneManager {
     public boolean increaseReadOnlyResources(){
         ohpool.allocateReadOnlyHost();
         try {
-            messenger.notifyNewResources(ohpool.getLastActiveResource());
+            messenger.notifyNewResources(ohpool.getLastActiveResources(vms_per_operation, hosts_per_operation));
         } catch (ParserConfigurationException | SAXException | IOException | InterruptedException ex) {Logger.getLogger(OneManager.class.getName()).log(Level.SEVERE, null, ex);}
         return true;
     }
     
     public boolean decreaseReadOnlyResources() throws InterruptedException, IOException{
-        if (messenger.notifyDecrease(ohpool.getLastActiveResource())){
+        if (messenger.notifyDecrease(ohpool.getLastActiveResources(vms_per_operation, hosts_per_operation))){
             while(!messenger.canDecrease()){}
             return ohpool.removeReadOnlyHost();
         }
@@ -319,7 +354,7 @@ public class OneManager {
                 for (int j = 0; j < vmsperhost; j++){ //create vmsperhost new virtual machines
                     vmid = instantiate_vm(hostid, idtemplatevm); //create a new virtual machine in "hostid"
                     //gera_log(objname,"Main: Nova VM alocada: " + vmid); //log
-                    ipvms[countvm] = ohpool.get_onehost(hostid).get_vm(0).get_ip(); //store the IP of this virtual machine
+                    ipvms[countvm] = ohpool.get_onehost(hostid).get_vm(0).getIP(); //store the IP of this virtual machine
                     countvm++;
                 }
             } else {//problem in host allocation
@@ -352,16 +387,16 @@ public class OneManager {
     /*
     public boolean newResourcesPending() throws ParserConfigurationException, SAXException, IOException, InterruptedException{        
         if (waiting_vms){
-            last_vms[0].sync_vm();
-            last_vms[1].sync_vm();
-            if (last_vms[0].get_ip().equalsIgnoreCase("") || last_vms[1].get_ip().equalsIgnoreCase("")) {
+            last_vms[0].syncInfo();
+            last_vms[1].syncInfo();
+            if (last_vms[0].getIP().equalsIgnoreCase("") || last_vms[1].getIP().equalsIgnoreCase("")) {
                 return false;
             } else {
-                if (ping(last_vms[0].get_ip()) && ping(last_vms[1].get_ip())){
+                if (ping(last_vms[0].getIP()) && ping(last_vms[1].getIP())){
                     ohpool.enableLastHost();
                     waiting_vms = false;
                     //gera_log(objname,"Notifica criação de novos recursos...");
-                    messenger.notifyNewResources(last_vms[0].get_ip() + "\n" + last_vms[1].get_ip());
+                    messenger.notifyNewResources(last_vms[0].getIP() + "\n" + last_vms[1].getIP());
                 }
             }
         }

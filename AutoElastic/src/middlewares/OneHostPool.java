@@ -30,13 +30,17 @@ import org.xml.sax.SAXException;
  *           - added getLastActiveResource method to return the last added host name 
  *06/01/2017 - viniciusfacco
  *           - added support for managing only hosts (not ready)          
+ *18/01/2017 - @viniciusfacco
+ *           - added list of virtual machines when the monitoring will consider only virtual machines
+ *           - changed the logic of all class to enable monitoring of only virtual machines if necessary
  */
 public class OneHostPool {
     
     //private OneHost[] hosts; //hosts que serão utilizados no ambiente    
-    private static final String objname = "middlewares.OneHostPool"; //name of the class to be used in the logs
+    private final String objname = "middlewares.OneHostPool"; //name of the class to be used in the logs
     private ArrayList<OneHost> hosts_ativos;
     private ArrayList<OneHost> hosts_inativos;
+    private ArrayList<OneHost> pending_hosts;
     private ArrayList<OneVM> virtualMachines;
     private float hostUsedCPU;        //soma do uso de cpu de todos os hosts ativos
     private float hostAllCPU;         //soma do total de cpu de todos os hosts ativos
@@ -63,9 +67,11 @@ public class OneHostPool {
                         String vmm, 
                         String vnm, 
                         int cluster_id,
-                        boolean pmanagehost){
+                        boolean pmanagehost) throws SAXException, IOException, Exception{
         hosts_inativos = new ArrayList();
         hosts_ativos = new ArrayList();
+        pending_hosts = new ArrayList();
+        virtualMachines = new ArrayList();
         log = plog;
         managehosts = pmanagehost;
         IM = im;
@@ -78,14 +84,15 @@ public class OneHostPool {
             //hosts_inativos.add(new OneHost(ips[i], "kvm", "kvm", "dummy", 100, log));
             //hosts_inativos.add(new OneHost(ips[i], "im_kvm", "vmm_kvm", "dummy", "tm_ssh")); comentado por atualização de versão
             if (!ips[i].equalsIgnoreCase("")){
-                hosts_inativos.add(new OneHost(ips[i], IM, VMM, VNM, CLUSTER_ID, log));
+                hosts_inativos.add(0, new OneHost(ips[i], IM, VMM, VNM, CLUSTER_ID, log));
             } else {
-                gera_log(objname,"OneHostPool: Nome de host vazio identificado.");
+                gera_log(objname," Host name empty.");
             }
             hosts = hosts + "IP: " + ips[i] + " | ";
         }
-        gera_log(objname,"OneHostPool: Hosts recebidos " + hosts);
+        //gera_log(objname,"OneHostPool: Hosts recebidos " + hosts);
         this.hostpool = new HostPool(oc);
+        updateResources(oc);
     }
     
     public float get_used_CPU(){
@@ -136,17 +143,29 @@ public class OneHostPool {
          }
     }
     
-    public String getLastActiveResource(){
+    public String getLastActiveResources(int amount_of_hosts, int amount_of_vms){
+        String resources = "";
         if (managehosts){
-            return hosts_ativos.get(hosts_ativos.size() - 1).get_name();
+            for (int i = 0; i < amount_of_hosts; i++){
+                resources += hosts_ativos.get(i).get_name() + ";";
+                resources += hosts_ativos.get(i).getVMsIPs() + "\n";
+            }
         } else {
-            return virtualMachines.get(virtualMachines.size() - 1).get_ip();
+            for (int i = 0; i < amount_of_vms; i++){
+                resources += virtualMachines.get(i).getIP() + ";";
+            }
         }
+        return resources;
     }
     
     //return the host with specific id from the actives or inactives hosts
     public OneHost get_onehost(int id){
         OneHost onehost = null;
+        for (OneHost host : pending_hosts) {
+            if (host.get_id() == id) {
+                return host;
+            }
+        }
         for (OneHost host : hosts_ativos) {
             if (host.get_id() == id) {
                 return host;
@@ -166,69 +185,111 @@ public class OneHostPool {
             OneHost host;
             hosts_inativos.get(0).create(oc);
             host = hosts_inativos.remove(0);
-            hosts_ativos.add(host);
+            hosts_ativos.add(0, host);
             return host.get_id();
         }
         return 0;
     }
     
     //when this method is used, a new host is allocated but it is still not considered part of set of active hosts
-    public int allocateHost(Client oc) throws Exception{
-        if (!hosts_inativos.isEmpty()){
-            OneHost host;
-            host = hosts_inativos.get(0);
-            host.create(oc);
-            //host = hosts_inativos.remove(0);
-            //hosts_ativos.add(host);
-            return host.get_id();
-        }
+    public int allocateResource(Client oc) throws Exception{
+        if (managehosts){
+            if (!hosts_inativos.isEmpty()){
+                pending_hosts.add(0, hosts_inativos.remove(0));
+                pending_hosts.get(0).create(oc);
+                return pending_hosts.get(0).get_id();
+            }
+        } 
         return 0;
     }
     
     //this method insert the last host created with the method allocatesHost in the set of active hosts. this is used when the host will be considered active only when the resources in it are online.
     public void enableLastHost(){
-        hosts_ativos.add(hosts_inativos.remove(0));
+        hosts_ativos.add(0,pending_hosts.remove(0));
     }
     
-    public boolean remove_host(Client oc) throws InterruptedException{        
-        OneHost host;
-        hosts_ativos.get(hosts_ativos.size() - 1).delete_vms();
-        while (!hosts_ativos.get(hosts_ativos.size() - 1).delete()){
-            Thread.sleep(1000);
+    public void addVM(OneVM vm){
+        virtualMachines.add(0, vm);
+    }
+    
+    public boolean removeResource(Client oc, int amount_of_vms, int amount_of_hosts) throws InterruptedException{        
+        if (managehosts){
+            //if we must manage hosts then remove the last amount of hosts
+            OneHost host;
+            for (int i = 0; i < amount_of_hosts; i++){
+                hosts_ativos.get(0).delete_vms();
+                while (!hosts_ativos.get(0).delete()){
+                    Thread.sleep(1000);
+                }
+                //hosts_ativos.get(i).delete();
+                host = hosts_ativos.remove(0);
+                hosts_inativos.add(0,host);
+            }
+            return true;
+        } else {
+            //if we do not want to manage hosts then remove the last amount of vms
+            OneVM vm;
+            for (int i = 0; i < amount_of_vms; i++){
+                vm = virtualMachines.remove(0);
+                while (!vm.delete()){
+                    Thread.sleep(1000);
+                }
+            }
+            return true;
         }
-        //hosts_ativos.get(hosts_ativos.size() - 1).delete();
-        host = hosts_ativos.remove(hosts_ativos.size() - 1);
-        hosts_inativos.add(host);
-        return true;
     }
     
     //synchronize the counters of the pool
-    public void sync_hosts(){
-        hostAllCPU = 0;
-        hostUsedCPU = 0;
-        hostAllMEM = 0;
-        hostUsedMEM = 0;
-        hostAllMonitoringTimes = "";
-        for (OneHost host_ativo : hosts_ativos) {
-            //percorre todos os hosts ativos
-            try {
-                host_ativo.sync_host(); //sincroniza cada host
-                hostUsedCPU = hostUsedCPU + host_ativo.get_used_cpu(); //pega uso da cpu
-                hostUsedMEM = hostUsedMEM + host_ativo.get_used_mem(); //get used memory
-                //gera_log(objname, "Main|OneHostPool|sync_hosts: Uso de CPU pelo host " + host_ativo.get_id() + " : " + host_ativo.get_used_cpu());
-                hostAllCPU = hostAllCPU + host_ativo.get_max_cpu(); //pega total de cpu
-                hostAllMEM = hostAllMEM + host_ativo.get_max_mem(); //get total memory
-                hostAllMonitoringTimes += ";" + host_ativo.get_last_mon_time(); //get the last_mon_time of the host and append in the attribute
-                gera_log(objname,"sync_hosts: Host " + host_ativo.get_name() + " atualizado.");
-            }catch (ParserConfigurationException | SAXException | IOException e) {
-                gera_log(objname,e.getMessage());
+    public void syncResources(){
+        if (managehosts){
+            //we update the hosts information if we want to manage them
+            hostAllCPU = 0;
+            hostUsedCPU = 0;
+            hostAllMEM = 0;
+            hostUsedMEM = 0;
+            hostAllMonitoringTimes = "";
+            for (OneHost host_ativo : hosts_ativos) {
+                //percorre todos os hosts ativos
+                try {
+                    host_ativo.syncInfo(); //sincroniza cada host
+                    hostUsedCPU = hostUsedCPU + host_ativo.get_used_cpu(); //pega uso da cpu
+                    hostUsedMEM = hostUsedMEM + host_ativo.get_used_mem(); //get used memory
+                    //gera_log(objname, "Main|OneHostPool|syncResources: Uso de CPU pelo host " + host_ativo.getID() + " : " + host_ativo.get_used_cpu());
+                    hostAllCPU = hostAllCPU + host_ativo.get_max_cpu(); //pega total de cpu
+                    hostAllMEM = hostAllMEM + host_ativo.get_max_mem(); //get total memory
+                    hostAllMonitoringTimes += ";" + host_ativo.get_last_mon_time(); //get the last_mon_time of the host and append in the attribute
+                    //gera_log(objname,"syncResources: Host " + host_ativo.get_name() + " synchronized.");
+                }catch (ParserConfigurationException | SAXException | IOException e) {
+                    gera_log(objname,e.getMessage());
+                }
             }
+            gera_log(objname,"syncResources: " + hosts_ativos.size() + " host(s) synchronized.");
+        } else {
+            //here we update only virtual machine information if we do not want to manage the hosts
+            vmAllCPU = 0;
+            vmUsedCPU = 0;
+            vmAllMEM = 0;
+            vmUsedMEM = 0;
+            vmAllMonitoringTimes = "";
+            for (OneVM vm : virtualMachines){
+                try {
+                    vm.syncInfo();
+                    vmUsedCPU = vmUsedCPU + vm.getUsedCPU();
+                    vmUsedMEM = vmUsedMEM + vm.getUsedMEM();
+                    vmAllCPU = vmAllCPU + vm.getAllocatedCPU();
+                    vmAllMEM = vmAllMEM + vm.getAllocatedMEM();
+                    vmAllMonitoringTimes += ";" + vm.getLastPoll();
+                    //gera_log(objname,"syncResources: VM " + vm.getID() + " synchronized.");
+                } catch (ParserConfigurationException | SAXException | IOException ex) {
+                    gera_log(objname,ex.getMessage());
+                }
+            }
+            gera_log(objname,"syncResources: " + virtualMachines.size() + " vm(s) synchronized.");
         }
-        gera_log(objname,"sync_hosts:" + hosts_ativos.size() + " host(s) atualizados.");
     }
     
-    //>verifica e cria os hosts no gerenciador que já estão rodando no opennebula
-    public void atualiza_hosts(Client oc) throws ParserConfigurationException, SAXException, IOException, Exception {
+    //>update hosts running in the cloud and its virtual machines
+    private void updateResources(Client oc) throws ParserConfigurationException, SAXException, IOException, Exception {
         
         DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
@@ -245,6 +306,14 @@ public class OneHostPool {
                     oc
                     );
         }
+        //now if we do not want to manage hosts we need to get all active virtual machines in these hosts
+        if (!managehosts){
+            for (OneHost host : hosts_ativos) { //for each active host
+                for (OneVM vm : host.getVMs()){ //we get each vm
+                    virtualMachines.add(0, vm); //and add in the arraylist
+                }
+            }
+        }
     }
 
     //cria host e adiciona no array de hosts ativos
@@ -254,20 +323,20 @@ public class OneHostPool {
             if (hosts_inativos.get(i).get_name().equals(name)){
                 hosts_inativos.get(i).create(oc, id);
                 host = hosts_inativos.remove(i);
-                hosts_ativos.add(host);
+                hosts_ativos.add(0, host);
             }
         }
     }
     
     //add a new host to the monitoring pool
     public boolean allocateReadOnlyHost(){
-        hosts_ativos.add(hosts_inativos.remove(0));
+        hosts_ativos.add(0, hosts_inativos.remove(0));
         return true;
     }
     
     //remove the last host from the monitoring pool
     public boolean removeReadOnlyHost(){
-        hosts_inativos.add(hosts_ativos.remove(hosts_ativos.size() - 1));
+        hosts_inativos.add(0,hosts_ativos.remove(0));
         return true;
     }
 }

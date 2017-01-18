@@ -36,6 +36,8 @@ import org.xml.sax.SAXException;
  * 17/11/2014 - viniciusfacco
  *            - implementeded method to log the name of the host and the creation and exclusion time
  *            - added parameter "AllocationTime"
+ * 18/01/2017 - @viniciusfacco
+ *            - Added virtual machines synchronization and some methods to retrieve information about virtual machines: getNumVMs(), getVMsIPs() and getVMs()
  */
 public class OneHost {
     
@@ -94,7 +96,7 @@ public class OneHost {
         //aqui tambem tenho que ler e adicionar as vms que estao neste host
         String id_vms[] = this.get_values_from_xml("VMS", "ID");
         for(int i = 0; i < id_vms.length; i++){
-            this.add_vm(new OneVM(oc, id_vms[i]));
+            this.add_vm(new OneVM(oc, Integer.parseInt(id_vms[i]), this.id));
         }
         this.status = true;
         return true;
@@ -161,10 +163,26 @@ public class OneHost {
         return this.status;
     }    
     
-    public void sync_host() throws ParserConfigurationException, SAXException, IOException{
+    public int getNumVMs(){
+        return this.vms.size();
+    }
+    
+    public String getVMsIPs(){
+        String vmnames = "";
+        for (OneVM vm : vms) {
+            vmnames += vm.getIP() + ";";
+        }
+        return vmnames;
+    }
+    
+    public ArrayList<OneVM> getVMs(){
+        return this.vms;
+    }
+    
+    public void syncInfo() throws ParserConfigurationException, SAXException, IOException{
         DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
-        String info = this.get_info();
+        String info = this.getInfo();
         InputSource is = new InputSource(new ByteArrayInputStream(info.getBytes()));
         Document doc = docBuilder.parse(is);
         doc.getDocumentElement().normalize();
@@ -204,14 +222,20 @@ public class OneHost {
         Element UMEM = (Element)USEDMEM.item(0);
         NodeList textUMEM = UMEM.getChildNodes();
         this.USED_MEM = Integer.parseInt(((Node)textUMEM.item(0)).getNodeValue().trim());
-        //System.out.println("USED_MEM: " + this.USED_MEM);        
+        //System.out.println("USED_MEM: " + this.USED_MEM); 
+        
+        //here we update virtual machines info in this host
+        //for (int i = 0; i < vms.size(); i++){
+        //    vms.get(i).syncInfo();
+        //}
+        
     }
     
     private String[] get_values_from_xml(String TAG, String SUBTAG) throws ParserConfigurationException, SAXException, IOException{
 
         DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         String[] retorno;
-        String info = this.get_info();
+        String info = this.getInfo();
         InputSource is = new InputSource(new ByteArrayInputStream(info.getBytes()));
         Document doc = docBuilder.parse(is);
         doc.getDocumentElement().normalize();
@@ -230,7 +254,7 @@ public class OneHost {
         return retorno;
     }
     
-    private String get_info() {
+    private String getInfo() {
         OneResponse rc = this.host.info();
         if (rc.isError()) {
             gera_log(objname,"Falha ao requisitar status da vm ID " + this.id + "\n" + rc.getErrorMessage());

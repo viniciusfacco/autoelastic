@@ -63,7 +63,7 @@ public class AutoElastic implements Runnable {
     private Evaluator evaluator;        //avaliador para saber se operações devem ser tomadas ou não
     private Thresholds thresholds;      //object to manage the thresholds
     
-    private static final String objname = "autoelastic.AutoElastic"; //name of the object to use in log information
+    private final String objname = "autoelastic.AutoElastic"; //name of the object to use in log information
     private static String frontend;
     private static String usuario;
     private static String senha;
@@ -385,10 +385,11 @@ public class AutoElastic implements Runnable {
                 msgnewresources, 
                 localdirtemp, 
                 remotedirsource, 
-                remotedirtarget
+                remotedirtarget,
+                managehosts
         );            
         //connect with the cloud server
-        if (cloud_manager.serverConnect(managehosts)){
+        if (cloud_manager.serverConnect()){
             gera_log(objname,"Conexão realizada com o servidor: " + frontend);
             monitoring = true; //if connection ok, then we can monitor
         } else {

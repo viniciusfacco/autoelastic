@@ -1834,7 +1834,7 @@ public class FAutoElastic extends javax.swing.JFrame {
             Logger.getLogger(AutoElastic.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
     //show about frame
     private void showAbout() {
         about.setVisible(true);
