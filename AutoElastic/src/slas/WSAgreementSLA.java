@@ -38,7 +38,7 @@ public class WSAgreementSLA {
         this.arquivo = xmlPathname;
         leSLA();
         log = plog;
-        gera_log(objname, "SLA Min Hosts: " + this.MinimalHosts + " / SLA Max Hosts: " + this.MaximalHosts + " / SLA Min VMs: " + this.MinimalVMs + " / SLA Max VMs: " + this.MaximalVMs);
+        gera_log(objname, "WSAgreementSLA: Min Hosts = " + this.MinimalHosts + " | Max Hosts = " + this.MaximalHosts + " | Min VMs = " + this.MinimalVMs + " | Max VMs = " + this.MaximalVMs);
     }
     
     public void leSLA() throws ParserConfigurationException, SAXException, IOException{

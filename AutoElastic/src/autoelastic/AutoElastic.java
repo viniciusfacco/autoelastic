@@ -206,7 +206,7 @@ public class AutoElastic implements Runnable {
         readonly = preadonly;
         managehosts = pmanagehosts;
         cooldown = pcooldown;
-        gera_log(objname,"Main: Construindo...");
+        gera_log(objname,"Constructing.");
     }
 
     @Override
@@ -216,11 +216,11 @@ public class AutoElastic implements Runnable {
         System.out.println("Oi Vini");        
 
         try {
-/*LOG*    */gera_log(objname,"Inicialização...");
+/*LOG*    */gera_log(objname,"Initializing.");
             inicialize();//inicialize the system
-/*LOG*    */gera_log(objname,"Main: Iniciando monitoramento...");
+/*LOG*    */gera_log(objname,"Starting monitoring.");
             monitoring();//start monitoring
-/*LOG*    */gera_log(objname,"Monitoramento finalizado.");
+/*LOG*    */gera_log(objname,"Monitoring ended.");
         } catch (ParserConfigurationException | SAXException | IOException e) {
 /*LOG*    */gera_log(objname,e.getMessage());
         } catch (Exception ex) {
@@ -280,13 +280,13 @@ public class AutoElastic implements Runnable {
             cont++;
             time = (int) ((timen - time0)/1000);
             cooldowncont--;
-            /*LOG*/gera_log(objname,"Main: " + cont + " Time: " + time + "s" + " | " + timen);
-            /*LOG*/gera_log(objname,"Main: Sincronizando hosts...");
+            /*LOG*/gera_log(objname,"monitoring: " + cont + " Time: " + time + "s" + " | " + timen);
+            /*LOG*/gera_log(objname,"monitoring: Synchronizing data.");
             cloud_manager.syncData(); //synchronize data of the cloud
             thresholds.calculateThresholds(cloud_manager.getCPULoad()); //recalculate the thresholds
-            /*LOG*/gera_log(objname,"Main|monitora: Soma da carga de cpu de todos os hosts: " + cloud_manager.getUsedCPU() + " / Threshold maximo estabelecido: " + cloud_manager.getAllocatedCPU() * thresholds.getUpperThreshold() + " / Threshold minimo estabelecido: " + cloud_manager.getAllocatedCPU() * thresholds.getLowerThreshold());
+            /*LOG*/gera_log(objname,"monitoring: Used CPU of all resources: " + cloud_manager.getUsedCPU() + " / Total CPU of all resources: " + cloud_manager.getAllocatedCPU());
             evaluator.computeLoad(cloud_manager.getCPULoad());            
-            /*LOG*/gera_log(objname,"Main|monitora: Load calculado: " + evaluator.getDecisionLoad() + " / Upper threshold: " + thresholds.getUpperThreshold() + " / Lower threshold: " + thresholds.getLowerThreshold());
+            /*LOG*/gera_log(objname,"monitoring: Load = " + evaluator.getDecisionLoad() + " / Upper threshold = " + thresholds.getUpperThreshold() + " / Lower threshold = " + thresholds.getLowerThreshold());
             /*GRA*/graphic1.update(cont, cloud_manager.getUsedCPU(), cloud_manager.getAllocatedCPU(), cloud_manager.getAllocatedCPU() * thresholds.getUpperThreshold(), cloud_manager.getAllocatedCPU() * thresholds.getLowerThreshold(), cloud_manager.getAllocatedCPU() * evaluator.getDecisionLoad());
             /*GRA*/graphic2.update(cont, cloud_manager.getCPULoad(), 1, thresholds.getUpperThreshold(), thresholds.getLowerThreshold(), evaluator.getDecisionLoad());            
             if (recalculate_thresholds > 0){//if this flag is greater than 0, then we must recalculate the thresholds (Live Thresholding)
@@ -300,18 +300,18 @@ public class AutoElastic implements Runnable {
                 }
                 recalculate_thresholds = 0;
             }
-            /*LOG*/gera_log(objname,"Main: Realiza verificação de alguma violação dos thresholds...");
+            /*LOG*/gera_log(objname,"monitoring: Realiza verificação de alguma violação dos thresholds...");
             if ((evaluator.evaluate(thresholds.getUpperThreshold(), thresholds.getLowerThreshold())) && (!resourcesPending) && (cooldowncont < 0)){
                 //analyze the cloud situation and if we have some violation we need deal with this 
                     //and if we are not waiting for new resource allocation we can evaluate the cloud
                     //and if we are not in a cooldown period
                 /*LOG*/export_log(cont, time, System.currentTimeMillis(), cloud_manager.getTotalActiveHosts(), cloud_manager.getAllocatedCPU(), cloud_manager.getUsedCPU(), cloud_manager.getAllocatedMEM(), cloud_manager.getUsedMEM(), cloud_manager.getAllocatedCPU() * thresholds.getUpperThreshold(), cloud_manager.getAllocatedCPU() * thresholds.getLowerThreshold(), cloud_manager.getCPULoad(), evaluator.getDecisionLoad(), thresholds.getLowerThreshold(), thresholds.getUpperThreshold(), cloud_manager.getLastMonitorTimes());
                 if (evaluator.isHighAction()){//if we have a violation on the high threshold
-                    /*LOG*/gera_log(objname,"Main: Avaliador detectou alta carga...Verificando se SLA está no limite...");
+                    /*LOG*/gera_log(objname,"monitoring: Avaliador detectou alta carga...Verificando se SLA está no limite...");
                     evaluator.resetFlags(); //after deal with the problem/violation, re-initialize the parameters of evaluation
                     if(sla.canIncrease(cloud_manager.getTotalActiveHosts(), managehosts)){ //verify the SLA to know if we can increase resources
-                        /*LOG*/gera_log(objname,"Main: SLA não atingido...novo recurso pode ser alocado...");
-                        /*LOG*/gera_log(objname,"Main: Alocando recursos...");
+                        /*LOG*/gera_log(objname,"monitoring: SLA não atingido...novo recurso pode ser alocado...");
+                        /*LOG*/gera_log(objname,"monitoring: Alocando recursos...");
                         if (!readonly){//if not readonly proceed the normal elasticity
                             cloud_manager.increaseResources();//increase one host and the number of vms informed in the parameters
                         } else {//if readonly then proceed only local elasticity 
@@ -319,14 +319,14 @@ public class AutoElastic implements Runnable {
                         }
                         resourcesPending = true;
                     } else {
-                        /*LOG*/gera_log(objname,"Main: SLA no limite...nada pode ser feito...");
+                        /*LOG*/gera_log(objname,"monitoring: SLA no limite...nada pode ser feito...");
                     }
                 } else if (evaluator.isLowAction()){ //if we have a violation on the low threshold
-                    /*LOG*/gera_log(objname,"Main: Avaliador detectou baixa carga...Verificando se SLA está no limite...");
+                    /*LOG*/gera_log(objname,"monitoring: Avaliador detectou baixa carga...Verificando se SLA está no limite...");
                     evaluator.resetFlags(); //after deal with the problem/violation, re-initialize the parameters of evaluation
                     if(sla.canDecrease(cloud_manager.getTotalActiveHosts(), managehosts)){ //verify the SLA to know if we can decrease resources
-                        /*LOG*/gera_log(objname,"Main: SLA não atingido...novo recurso pode ser liberado...");
-                        /*LOG*/gera_log(objname,"Main: Liberando recursos...");
+                        /*LOG*/gera_log(objname,"monitoring: SLA não atingido...novo recurso pode ser liberado...");
+                        /*LOG*/gera_log(objname,"monitoring: Liberando recursos...");
                         if (!readonly){//if not readonly proceed the normal elasticity
                             cloud_manager.decreaseResources(); //decrease the last host added and the number its vms
                         } else {//if readonly then proceed only local elasticity 
@@ -336,13 +336,13 @@ public class AutoElastic implements Runnable {
                         recalculate_thresholds = 2;
                         load_before = evaluator.getDecisionLoad();
                     } else {
-                        /*LOG*/gera_log(objname,"Main: SLA no limite...nada pode ser feito...");
+                        /*LOG*/gera_log(objname,"monitoring: SLA no limite...nada pode ser feito...");
                     }
                 } else {
-                        /*LOG*/gera_log(objname,"Main: Evaluator problem. We have violation but we do not know which.");
+                        /*LOG*/gera_log(objname,"monitoring: Evaluator problem. We have violation but we do not know which.");
                 }
             } else {
-                /*LOG*/gera_log(objname,"Main: Nenhuma ação necessária detectada/permitida.");
+                /*LOG*/gera_log(objname,"monitoring: Nenhuma ação necessária detectada/permitida.");
                 /*LOG*/export_log(cont, time, System.currentTimeMillis(), cloud_manager.getTotalActiveHosts(), cloud_manager.getAllocatedCPU(), cloud_manager.getUsedCPU(), cloud_manager.getAllocatedMEM(), cloud_manager.getUsedMEM(), cloud_manager.getAllocatedCPU() * thresholds.getUpperThreshold(), cloud_manager.getAllocatedCPU() * thresholds.getLowerThreshold(), cloud_manager.getCPULoad(), evaluator.getDecisionLoad(), thresholds.getLowerThreshold(), thresholds.getUpperThreshold(), cloud_manager.getLastMonitorTimes());
             }
             if (resourcesPending){//if there are resources being initialized, so we make sure they are already online to be added and recalculate the thresholds (Live Thresholding)
@@ -353,7 +353,7 @@ public class AutoElastic implements Runnable {
                     cooldowncont = cooldown; //as we delivered resources, set the cooldown period
                 }
             }
-            /*LOG*/gera_log(objname,"Main: Aguarda intervalo de tempo...");
+            /*LOG*/gera_log(objname,"monitoring: Aguarda intervalo de tempo...");
             timeLoop = System.currentTimeMillis() - timen;
             if (timeLoop < intervalo){
                 Thread.sleep(intervalo - timeLoop);
@@ -390,19 +390,19 @@ public class AutoElastic implements Runnable {
         );            
         //connect with the cloud server
         if (cloud_manager.serverConnect()){
-            gera_log(objname,"Conexão realizada com o servidor: " + frontend);
+            gera_log(objname,"inicialize: Connection established with server " + frontend);
             monitoring = true; //if connection ok, then we can monitor
         } else {
-            gera_log(objname,"Problema ao realizar conexão com o servidor: " + frontend);
+            gera_log(objname,"inicialize: Problem to connect to server " + frontend);
             monitoring = false; //if trouble, then we can't monitor
         }
         cloud_manager.setSSHClient(new SSHClient(frontend, usuario, senha));
         //--
-        gera_log(objname,"Main: Inicializando SLA: " + slapath);
+        gera_log(objname,"inicialize: Initializing SLA: " + slapath);
         //create a new SLA
         sla = new WSAgreementSLA(slapath, log);
         //--
-        gera_log(objname,"Main: Inicializando avaliador.");
+        gera_log(objname,"inicialize: Initializing evaluator.");
         //create a new cloud evaluator
         switch (evaluatortype){
             case "generic": 

@@ -86,7 +86,7 @@ public class OneHostPool {
             if (!ips[i].equalsIgnoreCase("")){
                 hosts_inativos.add(0, new OneHost(ips[i], IM, VMM, VNM, CLUSTER_ID, log));
             } else {
-                gera_log(objname," Host name empty.");
+                gera_log(objname,"OneHostPool: Host name empty.");
             }
             hosts = hosts + "IP: " + ips[i] + " | ";
         }
@@ -251,6 +251,7 @@ public class OneHostPool {
             for (OneHost host_ativo : hosts_ativos) {
                 //percorre todos os hosts ativos
                 try {
+                    gera_log(objname,"syncResources: Updating HOST ID " + host_ativo.get_id() + " data from cloud.");
                     host_ativo.syncInfo(); //sincroniza cada host
                     hostUsedCPU = hostUsedCPU + host_ativo.get_used_cpu(); //pega uso da cpu
                     hostUsedMEM = hostUsedMEM + host_ativo.get_used_mem(); //get used memory
@@ -258,7 +259,7 @@ public class OneHostPool {
                     hostAllCPU = hostAllCPU + host_ativo.get_max_cpu(); //pega total de cpu
                     hostAllMEM = hostAllMEM + host_ativo.get_max_mem(); //get total memory
                     hostAllMonitoringTimes += ";" + host_ativo.get_last_mon_time(); //get the last_mon_time of the host and append in the attribute
-                    //gera_log(objname,"syncResources: Host " + host_ativo.get_name() + " synchronized.");
+                    gera_log(objname,"syncResources: HOST " + host_ativo.get_id() + " synchronized.");
                 }catch (ParserConfigurationException | SAXException | IOException e) {
                     gera_log(objname,e.getMessage());
                 }
@@ -273,7 +274,9 @@ public class OneHostPool {
             vmAllMonitoringTimes = "";
             for (OneVM vm : virtualMachines){
                 try {
+                    gera_log(objname,"syncResources: Updating VM ID " + vm.getID() + " data from cloud.");
                     vm.syncInfo();
+                    //gera_log(objname,"syncResources: VM ID " + vm.getID() + " data from cloud updated.");
                     vmUsedCPU = vmUsedCPU + vm.getUsedCPU();
                     vmUsedMEM = vmUsedMEM + vm.getUsedMEM();
                     vmAllCPU = vmAllCPU + vm.getAllocatedCPU();

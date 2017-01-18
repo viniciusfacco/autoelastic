@@ -637,6 +637,11 @@ public class FAutoElastic extends javax.swing.JFrame {
         jcbManageHosts.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         jcbManageHosts.setForeground(new java.awt.Color(51, 204, 255));
         jcbManageHosts.setText("Manage Hosts");
+        jcbManageHosts.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jcbManageHostsItemStateChanged(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -1626,6 +1631,15 @@ public class FAutoElastic extends javax.swing.JFrame {
     private void jtfLogPathFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtfLogPathFocusLost
         this.jtfLocalDirTemp.setText(this.jtfLogPath.getText());
     }//GEN-LAST:event_jtfLogPathFocusLost
+
+    private void jcbManageHostsItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jcbManageHostsItemStateChanged
+        if (this.jcbManageHosts.isSelected()){
+            this.jcbReadOnly.setEnabled(true);
+        } else {
+            this.jcbReadOnly.setEnabled(false);
+            this.jcbReadOnly.setSelected(false);
+        }
+    }//GEN-LAST:event_jcbManageHostsItemStateChanged
 
     /**
      * @param args the command line arguments

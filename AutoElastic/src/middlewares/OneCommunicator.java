@@ -42,7 +42,7 @@ import org.xml.sax.SAXException;
 
 public class OneCommunicator {
     
-    private static final String objname = "middlewares.OneComunicator"; //name of the class to be used in the logs
+    private final String objname = "middlewares.OneComunicator"; //name of the class to be used in the logs
     private final JTextArea log;
     private final String server;
     private final String user;
@@ -133,7 +133,7 @@ public class OneCommunicator {
     //método para enviar que cria e envia arquivo para o frontend, notificando a aplicação da criação de novo host e vm
     public boolean notifyNewResources(String file_content) throws ParserConfigurationException, SAXException, IOException, InterruptedException {
         
-        gera_log(objname,"vms online");
+        gera_log(objname,"notifyNewResources: New VMs online.");
         try {
             //File arquivo = new File("C:\\temp\\one");
             //arquivo.mkdirs();
@@ -248,7 +248,7 @@ public class OneCommunicator {
                 InputStream in = channel.getInputStream();
                 channel.connect();
                 if (checkAck(in) != 0) {
-                    gera_log(objname,"System.exit(0);");
+                    gera_log(objname,"envia_arquivo: System.exit(0);");
                     return false;
                 }
                 File _lfile = new File(filepath);
@@ -261,7 +261,7 @@ public class OneCommunicator {
                     out.write(command.getBytes());
                     out.flush();
                     if (checkAck(in) != 0) {
-                        gera_log(objname,"System.exit(0);");
+                        gera_log(objname,"envia_arquivo: System.exit(0);");
                         return false;
                     }
                 }
@@ -278,7 +278,7 @@ public class OneCommunicator {
                 out.write(command.getBytes());
                 out.flush();
                 if (checkAck(in) != 0) {
-                    gera_log(objname,"System.exit(0);");
+                    gera_log(objname,"envia_arquivo: System.exit(0);");
                     return false;
                 }
                 // send a content of arquivo
@@ -298,7 +298,7 @@ public class OneCommunicator {
                 out.write(buf, 0, 1);
                 out.flush();
                 if (checkAck(in) != 0) {
-                    gera_log(objname,"System.exit(0);");
+                    gera_log(objname,"envia_arquivo: System.exit(0);");
                     return false;
                 }
             }

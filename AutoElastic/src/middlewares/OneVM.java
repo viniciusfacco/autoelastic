@@ -168,12 +168,6 @@ public class OneVM {
         el = (Element) nl.item(0);
         this.MAX_MEM = Integer.parseInt(el.getElementsByTagName("MEMORY").item(0).getChildNodes().item(0).getNodeValue().trim());
         this.MAX_CPU = Integer.parseInt(el.getElementsByTagName("CPU").item(0).getChildNodes().item(0).getNodeValue().trim()) * 100;
-        
-        //System.out.println("VM ID " + this.id + " monitorada.");
-        //System.out.println("VM ID " + this.id + " MAX CPU: " + this.MAX_CPU);
-        //System.out.println("VM ID " + this.id + " USED CPU: " + this.USED_CPU);
-        //System.out.println("VM ID " + this.id + " MAX MEM: " + this.MAX_MEM);
-        //System.out.println("VM ID " + this.id + " USED MEM: " + this.USED_MEM);
     }
     
     private String getInfo() {

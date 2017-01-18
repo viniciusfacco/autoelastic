@@ -76,7 +76,7 @@ public class OneHost {
         //OneResponse rc = Host.allocate(oc, name, image_manager, virtual_machine_manager, virtual_network_manager, transfer_manager); comentado por atualização de versão
         OneResponse rc = Host.allocate(oc, name, image_manager, virtual_machine_manager, virtual_network_manager);
         if( rc.isError() ){
-            gera_log(objname,"Falha ao criar Host!" + "\n" + rc.getErrorMessage());
+            gera_log(objname,"create: Error to create HOST!" + "\n" + rc.getErrorMessage());
             return false;
         }
         else {
@@ -105,7 +105,7 @@ public class OneHost {
     public boolean delete() {
         OneResponse rc = this.host.delete();
         if (rc.isError()){
-            gera_log(objname,"Falha ao deletar host ID " + this.id + "\n" + rc.getErrorMessage());
+            gera_log(objname,"delete: Error to delete HOST ID " + this.id + "\n" + rc.getErrorMessage());
             return false;
         }
         DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");   //code to get
@@ -257,7 +257,7 @@ public class OneHost {
     private String getInfo() {
         OneResponse rc = this.host.info();
         if (rc.isError()) {
-            gera_log(objname,"Falha ao requisitar status da vm ID " + this.id + "\n" + rc.getErrorMessage());
+            gera_log(objname,"getInfo: Error to require status from VM ID " + this.id + "\n" + rc.getErrorMessage());
         }
         //System.out.println(rc.getMessage());        
         return rc.getMessage();

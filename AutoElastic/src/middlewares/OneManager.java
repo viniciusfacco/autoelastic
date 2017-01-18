@@ -103,7 +103,7 @@ public class OneManager {
             //> realiza conexão com o front-end
             oneClient = new Client(user + ":" + password, "http://" + server_address + ":" + server_port + "/RPC2");
             if (oneClient.get_version().getMessage() != null){ //try to get the version. if null is because we do not have connection with the server
-                gera_log(objname,"Versão do OpenNebula: " + oneClient.get_version().getMessage());
+                gera_log(objname,"serverConnect: OpenNebula version: " + oneClient.get_version().getMessage());
                 //>criação dos hosts que podem ser utilizados
                 ohpool = new OneHostPool(
                         oneClient, 
@@ -306,7 +306,7 @@ public class OneManager {
     public void organizeReadOnlyMode(int lowThreshold) {
         int hosts = ohpool.get_total_ativos();
         for (int i = lowThreshold; i < hosts; i++){
-            gera_log(objname,"organizeReadOnlyMode: removendo host " + i + " de " + hosts + ".");
+            gera_log(objname,"organizeReadOnlyMode: removing host " + i + " from " + hosts + ".");
             ohpool.removeReadOnlyHost();
         }
     }
