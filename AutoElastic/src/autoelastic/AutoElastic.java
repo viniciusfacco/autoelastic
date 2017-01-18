@@ -305,11 +305,11 @@ public class AutoElastic implements Runnable {
                 //analyze the cloud situation and if we have some violation we need deal with this 
                     //and if we are not waiting for new resource allocation we can evaluate the cloud
                     //and if we are not in a cooldown period
-                /*LOG*/export_log(cont, time, System.currentTimeMillis(), cloud_manager.getTotalActiveHosts(), cloud_manager.getAllocatedCPU(), cloud_manager.getUsedCPU(), cloud_manager.getAllocatedMEM(), cloud_manager.getUsedMEM(), cloud_manager.getAllocatedCPU() * thresholds.getUpperThreshold(), cloud_manager.getAllocatedCPU() * thresholds.getLowerThreshold(), cloud_manager.getCPULoad(), evaluator.getDecisionLoad(), thresholds.getLowerThreshold(), thresholds.getUpperThreshold(), cloud_manager.getLastMonitorTimes());
+                /*LOG*/export_log(cont, time, System.currentTimeMillis(), cloud_manager.getTotalActiveResources(), cloud_manager.getAllocatedCPU(), cloud_manager.getUsedCPU(), cloud_manager.getAllocatedMEM(), cloud_manager.getUsedMEM(), cloud_manager.getAllocatedCPU() * thresholds.getUpperThreshold(), cloud_manager.getAllocatedCPU() * thresholds.getLowerThreshold(), cloud_manager.getCPULoad(), evaluator.getDecisionLoad(), thresholds.getLowerThreshold(), thresholds.getUpperThreshold(), cloud_manager.getLastMonitorTimes());
                 if (evaluator.isHighAction()){//if we have a violation on the high threshold
                     /*LOG*/gera_log(objname,"monitoring: Avaliador detectou alta carga...Verificando se SLA está no limite...");
                     evaluator.resetFlags(); //after deal with the problem/violation, re-initialize the parameters of evaluation
-                    if(sla.canIncrease(cloud_manager.getTotalActiveHosts(), managehosts)){ //verify the SLA to know if we can increase resources
+                    if(sla.canIncrease(cloud_manager.getTotalActiveResources(), managehosts)){ //verify the SLA to know if we can increase resources
                         /*LOG*/gera_log(objname,"monitoring: SLA não atingido...novo recurso pode ser alocado...");
                         /*LOG*/gera_log(objname,"monitoring: Alocando recursos...");
                         if (!readonly){//if not readonly proceed the normal elasticity
@@ -324,7 +324,7 @@ public class AutoElastic implements Runnable {
                 } else if (evaluator.isLowAction()){ //if we have a violation on the low threshold
                     /*LOG*/gera_log(objname,"monitoring: Avaliador detectou baixa carga...Verificando se SLA está no limite...");
                     evaluator.resetFlags(); //after deal with the problem/violation, re-initialize the parameters of evaluation
-                    if(sla.canDecrease(cloud_manager.getTotalActiveHosts(), managehosts)){ //verify the SLA to know if we can decrease resources
+                    if(sla.canDecrease(cloud_manager.getTotalActiveResources(), managehosts)){ //verify the SLA to know if we can decrease resources
                         /*LOG*/gera_log(objname,"monitoring: SLA não atingido...novo recurso pode ser liberado...");
                         /*LOG*/gera_log(objname,"monitoring: Liberando recursos...");
                         if (!readonly){//if not readonly proceed the normal elasticity
@@ -343,7 +343,7 @@ public class AutoElastic implements Runnable {
                 }
             } else {
                 /*LOG*/gera_log(objname,"monitoring: Nenhuma ação necessária detectada/permitida.");
-                /*LOG*/export_log(cont, time, System.currentTimeMillis(), cloud_manager.getTotalActiveHosts(), cloud_manager.getAllocatedCPU(), cloud_manager.getUsedCPU(), cloud_manager.getAllocatedMEM(), cloud_manager.getUsedMEM(), cloud_manager.getAllocatedCPU() * thresholds.getUpperThreshold(), cloud_manager.getAllocatedCPU() * thresholds.getLowerThreshold(), cloud_manager.getCPULoad(), evaluator.getDecisionLoad(), thresholds.getLowerThreshold(), thresholds.getUpperThreshold(), cloud_manager.getLastMonitorTimes());
+                /*LOG*/export_log(cont, time, System.currentTimeMillis(), cloud_manager.getTotalActiveResources(), cloud_manager.getAllocatedCPU(), cloud_manager.getUsedCPU(), cloud_manager.getAllocatedMEM(), cloud_manager.getUsedMEM(), cloud_manager.getAllocatedCPU() * thresholds.getUpperThreshold(), cloud_manager.getAllocatedCPU() * thresholds.getLowerThreshold(), cloud_manager.getCPULoad(), evaluator.getDecisionLoad(), thresholds.getLowerThreshold(), thresholds.getUpperThreshold(), cloud_manager.getLastMonitorTimes());
             }
             if (resourcesPending){//if there are resources being initialized, so we make sure they are already online to be added and recalculate the thresholds (Live Thresholding)
                 load_before = evaluator.getDecisionLoad();
@@ -514,18 +514,18 @@ public class AutoElastic implements Runnable {
                         }
                             
                         //volto para um host que é o mínimo
-                        while(cloud_manager.getTotalActiveHosts() > minimum_hosts){
+                        while(cloud_manager.getTotalActiveResources() > minimum_hosts){
                             cloud_manager.decreaseResourcesHard();//removo um
                         }
 
                         //usado somente se quantidade inicial de hosts é maior que a quantidade mínima definida pelo SLA
                         //while (!letsgo){//para eu prosseguir primeiro tenho que estar com a quantidade de vms 
-                        //    if (cloud_manager.getTotalActiveHosts() > initial_hosts){//se eu tiver mais hosts que o inicial
+                        //    if (cloud_manager.getTotalActiveResources() > initial_hosts){//se eu tiver mais hosts que o inicial
                         //        cloud_manager.decreaseResourcesHard();//removo um
-                        //    } else if (cloud_manager.getTotalActiveHosts() < initial_hosts){//agora se eu tiver menos hosts que o inicial
+                        //    } else if (cloud_manager.getTotalActiveResources() < initial_hosts){//agora se eu tiver menos hosts que o inicial
                         //        cloud_manager.increaseResources();//eu adiciono mais um
                         //    }
-                        //    if (!(cloud_manager.getTotalActiveHosts() == initial_hosts)){ //se a quantidade é igual já posso continuar
+                        //    if (!(cloud_manager.getTotalActiveResources() == initial_hosts)){ //se a quantidade é igual já posso continuar
                         //        while (cloud_manager.newResourcesPending()){//se não, vejo se tem recursos sendo alocados
                         //            Thread.sleep(1000);
                         //            //coloquei esse while pq se eu tiver 
@@ -656,12 +656,12 @@ public class AutoElastic implements Runnable {
             if ((evaluator.evaluate(thresholds.getUpperThreshold(), thresholds.getLowerThreshold())) && (!resourcesPending)){
                 //analyze the cloud situation and if we have some violation we need deal with this and if we are not waiting for new resource allocation we can evaluate the cloud
                 times = times + ";" + System.currentTimeMillis(); //T6-AposAvaliarCarga
-                /*LOG*/export_log(cont, tempo, System.currentTimeMillis(), cloud_manager.getTotalActiveHosts(), cloud_manager.getAllocatedCPU(), cloud_manager.getUsedCPU(), cloud_manager.getAllocatedMEM(), cloud_manager.getUsedMEM(), cloud_manager.getAllocatedCPU() * thresholds.getUpperThreshold(), cloud_manager.getAllocatedCPU() * thresholds.getLowerThreshold(), cloud_manager.getCPULoad(), evaluator.getDecisionLoad(), thresholds.getLowerThreshold(), thresholds.getUpperThreshold(), cloud_manager.getLastMonitorTimes());
+                /*LOG*/export_log(cont, tempo, System.currentTimeMillis(), cloud_manager.getTotalActiveResources(), cloud_manager.getAllocatedCPU(), cloud_manager.getUsedCPU(), cloud_manager.getAllocatedMEM(), cloud_manager.getUsedMEM(), cloud_manager.getAllocatedCPU() * thresholds.getUpperThreshold(), cloud_manager.getAllocatedCPU() * thresholds.getLowerThreshold(), cloud_manager.getCPULoad(), evaluator.getDecisionLoad(), thresholds.getLowerThreshold(), thresholds.getUpperThreshold(), cloud_manager.getLastMonitorTimes());
                 //here we need deal with the violation
                 if (evaluator.isHighAction()){//if we have a violation on the high threshold
                     ///*LOG*/gera_log(objname,"Main: Avaliador detectou alta carga...Verificando se SLA está no limite...");
                     evaluator.resetFlags(); //after deal with the problem/violation, re-initialize the parameters of evaluation
-                    if(sla.canIncrease(cloud_manager.getTotalActiveHosts(), managehosts)){ //verify the SLA to know if we can increase resources
+                    if(sla.canIncrease(cloud_manager.getTotalActiveResources(), managehosts)){ //verify the SLA to know if we can increase resources
                         ///*LOG*/gera_log(objname,"Main: SLA não atingido...novo recurso pode ser alocado...");
                         ///*LOG*/gera_log(objname,"Main: Alocando recursos...");
                         times = times + ";" + System.currentTimeMillis(); //T7-AntesDeAlocar
@@ -675,7 +675,7 @@ public class AutoElastic implements Runnable {
                 } else if (evaluator.isLowAction()){ //if we have a violation on the low threshold
                     ///*LOG*/gera_log(objname,"Main: Avaliador detectou baixa carga...Verificando se SLA está no limite...");
                     evaluator.resetFlags(); //after deal with the problem/violation, re-initialize the parameters of evaluation                    
-                    if(sla.canDecrease(cloud_manager.getTotalActiveHosts(), managehosts)){ //verify the SLA to know if we can decrease resources
+                    if(sla.canDecrease(cloud_manager.getTotalActiveResources(), managehosts)){ //verify the SLA to know if we can decrease resources
                         ///*LOG*/gera_log(objname,"Main: SLA não atingido...novo recurso pode ser liberado...");
                         ///*LOG*/gera_log(objname,"Main: Liberando recursos...");
                         times = times + ";;;" + System.currentTimeMillis(); //T7 e T8 vazios + T9-AntesDeDesalocar
@@ -692,7 +692,7 @@ public class AutoElastic implements Runnable {
                 }
             } else {
                 times = times + ";" + System.currentTimeMillis() + ";;;;"; //T6-AposAvaliarCarga + T7 T8 T9 e T10 vazios
-                /*LOG*/export_log(cont, tempo, System.currentTimeMillis(), cloud_manager.getTotalActiveHosts(), cloud_manager.getAllocatedCPU(), cloud_manager.getUsedCPU(), cloud_manager.getAllocatedMEM(), cloud_manager.getUsedMEM(), cloud_manager.getAllocatedCPU() * thresholds.getUpperThreshold(), cloud_manager.getAllocatedCPU() * thresholds.getLowerThreshold(), cloud_manager.getCPULoad(), evaluator.getDecisionLoad(), thresholds.getLowerThreshold(), thresholds.getUpperThreshold(), cloud_manager.getLastMonitorTimes());
+                /*LOG*/export_log(cont, tempo, System.currentTimeMillis(), cloud_manager.getTotalActiveResources(), cloud_manager.getAllocatedCPU(), cloud_manager.getUsedCPU(), cloud_manager.getAllocatedMEM(), cloud_manager.getUsedMEM(), cloud_manager.getAllocatedCPU() * thresholds.getUpperThreshold(), cloud_manager.getAllocatedCPU() * thresholds.getLowerThreshold(), cloud_manager.getCPULoad(), evaluator.getDecisionLoad(), thresholds.getLowerThreshold(), thresholds.getUpperThreshold(), cloud_manager.getLastMonitorTimes());
                 ///*LOG*/gera_log(objname,"Main: Nenhum problema detectado pelo avaliador ou aguardando vms.");
             }
             times = times + ";" + System.currentTimeMillis(); //T11-AntesVerificarRecursosPendentes

@@ -95,7 +95,7 @@ public class OneHostPool {
         updateResources(oc);
     }
     
-    public float get_used_CPU(){
+    public float getUsedCPU(){
         if (managehosts){
             return this.hostUsedCPU;
         } else {
@@ -103,7 +103,7 @@ public class OneHostPool {
         }
     }
     
-    public float get_allocated_CPU(){
+    public float getAllocatedCPU(){
         if (managehosts){
             return this.hostAllCPU;
         } else {
@@ -111,7 +111,7 @@ public class OneHostPool {
         }
     }
     
-    public float get_used_MEM(){
+    public float getUsedMEM(){
         if (managehosts){
             return this.hostUsedMEM;
         } else {
@@ -119,7 +119,7 @@ public class OneHostPool {
         }
     }
     
-    public float get_allocated_MEM(){
+    public float getAllocatedMEM(){
         if (managehosts){
             return this.hostAllMEM;
         } else {
@@ -127,7 +127,7 @@ public class OneHostPool {
         }
     }
     
-    public String get_last_monitor_times(){
+    public String getLastMonitorTimes(){
         if (managehosts){
             return this.hostAllMonitoringTimes;
         } else {
@@ -135,7 +135,7 @@ public class OneHostPool {
         }
     }
     
-    public int get_total_ativos(){
+    public int getTotalAtivos(){
          if (managehosts){
              return this.hosts_ativos.size();
          } else {
@@ -147,7 +147,7 @@ public class OneHostPool {
         String resources = "";
         if (managehosts){
             for (int i = 0; i < amount_of_hosts; i++){
-                resources += hosts_ativos.get(i).get_name() + ";";
+                resources += hosts_ativos.get(i).getName() + ";";
                 resources += hosts_ativos.get(i).getVMsIPs() + "\n";
             }
         } else {
@@ -159,20 +159,20 @@ public class OneHostPool {
     }
     
     //return the host with specific id from the actives or inactives hosts
-    public OneHost get_onehost(int id){
+    public OneHost getOneHost(int id){
         OneHost onehost = null;
         for (OneHost host : pending_hosts) {
-            if (host.get_id() == id) {
+            if (host.getID() == id) {
                 return host;
             }
         }
         for (OneHost host : hosts_ativos) {
-            if (host.get_id() == id) {
+            if (host.getID() == id) {
                 return host;
             }
         }
         for (OneHost host : hosts_inativos) {
-            if (host.get_id() == id) {
+            if (host.getID() == id) {
                 return host;
             }
         }
@@ -186,7 +186,7 @@ public class OneHostPool {
             hosts_inativos.get(0).create(oc);
             host = hosts_inativos.remove(0);
             hosts_ativos.add(0, host);
-            return host.get_id();
+            return host.getID();
         }
         return 0;
     }
@@ -197,7 +197,7 @@ public class OneHostPool {
             if (!hosts_inativos.isEmpty()){
                 pending_hosts.add(0, hosts_inativos.remove(0));
                 pending_hosts.get(0).create(oc);
-                return pending_hosts.get(0).get_id();
+                return pending_hosts.get(0).getID();
             }
         } 
         return 0;
@@ -208,7 +208,7 @@ public class OneHostPool {
         hosts_ativos.add(0,pending_hosts.remove(0));
     }
     
-    public void addVM(OneVM vm){
+    public void addVirtualMachine(OneVM vm){
         virtualMachines.add(0, vm);
     }
     
@@ -217,7 +217,7 @@ public class OneHostPool {
             //if we must manage hosts then remove the last amount of hosts
             OneHost host;
             for (int i = 0; i < amount_of_hosts; i++){
-                hosts_ativos.get(0).delete_vms();
+                hosts_ativos.get(0).deleteVMs();
                 while (!hosts_ativos.get(0).delete()){
                     Thread.sleep(1000);
                 }
@@ -251,15 +251,15 @@ public class OneHostPool {
             for (OneHost host_ativo : hosts_ativos) {
                 //percorre todos os hosts ativos
                 try {
-                    gera_log(objname,"syncResources: Updating HOST ID " + host_ativo.get_id() + " data from cloud.");
+                    gera_log(objname,"syncResources: Updating HOST ID " + host_ativo.getID() + " data from cloud.");
                     host_ativo.syncInfo(); //sincroniza cada host
-                    hostUsedCPU = hostUsedCPU + host_ativo.get_used_cpu(); //pega uso da cpu
-                    hostUsedMEM = hostUsedMEM + host_ativo.get_used_mem(); //get used memory
-                    //gera_log(objname, "Main|OneHostPool|syncResources: Uso de CPU pelo host " + host_ativo.getID() + " : " + host_ativo.get_used_cpu());
-                    hostAllCPU = hostAllCPU + host_ativo.get_max_cpu(); //pega total de cpu
-                    hostAllMEM = hostAllMEM + host_ativo.get_max_mem(); //get total memory
-                    hostAllMonitoringTimes += ";" + host_ativo.get_last_mon_time(); //get the last_mon_time of the host and append in the attribute
-                    gera_log(objname,"syncResources: HOST " + host_ativo.get_id() + " synchronized.");
+                    hostUsedCPU = hostUsedCPU + host_ativo.getUsedCPU(); //pega uso da cpu
+                    hostUsedMEM = hostUsedMEM + host_ativo.getUsedMEM(); //get used memory
+                    //gera_log(objname, "Main|OneHostPool|syncResources: Uso de CPU pelo host " + host_ativo.getID() + " : " + host_ativo.getUsedCPU());
+                    hostAllCPU = hostAllCPU + host_ativo.getMaxCPU(); //pega total de cpu
+                    hostAllMEM = hostAllMEM + host_ativo.getMaxMEM(); //get total memory
+                    hostAllMonitoringTimes += ";" + host_ativo.getLastMonTime(); //get the last_mon_time of the host and append in the attribute
+                    gera_log(objname,"syncResources: HOST " + host_ativo.getID() + " synchronized.");
                 }catch (ParserConfigurationException | SAXException | IOException e) {
                     gera_log(objname,e.getMessage());
                 }
@@ -303,7 +303,7 @@ public class OneHostPool {
         NodeList childs = doc.getDocumentElement().getChildNodes();
         for (int i = 0; i < childs.getLength(); i++){
             Element host = (Element) childs.item(i);
-            cria_host(
+            createHost(
                     host.getElementsByTagName("ID").item(0).getChildNodes().item(0).getNodeValue(),
                     host.getElementsByTagName("NAME").item(0).getChildNodes().item(0).getNodeValue(),
                     oc
@@ -320,10 +320,10 @@ public class OneHostPool {
     }
 
     //cria host e adiciona no array de hosts ativos
-    private void cria_host(String id, String name, Client oc) throws Exception {
+    private void createHost(String id, String name, Client oc) throws Exception {
         OneHost host;
         for (int i = 0; i < hosts_inativos.size(); i++){
-            if (hosts_inativos.get(i).get_name().equals(name)){
+            if (hosts_inativos.get(i).getName().equals(name)){
                 hosts_inativos.get(i).create(oc, id);
                 host = hosts_inativos.remove(i);
                 hosts_ativos.add(0, host);

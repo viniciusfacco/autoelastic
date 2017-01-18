@@ -227,7 +227,7 @@ public class OneCommunicator {
     }
     
     //método para enviar arquivo para o frontend
-    private boolean envia_arquivo(String filepath) {
+    private boolean sendFile(String filepath) {
 
         FileInputStream fis = null;
 

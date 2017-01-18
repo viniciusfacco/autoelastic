@@ -139,15 +139,15 @@ public class OneManager {
      * @return [0 &lt load &lt 1]
      */
     public float getCPULoad(){
-        float used = ohpool.get_used_CPU();
-        float allocated = ohpool.get_allocated_CPU();        
+        float used = ohpool.getUsedCPU();
+        float allocated = ohpool.getAllocatedCPU();        
         float load = used / allocated;
         return load;
     }
     
     //return the total of CPU available in the cloud
     public float getAllocatedCPU(){
-        return ohpool.get_allocated_CPU();
+        return ohpool.getAllocatedCPU();
     }
     
     /**
@@ -155,17 +155,17 @@ public class OneManager {
      * @return 0 &lt CPU 
      */
     public float getUsedCPU(){
-        return ohpool.get_used_CPU();
+        return ohpool.getUsedCPU();
     }
     
     //return the total of MEM available in the cloud
     public float getAllocatedMEM(){
-        return ohpool.get_allocated_MEM();
+        return ohpool.getAllocatedMEM();
     }
     
     //return the current use of MEM
     public float getUsedMEM(){
-        return ohpool.get_used_MEM();
+        return ohpool.getUsedMEM();
     }
     
     /**
@@ -173,12 +173,12 @@ public class OneManager {
      * @return the times in string separeted by ","
      */
     public String getLastMonitorTimes(){
-        return ohpool.get_last_monitor_times();
+        return ohpool.getLastMonitorTimes();
     }
     
     //return the current number of hosts in use
-    public int getTotalActiveHosts(){
-        return ohpool.get_total_ativos();
+    public int getTotalActiveResources(){
+        return ohpool.getTotalAtivos();
     }
 
     /**
@@ -200,7 +200,7 @@ public class OneManager {
                         new_vms.add(0,new OneVM(vmtemplateid));
                         new_vms.get(0).deploy(oneClient, hostid, log);//aloca vm nesse host
                         //gera_log(objname,"Main: Nova VM alocada: " + last_vms[i].getID());
-                        ohpool.get_onehost(hostid).add_vm(new_vms.get(0));
+                        ohpool.getOneHost(hostid).addVM(new_vms.get(0));
                         waiting_vms = true;
                         System.out.println("Allocating vm " + j);
                         //Thread.sleep(10000); //why?
@@ -259,7 +259,7 @@ public class OneManager {
                 }
             } else { //if we are monitoring only virtual machines lets add them to monitoring
                 for (int i = 0; i < new_vms.size(); i++){
-                    ohpool.addVM(new_vms.get(i));
+                    ohpool.addVirtualMachine(new_vms.get(i));
                 }
             }
             new_vms = null;
@@ -304,7 +304,7 @@ public class OneManager {
     
     //remove host from the monitoring pool leaving only "lowThreshold" hosts
     public void organizeReadOnlyMode(int lowThreshold) {
-        int hosts = ohpool.get_total_ativos();
+        int hosts = ohpool.getTotalAtivos();
         for (int i = lowThreshold; i < hosts; i++){
             gera_log(objname,"organizeReadOnlyMode: removing host " + i + " from " + hosts + ".");
             ohpool.removeReadOnlyHost();
@@ -354,7 +354,7 @@ public class OneManager {
                 for (int j = 0; j < vmsperhost; j++){ //create vmsperhost new virtual machines
                     vmid = instantiate_vm(hostid, idtemplatevm); //create a new virtual machine in "hostid"
                     //gera_log(objname,"Main: Nova VM alocada: " + vmid); //log
-                    ipvms[countvm] = ohpool.get_onehost(hostid).get_vm(0).getIP(); //store the IP of this virtual machine
+                    ipvms[countvm] = ohpool.getOneHost(hostid).getVM(0).getIP(); //store the IP of this virtual machine
                     countvm++;
                 }
             } else {//problem in host allocation
@@ -369,7 +369,7 @@ public class OneManager {
         int vmid;
         OneVM vm = new OneVM(vmtemplateid);
         vmid = vm.deploy(oneClient, hid, log);
-        ohpool.get_onehost(hid).add_vm(vm); //add this virtual machine in the "ohpool"
+        ohpool.getOneHost(hid).addVM(vm); //add this virtual machine in the "ohpool"
         return vmid;
     }
     

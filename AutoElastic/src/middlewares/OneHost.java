@@ -94,9 +94,9 @@ public class OneHost {
         this.id = Integer.parseInt(id);
         this.host = new Host(this.id, oc);
         //aqui tambem tenho que ler e adicionar as vms que estao neste host
-        String id_vms[] = this.get_values_from_xml("VMS", "ID");
+        String id_vms[] = this.getValuesFromXML("VMS", "ID");
         for(int i = 0; i < id_vms.length; i++){
-            this.add_vm(new OneVM(oc, Integer.parseInt(id_vms[i]), this.id));
+            this.addVM(new OneVM(oc, Integer.parseInt(id_vms[i]), this.id));
         }
         this.status = true;
         return true;
@@ -115,11 +115,11 @@ public class OneHost {
         return true;
     }
     
-    public void add_vm(OneVM onevm){
+    public void addVM(OneVM onevm){
         this.vms.add(0, onevm);
     }
     
-    public boolean delete_vms(){
+    public boolean deleteVMs(){
         while (!vms.isEmpty()){
             vms.get(0).delete();
             vms.remove(0);
@@ -127,35 +127,35 @@ public class OneHost {
         return true;
     }
     
-    public OneVM get_vm(int index){
+    public OneVM getVM(int index){
         return this.vms.get(index);
     }
     
-    public int get_id(){
+    public int getID(){
         return this.id;
     }
     
-    public String get_name(){
+    public String getName(){
         return this.name;
     }
     
-    public float get_used_cpu(){
+    public float getUsedCPU(){
         return this.USED_CPU;
     }
     
-    public float get_max_cpu(){
+    public float getMaxCPU(){
         return this.MAX_CPU;
     }
     
-    public float get_used_mem(){
+    public float getUsedMEM(){
         return this.USED_MEM;
     }
     
-    public float get_max_mem(){
+    public float getMaxMEM(){
         return this.MAX_MEM;
     }
     
-    public long get_last_mon_time(){
+    public long getLastMonTime(){
         return this.LAST_MON_TIME;
     }
     
@@ -231,7 +231,7 @@ public class OneHost {
         
     }
     
-    private String[] get_values_from_xml(String TAG, String SUBTAG) throws ParserConfigurationException, SAXException, IOException{
+    private String[] getValuesFromXML(String TAG, String SUBTAG) throws ParserConfigurationException, SAXException, IOException{
 
         DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         String[] retorno;
