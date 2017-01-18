@@ -766,6 +766,9 @@
                       </Events>
                     </Component>
                     <Component class="javax.swing.JTextField" name="jtfCoolDown">
+                      <Properties>
+                        <Property name="toolTipText" type="java.lang.String" value="Number of monitoring observations after a elasticity action that AutoElastic Manager cannot do any new elasticity operation."/>
+                      </Properties>
                     </Component>
                     <Component class="javax.swing.JLabel" name="jLabel19">
                       <Properties>
@@ -942,6 +945,7 @@
                           <Color blue="ff" green="cc" red="33" type="rgb"/>
                         </Property>
                         <Property name="text" type="java.lang.String" value="Read Only"/>
+                        <Property name="toolTipText" type="java.lang.String" value="Simulation mode where AutoElastic Manager does not add/remove resources in the cloud. Data is only read from cloud and elasticity operations occur only locally and logically. This mode operates only when Manage Hosts is active."/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JCheckBox" name="jcbLabMode">
@@ -956,7 +960,7 @@
                           <Color blue="ff" green="cc" red="33" type="rgb"/>
                         </Property>
                         <Property name="text" type="java.lang.String" value="Laboratory Mode"/>
-                        <Property name="toolTipText" type="java.lang.String" value="Check this box to run in automated laboratory mode."/>
+                        <Property name="toolTipText" type="java.lang.String" value="Activate automation tests programmed directly in the code. (Do not use)"/>
                         <Property name="focusable" type="boolean" value="false"/>
                       </Properties>
                     </Component>
@@ -977,6 +981,7 @@
                           <Color blue="ff" green="cc" red="33" type="rgb"/>
                         </Property>
                         <Property name="text" type="java.lang.String" value="Manage Hosts"/>
+                        <Property name="toolTipText" type="java.lang.String" value="Activate host monitoring. Elasticity operations add and remove hosts and its virtual machines from cloud. To monitor only virtual machines uncheck this box."/>
                       </Properties>
                       <Events>
                         <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="jcbManageHostsItemStateChanged"/>

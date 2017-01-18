@@ -59,7 +59,7 @@ public class About extends javax.swing.JFrame {
 
         jl_version.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         jl_version.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jl_version.setText("Version 2.2");
+        jl_version.setText("Version 2.3");
 
         jta_description.setEditable(false);
         jta_description.setBackground(new java.awt.Color(240, 240, 240));

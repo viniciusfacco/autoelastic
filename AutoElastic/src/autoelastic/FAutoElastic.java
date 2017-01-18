@@ -497,6 +497,8 @@ public class FAutoElastic extends javax.swing.JFrame {
             }
         });
 
+        jtfCoolDown.setToolTipText("Number of monitoring observations after a elasticity action that AutoElastic Manager cannot do any new elasticity operation.");
+
         jLabel19.setText("Cool-down Observations");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -623,12 +625,13 @@ public class FAutoElastic extends javax.swing.JFrame {
         jcbReadOnly.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         jcbReadOnly.setForeground(new java.awt.Color(51, 204, 255));
         jcbReadOnly.setText("Read Only");
+        jcbReadOnly.setToolTipText("Simulation mode where AutoElastic Manager does not add/remove resources in the cloud. Data is only read from cloud and elasticity operations occur only locally and logically. This mode operates only when Manage Hosts is active.");
 
         jcbLabMode.setBackground(new java.awt.Color(255, 255, 255));
         jcbLabMode.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         jcbLabMode.setForeground(new java.awt.Color(51, 204, 255));
         jcbLabMode.setText("Laboratory Mode");
-        jcbLabMode.setToolTipText("Check this box to run in automated laboratory mode.");
+        jcbLabMode.setToolTipText("Activate automation tests programmed directly in the code. (Do not use)");
         jcbLabMode.setFocusable(false);
 
         jLabel2.setText("General");
@@ -637,6 +640,7 @@ public class FAutoElastic extends javax.swing.JFrame {
         jcbManageHosts.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         jcbManageHosts.setForeground(new java.awt.Color(51, 204, 255));
         jcbManageHosts.setText("Manage Hosts");
+        jcbManageHosts.setToolTipText("Activate host monitoring. Elasticity operations add and remove hosts and its virtual machines from cloud. To monitor only virtual machines uncheck this box.");
         jcbManageHosts.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jcbManageHostsItemStateChanged(evt);

@@ -95,7 +95,7 @@
               <Font name="Century Gothic" size="12" style="0"/>
             </Property>
             <Property name="horizontalAlignment" type="int" value="0"/>
-            <Property name="text" type="java.lang.String" value="Version 2.2"/>
+            <Property name="text" type="java.lang.String" value="Version 2.3"/>
           </Properties>
         </Component>
         <Container class="javax.swing.JScrollPane" name="jScrollPane1">
