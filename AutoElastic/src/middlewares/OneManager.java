@@ -40,7 +40,7 @@ public class OneManager {
     
     private static final String objname = "middlewares.OneManager"; //name of the class to be used in the logs
     private Client oneClient; //cliente de conexão com o servidor opennebula
-    private OneHostPool ohpool; //conjunto de hosts que serão monitorados e utilizados
+    private OneResourcePool orpool; //set of resources in the cloud
     private OneCommunicator messenger; //comunicador utilizado para realizar a comunicação de operações de elasticidade
     private final String user; //usuario para conexão com o OpenNebula
     private final String password; //senha para conexão com o OpenNebula
@@ -105,7 +105,7 @@ public class OneManager {
             if (oneClient.get_version().getMessage() != null){ //try to get the version. if null is because we do not have connection with the server
                 gera_log(objname,"serverConnect: OpenNebula version: " + oneClient.get_version().getMessage());
                 //>criação dos hosts que podem ser utilizados
-                ohpool = new OneHostPool(
+                orpool = new OneResourcePool(
                         oneClient, 
                         iphosts, 
                         log, 
@@ -131,7 +131,7 @@ public class OneManager {
     }
     
     public void syncData(){
-        ohpool.syncResources(); //sincroniza dados dos hosts
+        orpool.syncResources(); //sincroniza dados dos hosts
     }
     
     /**
@@ -139,15 +139,15 @@ public class OneManager {
      * @return [0 &lt load &lt 1]
      */
     public float getCPULoad(){
-        float used = ohpool.getUsedCPU();
-        float allocated = ohpool.getAllocatedCPU();        
+        float used = orpool.getUsedCPU();
+        float allocated = orpool.getAllocatedCPU();        
         float load = used / allocated;
         return load;
     }
     
     //return the total of CPU available in the cloud
     public float getAllocatedCPU(){
-        return ohpool.getAllocatedCPU();
+        return orpool.getAllocatedCPU();
     }
     
     /**
@@ -155,17 +155,17 @@ public class OneManager {
      * @return 0 &lt CPU 
      */
     public float getUsedCPU(){
-        return ohpool.getUsedCPU();
+        return orpool.getUsedCPU();
     }
     
     //return the total of MEM available in the cloud
     public float getAllocatedMEM(){
-        return ohpool.getAllocatedMEM();
+        return orpool.getAllocatedMEM();
     }
     
     //return the current use of MEM
     public float getUsedMEM(){
-        return ohpool.getUsedMEM();
+        return orpool.getUsedMEM();
     }
     
     /**
@@ -173,12 +173,12 @@ public class OneManager {
      * @return the times in string separeted by ","
      */
     public String getLastMonitorTimes(){
-        return ohpool.getLastMonitorTimes();
+        return orpool.getLastMonitorTimes();
     }
     
     //return the current number of hosts in use
     public int getTotalActiveResources(){
-        return ohpool.getTotalAtivos();
+        return orpool.getTotalAtivos();
     }
 
     /**
@@ -194,13 +194,13 @@ public class OneManager {
             int hostid;
             for (int i = 0; i < hosts_per_operation; i++){
                 //hostid = ohpool.allocatesHostNow(oneClient); //allocates the host and it will be active immediatly
-                hostid = ohpool.allocateResource(oneClient);      //allocates the host and it will be active after resorces be online
+                hostid = orpool.allocateResource(oneClient);      //allocates the host and it will be active after resorces be online
                 if (hostid > 0){
                     for (int j = 0; j < vms_per_operation; j++) {
                         new_vms.add(0,new OneVM(vmtemplateid));
                         new_vms.get(0).deploy(oneClient, hostid, log);//aloca vm nesse host
                         //gera_log(objname,"Main: Nova VM alocada: " + last_vms[i].getID());
-                        ohpool.getOneHost(hostid).addVM(new_vms.get(0));
+                        orpool.getOneHost(hostid).addVM(new_vms.get(0));
                         waiting_vms = true;
                         System.out.println("Allocating vm " + j);
                         //Thread.sleep(10000); //why?
@@ -222,9 +222,9 @@ public class OneManager {
         
     //método que remove um host e suas máquinas virtuais no ambiente
     public boolean decreaseResources() throws InterruptedException, IOException{
-        if (messenger.notifyDecrease(ohpool.getLastActiveResources(vms_per_operation, hosts_per_operation))){
+        if (messenger.notifyDecrease(orpool.getLastActiveResources(vms_per_operation, hosts_per_operation))){
             while(!messenger.canDecrease()){}
-            return ohpool.removeResource(oneClient, vms_per_operation, hosts_per_operation);//remove último host criado e suas vms também
+            return orpool.removeResource(oneClient, vms_per_operation, hosts_per_operation);//remove último host criado e suas vms também
         }
         return false;
     }
@@ -235,7 +235,7 @@ public class OneManager {
      * @throws InterruptedException
      */
     public boolean decreaseResourcesHard() throws InterruptedException{
-        return ohpool.removeResource(oneClient, vms_per_operation, hosts_per_operation);//remove último host criado e suas vms também
+        return orpool.removeResource(oneClient, vms_per_operation, hosts_per_operation);//remove último host criado e suas vms também
     }
     
     public boolean newResourcesPending() throws ParserConfigurationException, SAXException, IOException, InterruptedException{        
@@ -255,11 +255,11 @@ public class OneManager {
             //now lets activate this new resources in the monitoring
             if(managehosts){ //if we are monitoring hosts then lets enable the added hosts
                 for (int i = 0; i < hosts_per_operation; i++){
-                    ohpool.enableLastHost();
+                    orpool.enableLastHost();
                 }
             } else { //if we are monitoring only virtual machines lets add them to monitoring
                 for (int i = 0; i < new_vms.size(); i++){
-                    ohpool.addVirtualMachine(new_vms.get(i));
+                    orpool.addVirtualMachine(new_vms.get(i));
                 }
             }
             new_vms = null;
@@ -304,25 +304,25 @@ public class OneManager {
     
     //remove host from the monitoring pool leaving only "lowThreshold" hosts
     public void organizeReadOnlyMode(int lowThreshold) {
-        int hosts = ohpool.getTotalAtivos();
+        int hosts = orpool.getTotalAtivos();
         for (int i = lowThreshold; i < hosts; i++){
             gera_log(objname,"organizeReadOnlyMode: removing host " + i + " from " + hosts + ".");
-            ohpool.removeReadOnlyHost();
+            orpool.removeReadOnlyHost();
         }
     }
     
     public boolean increaseReadOnlyResources(){
-        ohpool.allocateReadOnlyHost();
+        orpool.allocateReadOnlyHost();
         try {
-            messenger.notifyNewResources(ohpool.getLastActiveResources(vms_per_operation, hosts_per_operation));
+            messenger.notifyNewResources(orpool.getLastActiveResources(vms_per_operation, hosts_per_operation));
         } catch (ParserConfigurationException | SAXException | IOException | InterruptedException ex) {Logger.getLogger(OneManager.class.getName()).log(Level.SEVERE, null, ex);}
         return true;
     }
     
     public boolean decreaseReadOnlyResources() throws InterruptedException, IOException{
-        if (messenger.notifyDecrease(ohpool.getLastActiveResources(vms_per_operation, hosts_per_operation))){
+        if (messenger.notifyDecrease(orpool.getLastActiveResources(vms_per_operation, hosts_per_operation))){
             while(!messenger.canDecrease()){}
-            return ohpool.removeReadOnlyHost();
+            return orpool.removeReadOnlyHost();
         }
         return false;
     }
@@ -354,7 +354,7 @@ public class OneManager {
                 for (int j = 0; j < vmsperhost; j++){ //create vmsperhost new virtual machines
                     vmid = instantiate_vm(hostid, idtemplatevm); //create a new virtual machine in "hostid"
                     //gera_log(objname,"Main: Nova VM alocada: " + vmid); //log
-                    ipvms[countvm] = ohpool.getOneHost(hostid).getVM(0).getIP(); //store the IP of this virtual machine
+                    ipvms[countvm] = orpool.getOneHost(hostid).getVM(0).getIP(); //store the IP of this virtual machine
                     countvm++;
                 }
             } else {//problem in host allocation
@@ -369,7 +369,7 @@ public class OneManager {
         int vmid;
         OneVM vm = new OneVM(vmtemplateid);
         vmid = vm.deploy(oneClient, hid, log);
-        ohpool.getOneHost(hid).addVM(vm); //add this virtual machine in the "ohpool"
+        orpool.getOneHost(hid).addVM(vm); //add this virtual machine in the "ohpool"
         return vmid;
     }
     
@@ -377,7 +377,7 @@ public class OneManager {
     private int instantiate_host(){
         int hostid = 0;
         try {
-            hostid = ohpool.allocateHostNow(oneClient); //create a new host in the "ohpool"
+            hostid = orpool.allocateHostNow(oneClient); //create a new host in the "ohpool"
         } catch (Exception ex) {
             Logger.getLogger(OneManager.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -34,7 +34,7 @@ import org.xml.sax.SAXException;
  *           - added list of virtual machines when the monitoring will consider only virtual machines
  *           - changed the logic of all class to enable monitoring of only virtual machines if necessary
  */
-public class OneHostPool {
+public class OneResourcePool {
     
     //private OneHost[] hosts; //hosts que serão utilizados no ambiente    
     private final String objname = "middlewares.OneHostPool"; //name of the class to be used in the logs
@@ -60,7 +60,7 @@ public class OneHostPool {
     private final HostPool hostpool;
     private final boolean managehosts;
         
-    public OneHostPool(Client oc, 
+    public OneResourcePool(Client oc, 
                         String[] ips, 
                         JTextArea plog, 
                         String im, 
@@ -90,7 +90,7 @@ public class OneHostPool {
             }
             hosts = hosts + "IP: " + ips[i] + " | ";
         }
-        //gera_log(objname,"OneHostPool: Hosts recebidos " + hosts);
+        //gera_log(objname,"OneResourcePool: Hosts recebidos " + hosts);
         this.hostpool = new HostPool(oc);
         updateResources(oc);
     }
@@ -255,7 +255,7 @@ public class OneHostPool {
                     host_ativo.syncInfo(); //sincroniza cada host
                     hostUsedCPU = hostUsedCPU + host_ativo.getUsedCPU(); //pega uso da cpu
                     hostUsedMEM = hostUsedMEM + host_ativo.getUsedMEM(); //get used memory
-                    //gera_log(objname, "Main|OneHostPool|syncResources: Uso de CPU pelo host " + host_ativo.getID() + " : " + host_ativo.getUsedCPU());
+                    //gera_log(objname, "Main|OneResourcePool|syncResources: Uso de CPU pelo host " + host_ativo.getID() + " : " + host_ativo.getUsedCPU());
                     hostAllCPU = hostAllCPU + host_ativo.getMaxCPU(); //pega total de cpu
                     hostAllMEM = hostAllMEM + host_ativo.getMaxMEM(); //get total memory
                     hostAllMonitoringTimes += ";" + host_ativo.getLastMonTime(); //get the last_mon_time of the host and append in the attribute
