@@ -37,7 +37,7 @@ import org.xml.sax.SAXException;
 public class OneResourcePool {
     
     //private OneHost[] hosts; //hosts que serão utilizados no ambiente    
-    private final String objname = "middlewares.OneHostPool"; //name of the class to be used in the logs
+    private final String objname = "middlewares.OneResourcePool"; //name of the class to be used in the logs
     private ArrayList<OneHost> hosts_ativos;
     private ArrayList<OneHost> hosts_inativos;
     private ArrayList<OneHost> pending_hosts;
@@ -276,15 +276,15 @@ public class OneResourcePool {
                 try {
                     gera_log(objname,"syncResources: Updating VM ID " + vm.getID() + " data from cloud.");
                     vm.syncInfo();
-                    //gera_log(objname,"syncResources: VM ID " + vm.getID() + " data from cloud updated.");
+                    gera_log(objname,"syncResources: VM ID " + vm.getID() + " data from cloud updated.");
                     vmUsedCPU = vmUsedCPU + vm.getUsedCPU();
                     vmUsedMEM = vmUsedMEM + vm.getUsedMEM();
                     vmAllCPU = vmAllCPU + vm.getAllocatedCPU();
                     vmAllMEM = vmAllMEM + vm.getAllocatedMEM();
                     vmAllMonitoringTimes += ";" + vm.getLastPoll();
-                    //gera_log(objname,"syncResources: VM " + vm.getID() + " synchronized.");
+                    gera_log(objname,"syncResources: VM " + vm.getID() + " synchronized.");
                 } catch (ParserConfigurationException | SAXException | IOException ex) {
-                    gera_log(objname,ex.getMessage());
+                    gera_log(objname + "(ERROR)",ex.getMessage());
                 }
             }
             gera_log(objname,"syncResources: " + virtualMachines.size() + " vm(s) synchronized.");

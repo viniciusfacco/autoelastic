@@ -27,6 +27,8 @@ import org.xml.sax.SAXException;
  * 18/01/2017 - @viniciusfacco
  *            - Added hostid, USED_MEM, MAX_MEM, USED_CPU, MAX_CPU and LAST_POLL to the object and its respective methods
  *            - Now attributes from virtual machines are monitored too
+ * 24/01/2017 - viniciusfacco
+ *            - bug correction in the xml parser
  */
 public class OneVM {
     
@@ -139,35 +141,42 @@ public class OneVM {
         Document doc = docBuilder.parse(is);
         doc.getDocumentElement().normalize();
         
+        //gera_log(objname,"syncInfo: NIC.");
         NodeList nl = doc.getElementsByTagName("NIC");
         Element el = (Element) nl.item(0);
         this.ip = el.getElementsByTagName("IP").item(0).getChildNodes().item(0).getNodeValue().trim();
         
+        //gera_log(objname,"syncInfo: HISTORY.");
         nl = doc.getElementsByTagName("HISTORY");
         el = (Element) nl.item(0);
         this.hostid = Integer.parseInt(el.getElementsByTagName("HID").item(0).getChildNodes().item(0).getNodeValue().trim());
         
+        //gera_log(objname,"syncInfo: STATE.");
         nl = doc.getElementsByTagName("STATE");
         el = (Element) nl.item(0);
         this.state = Integer.parseInt(el.getChildNodes().item(0).getNodeValue().trim());
         //System.out.println("Status VM ID " + this.id + ": " + this.state);log.append("Status VM ID " + this.id + ": " + this.state + "\n");
         
+        //gera_log(objname,"syncInfo: LAST_POLL.");
         nl = doc.getElementsByTagName("LAST_POLL");
         el = (Element) nl.item(0);
         this.LAST_POLL = Long.parseLong(el.getChildNodes().item(0).getNodeValue().trim());
         
+        //gera_log(objname,"syncInfo: MEMORY.");
         nl = doc.getElementsByTagName("MEMORY");
         el = (Element) nl.item(0);
-        this.USED_MEM = Integer.parseInt(el.getChildNodes().item(0).getNodeValue().trim()) / 1024;
+        this.USED_MEM = (float) (Double.parseDouble(el.getChildNodes().item(0).getNodeValue().trim()) / 1024);
         
+        //gera_log(objname,"syncInfo: CPU.");
         nl = doc.getElementsByTagName("CPU");
         el = (Element) nl.item(0);
-        this.USED_CPU = Integer.parseInt(el.getChildNodes().item(0).getNodeValue().trim());
+        this.USED_CPU = (float) Double.parseDouble(el.getChildNodes().item(0).getNodeValue().trim());
         
+        //gera_log(objname,"syncInfo: TEMPLATE.");
         nl = doc.getElementsByTagName("TEMPLATE");
         el = (Element) nl.item(0);
-        this.MAX_MEM = Integer.parseInt(el.getElementsByTagName("MEMORY").item(0).getChildNodes().item(0).getNodeValue().trim());
-        this.MAX_CPU = Integer.parseInt(el.getElementsByTagName("CPU").item(0).getChildNodes().item(0).getNodeValue().trim()) * 100;
+        this.MAX_MEM = (float) Double.parseDouble(el.getElementsByTagName("MEMORY").item(0).getChildNodes().item(0).getNodeValue().trim());
+        this.MAX_CPU = (float) (Double.parseDouble(el.getElementsByTagName("CPU").item(0).getChildNodes().item(0).getNodeValue().trim()) * 100);
     }
     
     private String getInfo() {

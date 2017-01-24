@@ -35,6 +35,8 @@ import org.xml.sax.SAXException;
  *            - added funcionality to monitor only virtual machines if necessary
  *            - added fkag managehosts
  *            - fixed bug in newResourcesPending to enable resources in the monitoring after they get online
+ * 24/01/2017 - viniciusfacco
+ *            - added port parameters to connect servers
  */
 public class OneManager {
     
@@ -45,7 +47,7 @@ public class OneManager {
     private final String user; //usuario para conexão com o OpenNebula
     private final String password; //senha para conexão com o OpenNebula
     private final String server_address; //IP do servidor OpenNebula
-    private final int server_port = 2633; //porta de conexão com o servidor OpenNebula
+    private int server_port; //porta de conexão com o servidor OpenNebula
     private final String[] iphosts;
     private static String image_manager;
     private static String virtual_machine_manager;
@@ -79,7 +81,8 @@ public class OneManager {
                         String plocaldirtemp, 
                         String premotedirsource, 
                         String premotedirtarget,
-                        boolean pmanagehosts
+                        boolean pmanagehosts,
+                        int pserverport
     ){
         user = puser;
         password = ppassword;
@@ -96,6 +99,7 @@ public class OneManager {
         waiting_vms = false;
         messenger = new OneCommunicator(psshserver, psshuser, psshpassword, plog);
         messenger.setParameters(pmsgwarningremove, pmsgcanremove, pmsgnewresources, plocaldirtemp, premotedirsource, premotedirtarget);
+        server_port = pserverport;
     }
     
     public boolean serverConnect(){
