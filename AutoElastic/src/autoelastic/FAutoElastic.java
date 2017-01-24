@@ -26,6 +26,8 @@ import org.xml.sax.SAXException;
  *            - added a new tab called Communication with nine new parameters that the user can set
  * 03/01/2017 - viniciusfacco
  *            - added Read Only flag
+ * 24/01/2017 - viniciusfacco
+ *            - added port parameters to connect servers
  */
 public class FAutoElastic extends javax.swing.JFrame {
 
@@ -66,6 +68,8 @@ public class FAutoElastic extends javax.swing.JFrame {
         jLabel14 = new javax.swing.JLabel();
         jtfClusterId = new javax.swing.JTextField();
         jSeparator2 = new javax.swing.JSeparator();
+        jLabel21 = new javax.swing.JLabel();
+        frontendport = new javax.swing.JTextField();
         jpParameters = new javax.swing.JPanel();
         jtfSla = new javax.swing.JTextField();
         jbBuscarSLA = new javax.swing.JButton();
@@ -122,6 +126,8 @@ public class FAutoElastic extends javax.swing.JFrame {
         jlMsgWarningRemove = new javax.swing.JLabel();
         jlMsgCanRemove = new javax.swing.JLabel();
         jlMsgNewResources = new javax.swing.JLabel();
+        jLabel22 = new javax.swing.JLabel();
+        dataserverport = new javax.swing.JTextField();
         jpHosts = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         jtHosts = new javax.swing.JTable();
@@ -237,6 +243,10 @@ public class FAutoElastic extends javax.swing.JFrame {
             }
         });
 
+        jLabel21.setText(":");
+
+        frontendport.setText("2633");
+
         javax.swing.GroupLayout jpServerLayout = new javax.swing.GroupLayout(jpServer);
         jpServer.setLayout(jpServerLayout);
         jpServerLayout.setHorizontalGroup(
@@ -262,7 +272,7 @@ public class FAutoElastic extends javax.swing.JFrame {
                             .addGroup(jpServerLayout.createSequentialGroup()
                                 .addComponent(jLabel12)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jtfVMM))))
+                                .addComponent(jtfVMM, javax.swing.GroupLayout.DEFAULT_SIZE, 370, Short.MAX_VALUE))))
                     .addGroup(jpServerLayout.createSequentialGroup()
                         .addGroup(jpServerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jpServerLayout.createSequentialGroup()
@@ -279,6 +289,10 @@ public class FAutoElastic extends javax.swing.JFrame {
                                 .addComponent(jLabel10)
                                 .addGap(36, 36, 36)
                                 .addComponent(jtfSenha)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel21)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(frontendport, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -288,7 +302,9 @@ public class FAutoElastic extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jpServerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jtfFrontend, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel21)
+                    .addComponent(frontendport, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(12, 12, 12)
                 .addGroup(jpServerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jtfUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -774,6 +790,10 @@ public class FAutoElastic extends javax.swing.JFrame {
 
         jlMsgNewResources.setText("Notification of New Resources Message");
 
+        jLabel22.setText(":");
+
+        dataserverport.setText("22");
+
         javax.swing.GroupLayout jpCommunicationLayout = new javax.swing.GroupLayout(jpCommunication);
         jpCommunication.setLayout(jpCommunicationLayout);
         jpCommunicationLayout.setHorizontalGroup(
@@ -795,18 +815,28 @@ public class FAutoElastic extends javax.swing.JFrame {
                     .addComponent(jtfRemoteDirSource, javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jpCommunicationLayout.createSequentialGroup()
                         .addGroup(jpCommunicationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jtfSSHPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE)
-                            .addComponent(jtfSSHUser)
-                            .addComponent(jtfSSHServer, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addGap(46, 46, 46)
+                            .addGroup(jpCommunicationLayout.createSequentialGroup()
+                                .addComponent(jtfSSHServer, javax.swing.GroupLayout.DEFAULT_SIZE, 157, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel22)
+                                .addGap(3, 3, 3)
+                                .addComponent(dataserverport, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE))
+                            .addComponent(jtfSSHPassword)
+                            .addComponent(jtfSSHUser))
+                        .addGap(37, 37, 37)
                         .addGroup(jpCommunicationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jlMsgWarningRemove)
-                            .addComponent(jlMsgCanRemove)
-                            .addComponent(jlMsgNewResources))
+                            .addGroup(jpCommunicationLayout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jlMsgWarningRemove))
+                            .addGroup(jpCommunicationLayout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(jpCommunicationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jlMsgCanRemove, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jlMsgNewResources, javax.swing.GroupLayout.Alignment.TRAILING))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jpCommunicationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jtfMsgCanRemove, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jtfMsgWarningRemove, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jpCommunicationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jtfMsgCanRemove, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 370, Short.MAX_VALUE)
+                            .addComponent(jtfMsgWarningRemove, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jtfMsgNewResources)))
                     .addComponent(jtfLocalDirTemp))
                 .addGap(22, 22, 22))
@@ -819,7 +849,9 @@ public class FAutoElastic extends javax.swing.JFrame {
                     .addComponent(jlSSHServer)
                     .addComponent(jtfSSHServer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jtfMsgWarningRemove, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jlMsgWarningRemove))
+                    .addComponent(jlMsgWarningRemove)
+                    .addComponent(jLabel22)
+                    .addComponent(dataserverport, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jpCommunicationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jtfSSHUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1683,6 +1715,8 @@ public class FAutoElastic extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup bgEvaluators;
     private javax.swing.ButtonGroup bgThresholdType;
+    private javax.swing.JTextField dataserverport;
+    private javax.swing.JTextField frontendport;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -1697,6 +1731,8 @@ public class FAutoElastic extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -1953,14 +1989,16 @@ public class FAutoElastic extends javax.swing.JFrame {
                     this.jtaLog,
                     this.jcbReadOnly.isSelected(),
                     this.jcbManageHosts.isSelected(),
-                    Integer.parseInt(this.jtfCoolDown.getText())
+                    Integer.parseInt(this.jtfCoolDown.getText()),
+                    Integer.parseInt(this.frontendport.getText()),
+                    Integer.parseInt(this.dataserverport.getText())
             );
 
             if (this.jcbLabMode.isSelected()){
                 try {
                     //if we selected the lab mode the parameters to be used will be others
                     this.setVisible(false);
-                    autoelastic_manager.startLabMode(this.jtfFrontend.getText(), this.jtfUsuario.getText(), this.jtfSenha.getText(), this.jtfSla.getText(), hosts, jtaLog);
+                    autoelastic_manager.startLabMode(this.jtfFrontend.getText(), this.jtfUsuario.getText(), this.jtfSenha.getText(), this.jtfSla.getText(), hosts, jtaLog, this.frontendport.getText());
                 } catch (IOException ex) {
                     Logger.getLogger(FAutoElastic.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (ParserConfigurationException ex) {

@@ -55,6 +55,8 @@ import thresholds.*;
  *            - implemented read only mode in the monitoring and innitialize methods
  * 06/01/2017 - viniciusfacco
  *            - implemented cooldown period after each elasticity operation
+ * 24/01/2017 - viniciusfacco
+ *            - added port parameters to connect servers
  */
 public class AutoElastic implements Runnable {
 
@@ -99,6 +101,8 @@ public class AutoElastic implements Runnable {
     private static boolean readonly;
     private static boolean managehosts;
     private static int cooldown;
+    private static int serverport;
+    private static int sshserverport;
     
     public AutoElastic(JPanel pgraphic1, JPanel pgraphic2){
         graphic1 = new Graphic(pgraphic1, "CPU Usage (Total)");
@@ -170,7 +174,9 @@ public class AutoElastic implements Runnable {
                        JTextArea plog,
                        boolean preadonly,
                        boolean pmanagehosts,
-                       int pcooldown){
+                       int pcooldown,
+                       int pserverport,
+                       int psshserverport){
         
         frontend = pfrontend;
         usuario = pusuario;
@@ -206,6 +212,8 @@ public class AutoElastic implements Runnable {
         readonly = preadonly;
         managehosts = pmanagehosts;
         cooldown = pcooldown;
+        serverport = pserverport;
+        sshserverport = psshserverport;
         gera_log(objname,"Constructing.");
     }
 
@@ -386,7 +394,8 @@ public class AutoElastic implements Runnable {
                 localdirtemp, 
                 remotedirsource, 
                 remotedirtarget,
-                managehosts
+                managehosts,
+                serverport
         );            
         //connect with the cloud server
         if (cloud_manager.serverConnect()){
@@ -396,7 +405,7 @@ public class AutoElastic implements Runnable {
             gera_log(objname,"inicialize: Problem to connect to server " + frontend);
             monitoring = false; //if trouble, then we can't monitor
         }
-        cloud_manager.setSSHClient(new SSHClient(frontend, usuario, senha));
+        cloud_manager.setSSHClient(new SSHClient(frontend, usuario, senha, sshserverport));
         //--
         gera_log(objname,"inicialize: Initializing SLA: " + slapath);
         //create a new SLA
@@ -448,9 +457,9 @@ public class AutoElastic implements Runnable {
      * @throws SAXException
      * @throws Exception
      */
-    public void startLabMode(String srv, String usr, String pwd, String sla, String[] hosts, JTextArea lg) throws InterruptedException, IOException, ParserConfigurationException, SAXException, Exception{
+    public void startLabMode(String srv, String usr, String pwd, String sla, String[] hosts, JTextArea lg, String prt) throws InterruptedException, IOException, ParserConfigurationException, SAXException, Exception{
         
-        SSHClient ssh = new SSHClient(srv, usr, pwd);
+        SSHClient ssh = new SSHClient(srv, usr, pwd, Integer.parseInt(prt));
         String ip_vm_master = "10.210.14.65";//VM que vai rodar mestre e slave inicial. Processos devem ser iniciados manualmente aqui.
         String server_message_start = "appstarted";
         String server_message_stop = "appstoped";

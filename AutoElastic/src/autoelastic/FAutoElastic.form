@@ -138,7 +138,7 @@
                                       <Group type="102" attributes="0">
                                           <Component id="jLabel12" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                          <Component id="jtfVMM" max="32767" attributes="0"/>
+                                          <Component id="jtfVMM" pref="370" max="32767" attributes="0"/>
                                       </Group>
                                   </Group>
                               </Group>
@@ -164,6 +164,10 @@
                                           <Component id="jtfSenha" max="32767" attributes="0"/>
                                       </Group>
                                   </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="jLabel21" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="frontendport" min="-2" pref="50" max="-2" attributes="0"/>
                                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                               </Group>
                           </Group>
@@ -178,6 +182,8 @@
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="jtfFrontend" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabel21" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="frontendport" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
@@ -331,6 +337,16 @@
                   </Events>
                 </Component>
                 <Component class="javax.swing.JSeparator" name="jSeparator2">
+                </Component>
+                <Component class="javax.swing.JLabel" name="jLabel21">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value=":"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JTextField" name="frontendport">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="2633"/>
+                  </Properties>
                 </Component>
               </SubComponents>
             </Container>
@@ -1028,20 +1044,34 @@
                               <Component id="jtfRemoteDirSource" alignment="0" max="32767" attributes="0"/>
                               <Group type="102" attributes="0">
                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                      <Component id="jtfSSHPassword" pref="139" max="32767" attributes="0"/>
+                                      <Group type="102" attributes="0">
+                                          <Component id="jtfSSHServer" pref="157" max="32767" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="jLabel22" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
+                                          <Component id="dataserverport" pref="37" max="32767" attributes="0"/>
+                                      </Group>
+                                      <Component id="jtfSSHPassword" max="32767" attributes="0"/>
                                       <Component id="jtfSSHUser" max="32767" attributes="0"/>
-                                      <Component id="jtfSSHServer" alignment="1" max="32767" attributes="0"/>
                                   </Group>
-                                  <EmptySpace min="-2" pref="46" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="1" attributes="0">
-                                      <Component id="jlMsgWarningRemove" min="-2" max="-2" attributes="0"/>
-                                      <Component id="jlMsgCanRemove" min="-2" max="-2" attributes="0"/>
-                                      <Component id="jlMsgNewResources" min="-2" max="-2" attributes="0"/>
+                                      <Group type="102" alignment="1" attributes="0">
+                                          <EmptySpace min="31" max="32767" attributes="0"/>
+                                          <Component id="jlMsgWarningRemove" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" alignment="1" attributes="0">
+                                          <EmptySpace max="32767" attributes="0"/>
+                                          <Group type="103" groupAlignment="0" attributes="0">
+                                              <Component id="jlMsgCanRemove" alignment="1" min="-2" max="-2" attributes="0"/>
+                                              <Component id="jlMsgNewResources" alignment="1" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                      </Group>
                                   </Group>
-                                  <EmptySpace min="-2" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="1" attributes="0">
-                                      <Component id="jtfMsgCanRemove" alignment="0" max="32767" attributes="0"/>
-                                      <Component id="jtfMsgWarningRemove" alignment="0" max="32767" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                      <Component id="jtfMsgCanRemove" alignment="1" pref="370" max="32767" attributes="0"/>
+                                      <Component id="jtfMsgWarningRemove" alignment="1" max="32767" attributes="0"/>
                                       <Component id="jtfMsgNewResources" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
@@ -1060,6 +1090,8 @@
                               <Component id="jtfSSHServer" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jtfMsgWarningRemove" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jlMsgWarningRemove" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabel22" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="dataserverport" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
@@ -1187,6 +1219,16 @@
                 <Component class="javax.swing.JLabel" name="jlMsgNewResources">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Notification of New Resources Message"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="jLabel22">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value=":"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JTextField" name="dataserverport">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="22"/>
                   </Properties>
                 </Component>
               </SubComponents>
