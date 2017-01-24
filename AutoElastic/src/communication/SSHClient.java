@@ -29,18 +29,20 @@ public class SSHClient {
     private final String server;
     private final String user;
     private final String password;
+    private final int port;
     
     private JSch jsch;
     private Session session;
     private UserInfo ui;
     
-    public SSHClient(String srv, String usr, String pwd){
+    public SSHClient(String srv, String usr, String pwd, int prt){
         server = srv;
         user = usr;
         password = pwd;
+        port = prt;
         jsch = new JSch();  
         try {
-            session = jsch.getSession(user, server, 22);
+            session = jsch.getSession(user, server, port);
         } catch (JSchException ex) {
             System.out.println("Problema ao solicitar sessão SSH.");
             Logger.getLogger(SSHClient.class.getName()).log(Level.SEVERE, null, ex);
