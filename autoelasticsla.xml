@@ -3,5 +3,7 @@
 	<Terms>
 		<MaximalHosts>10</MaximalHosts>
 		<MinimalHosts>1</MinimalHosts>
+		<MaximalVirtualMachines>10</MaximalVirtualMachines>
+		<MinimalVirtualMachines>1</MinimalVirtualMachines>
 	</Terms>
 </Agreement>
