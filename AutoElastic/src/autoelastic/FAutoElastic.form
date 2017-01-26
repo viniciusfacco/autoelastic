@@ -138,7 +138,7 @@
                                       <Group type="102" attributes="0">
                                           <Component id="jLabel12" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                          <Component id="jtfVMM" pref="370" max="32767" attributes="0"/>
+                                          <Component id="jtfVMM" pref="262" max="32767" attributes="0"/>
                                       </Group>
                                   </Group>
                               </Group>
@@ -155,19 +155,19 @@
                                           <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
                                           <Group type="103" groupAlignment="0" attributes="0">
                                               <Component id="jtfFrontend" min="-2" pref="218" max="-2" attributes="0"/>
-                                              <Component id="jtfUsuario" min="-2" pref="218" max="-2" attributes="0"/>
+                                              <Component id="jtfFrontEndUser" min="-2" pref="218" max="-2" attributes="0"/>
                                           </Group>
                                       </Group>
                                       <Group type="102" alignment="0" attributes="0">
                                           <Component id="jLabel10" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
-                                          <Component id="jtfSenha" max="32767" attributes="0"/>
+                                          <Component id="jtfFrontEndPassword" max="32767" attributes="0"/>
                                       </Group>
                                   </Group>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="jLabel21" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="frontendport" min="-2" pref="50" max="-2" attributes="0"/>
+                                  <Component id="jtfFrontEndPort" min="-2" pref="50" max="-2" attributes="0"/>
                                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                               </Group>
                           </Group>
@@ -183,16 +183,16 @@
                               <Component id="jtfFrontend" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel21" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="frontendport" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jtfFrontEndPort" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jtfUsuario" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jtfFrontEndUser" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel9" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jtfSenha" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jtfFrontEndPassword" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel10" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
@@ -246,13 +246,13 @@
                     <Property name="text" type="java.lang.String" value="User"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="jtfUsuario">
+                <Component class="javax.swing.JTextField" name="jtfFrontEndUser">
                   <Properties>
                     <Property name="toolTipText" type="java.lang.String" value="Cloud administrator user."/>
                   </Properties>
                   <Events>
-                    <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="jtfUsuarioFocusGained"/>
-                    <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="jtfUsuarioFocusLost"/>
+                    <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="jtfFrontEndUserFocusGained"/>
+                    <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="jtfFrontEndUserFocusLost"/>
                   </Events>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel10">
@@ -263,13 +263,13 @@
                     <Property name="text" type="java.lang.String" value="Password"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="jtfSenha">
+                <Component class="javax.swing.JTextField" name="jtfFrontEndPassword">
                   <Properties>
                     <Property name="toolTipText" type="java.lang.String" value="Cloud administrator user password."/>
                   </Properties>
                   <Events>
-                    <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="jtfSenhaFocusGained"/>
-                    <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="jtfSenhaFocusLost"/>
+                    <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="jtfFrontEndPasswordFocusGained"/>
+                    <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="jtfFrontEndPasswordFocusLost"/>
                   </Events>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel11">
@@ -343,7 +343,7 @@
                     <Property name="text" type="java.lang.String" value=":"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="frontendport">
+                <Component class="javax.swing.JTextField" name="jtfFrontEndPort">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="2633"/>
                   </Properties>
@@ -370,13 +370,13 @@
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" attributes="0">
-                                  <Component id="jPanel4" max="32767" attributes="0"/>
+                                  <Component id="jPanel4" pref="164" max="32767" attributes="0"/>
                                   <EmptySpace min="-2" max="-2" attributes="0"/>
-                                  <Component id="jPanel3" pref="196" max="32767" attributes="0"/>
+                                  <Component id="jPanel3" pref="174" max="32767" attributes="0"/>
                                   <EmptySpace min="-2" max="-2" attributes="0"/>
-                                  <Component id="jPanel2" pref="183" max="32767" attributes="0"/>
+                                  <Component id="jPanel2" pref="152" max="32767" attributes="0"/>
                                   <EmptySpace min="-2" max="-2" attributes="0"/>
-                                  <Component id="jPanel1" pref="175" max="32767" attributes="0"/>
+                                  <Component id="jPanel1" pref="151" max="32767" attributes="0"/>
                                   <EmptySpace min="-2" max="-2" attributes="0"/>
                                   <Component id="jPanel5" max="32767" attributes="0"/>
                               </Group>
@@ -500,10 +500,10 @@
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                   <Component id="jLabel16" alignment="0" max="32767" attributes="0"/>
                                   <Component id="jrbAging" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="jRadioButton1" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="jrbFullAging" alignment="0" max="32767" attributes="0"/>
                                   <Component id="jrbGeneric" alignment="0" max="32767" attributes="0"/>
                               </Group>
-                              <EmptySpace pref="53" max="32767" attributes="0"/>
+                              <EmptySpace pref="29" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -515,7 +515,7 @@
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jrbAging" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jRadioButton1" min="-2" max="-2" attributes="0"/>
+                              <Component id="jrbFullAging" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jrbGeneric" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="32767" attributes="0"/>
@@ -565,7 +565,7 @@
                         <Property name="actionCommand" type="java.lang.String" value="generic"/>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JRadioButton" name="jRadioButton1">
+                    <Component class="javax.swing.JRadioButton" name="jrbFullAging">
                       <Properties>
                         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                           <Color blue="ff" green="ff" red="ff" type="rgb"/>
@@ -601,9 +601,9 @@
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="jrbLive" min="-2" max="-2" attributes="0"/>
                                   <Component id="jLabel17" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jrbFixed" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jrbStatic" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace pref="91" max="32767" attributes="0"/>
+                              <EmptySpace pref="60" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -613,7 +613,7 @@
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jLabel17" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="jrbFixed" min="-2" max="-2" attributes="0"/>
+                              <Component id="jrbStatic" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="jrbLive" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="32767" attributes="0"/>
@@ -630,7 +630,7 @@
                         <Property name="text" type="java.lang.String" value="Threshold Type"/>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JRadioButton" name="jrbFixed">
+                    <Component class="javax.swing.JRadioButton" name="jrbStatic">
                       <Properties>
                         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                           <Color blue="ff" green="ff" red="ff" type="rgb"/>
@@ -700,7 +700,7 @@
                                       </Group>
                                   </Group>
                               </Group>
-                              <EmptySpace pref="32" max="32767" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -819,7 +819,7 @@
                                   <Component id="jtfTemplateid" alignment="0" max="32767" attributes="0"/>
                                   <Component id="jtfVmsPorHost" alignment="0" max="32767" attributes="0"/>
                               </Group>
-                              <EmptySpace pref="26" max="32767" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -928,7 +928,7 @@
                                   <Component id="jcbLabMode" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace pref="38" max="32767" attributes="0"/>
+                              <EmptySpace pref="23" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -1049,7 +1049,7 @@
                                           <EmptySpace max="-2" attributes="0"/>
                                           <Component id="jLabel22" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
-                                          <Component id="dataserverport" pref="37" max="32767" attributes="0"/>
+                                          <Component id="jtfSSHPort" pref="37" max="32767" attributes="0"/>
                                       </Group>
                                       <Component id="jtfSSHPassword" max="32767" attributes="0"/>
                                       <Component id="jtfSSHUser" max="32767" attributes="0"/>
@@ -1061,7 +1061,7 @@
                                       </Group>
                                       <Group type="102" alignment="0" attributes="0">
                                           <EmptySpace type="separate" max="-2" attributes="0"/>
-                                          <Component id="jlMsgCanRemove" pref="215" max="32767" attributes="0"/>
+                                          <Component id="jlMsgCanRemove" max="32767" attributes="0"/>
                                       </Group>
                                       <Group type="102" alignment="1" attributes="0">
                                           <EmptySpace max="-2" attributes="0"/>
@@ -1070,7 +1070,7 @@
                                   </Group>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="jtfMsgCanRemove" alignment="1" pref="347" max="32767" attributes="0"/>
+                                      <Component id="jtfMsgPermissionRemove" alignment="1" pref="251" max="32767" attributes="0"/>
                                       <Component id="jtfMsgWarningRemove" alignment="1" max="32767" attributes="0"/>
                                       <Component id="jtfMsgNewResources" max="32767" attributes="0"/>
                                   </Group>
@@ -1091,13 +1091,13 @@
                               <Component id="jtfMsgWarningRemove" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jlMsgWarningRemove" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel22" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="dataserverport" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jtfSSHPort" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="jtfSSHUser" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jlSSHUser" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jtfMsgCanRemove" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jtfMsgPermissionRemove" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jlMsgCanRemove" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -1146,7 +1146,7 @@
                     <Property name="toolTipText" type="java.lang.String" value="Name of the file that AutoElastic Manager creates inside Message Target Dir to inform that he will remove resources."/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="jtfMsgCanRemove">
+                <Component class="javax.swing.JTextField" name="jtfMsgPermissionRemove">
                   <Properties>
                     <Property name="toolTipText" type="java.lang.String" value="Name of the file that AutoElastic Manager reads from Message Source Dir to get permission to remove resources."/>
                   </Properties>
@@ -1229,7 +1229,7 @@
                     <Property name="text" type="java.lang.String" value=":"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="dataserverport">
+                <Component class="javax.swing.JTextField" name="jtfSSHPort">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="22"/>
                   </Properties>
@@ -1254,7 +1254,7 @@
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
-                          <Component id="jScrollPane3" pref="829" max="32767" attributes="0"/>
+                          <Component id="jScrollPane3" pref="721" max="32767" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="jbDelHost" min="-2" pref="92" max="-2" attributes="0"/>
@@ -1414,7 +1414,7 @@
                   <Layout>
                     <DimensionLayout dim="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <EmptySpace min="0" pref="463" max="32767" attributes="0"/>
+                          <EmptySpace min="0" pref="409" max="32767" attributes="0"/>
                       </Group>
                     </DimensionLayout>
                     <DimensionLayout dim="1">
@@ -1434,7 +1434,7 @@
                   <Layout>
                     <DimensionLayout dim="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <EmptySpace min="0" pref="464" max="32767" attributes="0"/>
+                          <EmptySpace min="0" pref="410" max="32767" attributes="0"/>
                       </Group>
                     </DimensionLayout>
                     <DimensionLayout dim="1">
@@ -1611,11 +1611,15 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
                       <Component id="jbSaleLog" min="-2" pref="100" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jButton1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jButton2" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Component id="jbAbout" min="-2" pref="100" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="222" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="68" max="-2" attributes="0"/>
                       <Component id="jLabel18" max="32767" attributes="0"/>
-                      <EmptySpace min="-2" pref="244" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="42" max="-2" attributes="0"/>
                       <Component id="jbMinimize" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jbExit" min="-2" max="-2" attributes="0"/>
@@ -1625,12 +1629,14 @@
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jbSaleLog" alignment="0" max="32767" attributes="0"/>
-                  <Component id="jbAbout" alignment="0" max="32767" attributes="0"/>
                   <Component id="jbExit" alignment="0" max="32767" attributes="0"/>
                   <Group type="103" alignment="0" groupAlignment="3" attributes="0">
                       <Component id="jbMinimize" alignment="3" max="32767" attributes="0"/>
                       <Component id="jLabel18" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
+                  <Component id="jButton1" alignment="0" max="32767" attributes="0"/>
+                  <Component id="jButton2" max="32767" attributes="0"/>
+                  <Component id="jbAbout" alignment="0" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
           </Layout>
@@ -1762,6 +1768,54 @@
                 <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jbExitMousePressed"/>
                 <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jbExitMouseReleased"/>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbExitActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JButton" name="jButton1">
+              <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="ff" green="cc" red="33" type="rgb"/>
+                </Property>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Segoe UI" size="14" style="0"/>
+                </Property>
+                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Save CONFIG"/>
+                <Property name="contentAreaFilled" type="boolean" value="false"/>
+                <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+                  <Color id="Cursor em Forma de M&#xe3;o"/>
+                </Property>
+                <Property name="focusable" type="boolean" value="false"/>
+                <Property name="horizontalAlignment" type="int" value="2"/>
+                <Property name="opaque" type="boolean" value="true"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JButton" name="jButton2">
+              <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="ff" green="cc" red="33" type="rgb"/>
+                </Property>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Segoe UI" size="14" style="0"/>
+                </Property>
+                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Load CONFIG"/>
+                <Property name="contentAreaFilled" type="boolean" value="false"/>
+                <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+                  <Color id="Cursor em Forma de M&#xe3;o"/>
+                </Property>
+                <Property name="focusable" type="boolean" value="false"/>
+                <Property name="horizontalAlignment" type="int" value="2"/>
+                <Property name="opaque" type="boolean" value="true"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton2ActionPerformed"/>
               </Events>
             </Component>
           </SubComponents>
