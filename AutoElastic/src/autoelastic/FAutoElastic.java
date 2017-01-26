@@ -15,7 +15,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
-
+ 
 /**
  * User Interface
  * @author viniciusfacco
@@ -784,10 +784,13 @@ public class FAutoElastic extends javax.swing.JFrame {
 
         jlRemoteDirTarget1.setText("Local Temp Dir");
 
+        jlMsgWarningRemove.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jlMsgWarningRemove.setText("Warning Remove Resources Message");
 
+        jlMsgCanRemove.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jlMsgCanRemove.setText("Permission to Remove Resources Message");
 
+        jlMsgNewResources.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jlMsgNewResources.setText("Notification of New Resources Message");
 
         jLabel22.setText(":");
@@ -823,19 +826,19 @@ public class FAutoElastic extends javax.swing.JFrame {
                                 .addComponent(dataserverport, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE))
                             .addComponent(jtfSSHPassword)
                             .addComponent(jtfSSHUser))
-                        .addGap(37, 37, 37)
-                        .addGroup(jpCommunicationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(jpCommunicationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jpCommunicationLayout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jlMsgWarningRemove))
+                                .addGap(37, 37, 37)
+                                .addComponent(jlMsgWarningRemove, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(jpCommunicationLayout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(jpCommunicationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jlMsgCanRemove, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jlMsgNewResources, javax.swing.GroupLayout.Alignment.TRAILING))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jpCommunicationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jtfMsgCanRemove, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 370, Short.MAX_VALUE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jlMsgCanRemove, javax.swing.GroupLayout.DEFAULT_SIZE, 215, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpCommunicationLayout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jlMsgNewResources, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGap(18, 18, 18)
+                        .addGroup(jpCommunicationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jtfMsgCanRemove, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 347, Short.MAX_VALUE)
                             .addComponent(jtfMsgWarningRemove, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jtfMsgNewResources)))
                     .addComponent(jtfLocalDirTemp))

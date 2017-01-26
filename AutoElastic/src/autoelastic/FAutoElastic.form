@@ -1025,7 +1025,7 @@
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace max="-2" attributes="0"/>
+                          <EmptySpace min="-2" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="103" groupAlignment="0" attributes="0">
@@ -1038,7 +1038,7 @@
                               </Group>
                               <Component id="jlRemoteDirSource" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace max="-2" attributes="0"/>
+                          <EmptySpace min="-2" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="1" attributes="0">
                               <Component id="jtfRemoteDirTarget" alignment="0" max="32767" attributes="0"/>
                               <Component id="jtfRemoteDirSource" alignment="0" max="32767" attributes="0"/>
@@ -1054,23 +1054,23 @@
                                       <Component id="jtfSSHPassword" max="32767" attributes="0"/>
                                       <Component id="jtfSSHUser" max="32767" attributes="0"/>
                                   </Group>
-                                  <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="1" attributes="0">
-                                      <Group type="102" alignment="1" attributes="0">
-                                          <EmptySpace min="31" max="32767" attributes="0"/>
-                                          <Component id="jlMsgWarningRemove" min="-2" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Group type="102" attributes="0">
+                                          <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
+                                          <Component id="jlMsgWarningRemove" max="32767" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                                          <Component id="jlMsgCanRemove" pref="215" max="32767" attributes="0"/>
                                       </Group>
                                       <Group type="102" alignment="1" attributes="0">
-                                          <EmptySpace max="32767" attributes="0"/>
-                                          <Group type="103" groupAlignment="0" attributes="0">
-                                              <Component id="jlMsgCanRemove" alignment="1" min="-2" max="-2" attributes="0"/>
-                                              <Component id="jlMsgNewResources" alignment="1" min="-2" max="-2" attributes="0"/>
-                                          </Group>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="jlMsgNewResources" max="32767" attributes="0"/>
                                       </Group>
                                   </Group>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                      <Component id="jtfMsgCanRemove" alignment="1" pref="370" max="32767" attributes="0"/>
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="jtfMsgCanRemove" alignment="1" pref="347" max="32767" attributes="0"/>
                                       <Component id="jtfMsgWarningRemove" alignment="1" max="32767" attributes="0"/>
                                       <Component id="jtfMsgNewResources" max="32767" attributes="0"/>
                                   </Group>
@@ -1208,16 +1208,19 @@
                 </Component>
                 <Component class="javax.swing.JLabel" name="jlMsgWarningRemove">
                   <Properties>
+                    <Property name="horizontalAlignment" type="int" value="4"/>
                     <Property name="text" type="java.lang.String" value="Warning Remove Resources Message"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jlMsgCanRemove">
                   <Properties>
+                    <Property name="horizontalAlignment" type="int" value="4"/>
                     <Property name="text" type="java.lang.String" value="Permission to Remove Resources Message"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jlMsgNewResources">
                   <Properties>
+                    <Property name="horizontalAlignment" type="int" value="4"/>
                     <Property name="text" type="java.lang.String" value="Notification of New Resources Message"/>
                   </Properties>
                 </Component>
