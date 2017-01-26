@@ -251,7 +251,7 @@ public class OneResourcePool {
             for (OneHost host_ativo : hosts_ativos) {
                 //percorre todos os hosts ativos
                 try {
-                    gera_log(objname,"syncResources: Updating HOST ID " + host_ativo.getID() + " data from cloud.");
+                    //gera_log(objname,"syncResources: Updating HOST ID " + host_ativo.getID() + " data from cloud.");
                     host_ativo.syncInfo(); //sincroniza cada host
                     hostUsedCPU = hostUsedCPU + host_ativo.getUsedCPU(); //pega uso da cpu
                     hostUsedMEM = hostUsedMEM + host_ativo.getUsedMEM(); //get used memory
@@ -274,9 +274,9 @@ public class OneResourcePool {
             vmAllMonitoringTimes = "";
             for (OneVM vm : virtualMachines){
                 try {
-                    gera_log(objname,"syncResources: Updating VM ID " + vm.getID() + " data from cloud.");
+                    //gera_log(objname,"syncResources: Updating VM ID " + vm.getID() + " data from cloud.");
                     vm.syncInfo();
-                    gera_log(objname,"syncResources: VM ID " + vm.getID() + " data from cloud updated.");
+                    //gera_log(objname,"syncResources: VM ID " + vm.getID() + " data from cloud updated.");
                     vmUsedCPU = vmUsedCPU + vm.getUsedCPU();
                     vmUsedMEM = vmUsedMEM + vm.getUsedMEM();
                     vmAllCPU = vmAllCPU + vm.getAllocatedCPU();

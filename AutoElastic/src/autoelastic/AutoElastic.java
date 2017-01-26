@@ -308,18 +308,17 @@ public class AutoElastic implements Runnable {
                 }
                 recalculate_thresholds = 0;
             }
-            /*LOG*/gera_log(objname,"monitoring: Realiza verificação de alguma violação dos thresholds...");
+            /*LOG*/gera_log(objname,"monitoring: Checking threshold violations.");
             if ((evaluator.evaluate(thresholds.getUpperThreshold(), thresholds.getLowerThreshold())) && (!resourcesPending) && (cooldowncont < 0)){
                 //analyze the cloud situation and if we have some violation we need deal with this 
                     //and if we are not waiting for new resource allocation we can evaluate the cloud
                     //and if we are not in a cooldown period
                 /*LOG*/export_log(cont, time, System.currentTimeMillis(), cloud_manager.getTotalActiveResources(), cloud_manager.getAllocatedCPU(), cloud_manager.getUsedCPU(), cloud_manager.getAllocatedMEM(), cloud_manager.getUsedMEM(), cloud_manager.getAllocatedCPU() * thresholds.getUpperThreshold(), cloud_manager.getAllocatedCPU() * thresholds.getLowerThreshold(), cloud_manager.getCPULoad(), evaluator.getDecisionLoad(), thresholds.getLowerThreshold(), thresholds.getUpperThreshold(), cloud_manager.getLastMonitorTimes());
                 if (evaluator.isHighAction()){//if we have a violation on the high threshold
-                    /*LOG*/gera_log(objname,"monitoring: Avaliador detectou alta carga...Verificando se SLA está no limite...");
+                    /*LOG*/gera_log(objname,"monitoring: Upper threshold violated. Checking SLA...");
                     evaluator.resetFlags(); //after deal with the problem/violation, re-initialize the parameters of evaluation
                     if(sla.canIncrease(cloud_manager.getTotalActiveResources(), managehosts)){ //verify the SLA to know if we can increase resources
-                        /*LOG*/gera_log(objname,"monitoring: SLA não atingido...novo recurso pode ser alocado...");
-                        /*LOG*/gera_log(objname,"monitoring: Alocando recursos...");
+                        /*LOG*/gera_log(objname,"monitoring: Operation authorized by SLA. Instantiating resources.");
                         if (!readonly){//if not readonly proceed the normal elasticity
                             cloud_manager.increaseResources();//increase one host and the number of vms informed in the parameters
                         } else {//if readonly then proceed only local elasticity 
@@ -327,14 +326,13 @@ public class AutoElastic implements Runnable {
                         }
                         resourcesPending = true;
                     } else {
-                        /*LOG*/gera_log(objname,"monitoring: SLA no limite...nada pode ser feito...");
+                        /*LOG*/gera_log(objname,"monitoring: Operation not authorized by SLA.");
                     }
                 } else if (evaluator.isLowAction()){ //if we have a violation on the low threshold
-                    /*LOG*/gera_log(objname,"monitoring: Avaliador detectou baixa carga...Verificando se SLA está no limite...");
+                    /*LOG*/gera_log(objname,"monitoring: Lower threshold violated. Checking SLA...");
                     evaluator.resetFlags(); //after deal with the problem/violation, re-initialize the parameters of evaluation
                     if(sla.canDecrease(cloud_manager.getTotalActiveResources(), managehosts)){ //verify the SLA to know if we can decrease resources
-                        /*LOG*/gera_log(objname,"monitoring: SLA não atingido...novo recurso pode ser liberado...");
-                        /*LOG*/gera_log(objname,"monitoring: Liberando recursos...");
+                        /*LOG*/gera_log(objname,"monitoring: Operation authorized by SLA. Releasing resources.");
                         if (!readonly){//if not readonly proceed the normal elasticity
                             cloud_manager.decreaseResources(); //decrease the last host added and the number its vms
                         } else {//if readonly then proceed only local elasticity 
@@ -344,13 +342,13 @@ public class AutoElastic implements Runnable {
                         recalculate_thresholds = 2;
                         load_before = evaluator.getDecisionLoad();
                     } else {
-                        /*LOG*/gera_log(objname,"monitoring: SLA no limite...nada pode ser feito...");
+                        /*LOG*/gera_log(objname,"monitoring: Operation not authorized by SLA.");
                     }
                 } else {
                         /*LOG*/gera_log(objname,"monitoring: Evaluator problem. We have violation but we do not know which.");
                 }
             } else {
-                /*LOG*/gera_log(objname,"monitoring: Nenhuma ação necessária detectada/permitida.");
+                /*LOG*/gera_log(objname,"monitoring: No operations detected or allowed.");
                 /*LOG*/export_log(cont, time, System.currentTimeMillis(), cloud_manager.getTotalActiveResources(), cloud_manager.getAllocatedCPU(), cloud_manager.getUsedCPU(), cloud_manager.getAllocatedMEM(), cloud_manager.getUsedMEM(), cloud_manager.getAllocatedCPU() * thresholds.getUpperThreshold(), cloud_manager.getAllocatedCPU() * thresholds.getLowerThreshold(), cloud_manager.getCPULoad(), evaluator.getDecisionLoad(), thresholds.getLowerThreshold(), thresholds.getUpperThreshold(), cloud_manager.getLastMonitorTimes());
             }
             if (resourcesPending){//if there are resources being initialized, so we make sure they are already online to be added and recalculate the thresholds (Live Thresholding)
@@ -361,7 +359,7 @@ public class AutoElastic implements Runnable {
                     cooldowncont = cooldown; //as we delivered resources, set the cooldown period
                 }
             }
-            /*LOG*/gera_log(objname,"monitoring: Aguarda intervalo de tempo...");
+            /*LOG*/gera_log(objname,"monitoring: Sleeping...");
             timeLoop = System.currentTimeMillis() - timen;
             if (timeLoop < intervalo){
                 Thread.sleep(intervalo - timeLoop);

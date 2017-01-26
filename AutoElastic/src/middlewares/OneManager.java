@@ -206,7 +206,7 @@ public class OneManager {
                         //gera_log(objname,"Main: Nova VM alocada: " + last_vms[i].getID());
                         orpool.getOneHost(hostid).addVM(new_vms.get(0));
                         waiting_vms = true;
-                        System.out.println("Allocating vm " + j);
+                        //System.out.println("Allocating vm " + j);
                         //Thread.sleep(10000); //why?
                     }
                 } else {
@@ -218,7 +218,7 @@ public class OneManager {
                 new_vms.add(0,new OneVM(vmtemplateid));
                 new_vms.get(0).instantiate(oneClient, log);
                 waiting_vms = true;
-                System.out.println("Instantiating vm " + i);
+                //System.out.println("Instantiating vm " + i);
             }
         }
         return waiting_vms;
@@ -310,7 +310,7 @@ public class OneManager {
     public void organizeReadOnlyMode(int lowThreshold) {
         int hosts = orpool.getTotalAtivos();
         for (int i = lowThreshold; i < hosts; i++){
-            gera_log(objname,"organizeReadOnlyMode: removing host " + i + " from " + hosts + ".");
+            gera_log(objname,"organizeReadOnlyMode: Removing host " + i + " from " + hosts + ".");
             orpool.removeReadOnlyHost();
         }
     }
