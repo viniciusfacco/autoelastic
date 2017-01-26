@@ -1,9 +1,9 @@
 <Agreement AgreementId="slaautoelastic">
 	<Name>AutoElasticSLA</Name>
 	<Terms>
+		<MinimalHosts>10</MinimalHosts>
 		<MaximalHosts>10</MaximalHosts>
-		<MinimalHosts>1</MinimalHosts>
-		<MaximalVirtualMachines>10</MaximalVirtualMachines>
-		<MinimalVirtualMachines>1</MinimalVirtualMachines>
+		<MinimalVirtualMachines>3</MinimalVirtualMachines>
+		<MaximalVirtualMachines>20</MaximalVirtualMachines>
 	</Terms>
 </Agreement>
