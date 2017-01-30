@@ -38,6 +38,8 @@ import org.xml.sax.SAXException;
  *            - added method setParameters to set local and remote directories and name of the communication files
  * 03/01/2017 - viniciusfacco
  *            - added parameter "message" in the notifyDecrease method
+ * 30/01/2017 - viniciusfacco
+ *            - added ping method
  */
 
 public class OneCommunicator {
@@ -152,6 +154,10 @@ public class OneCommunicator {
             Logger.getLogger(AutoElastic.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
+    }
+    
+    public boolean ping(String host){
+        return this.ssh.ping(host);
     }
 
     /*==================================================*

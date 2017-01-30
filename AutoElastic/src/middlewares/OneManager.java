@@ -37,6 +37,8 @@ import org.xml.sax.SAXException;
  *            - fixed bug in newResourcesPending to enable resources in the monitoring after they get online
  * 24/01/2017 - viniciusfacco
  *            - added port parameters to connect servers
+ * 30/01/2017 - viniciusfacco
+ *            - now ping vms use ssh method and run the command in the front end
  */
 public class OneManager {
     
@@ -247,7 +249,7 @@ public class OneManager {
         if (waiting_vms){
             for (int i = 0; i < new_vms.size(); i++){
                 new_vms.get(i).syncInfo();
-                if (!ping(new_vms.get(i).getIP())){
+                if (!messenger.ping(new_vms.get(i).getIP())){
                     return waiting_vms;
                 }
                 message = message + new_vms.get(i).getIP() + "\n";
@@ -270,34 +272,7 @@ public class OneManager {
         }
         return waiting_vms;
     }
-    
-    //ping :)
-    private boolean ping(String ip) {
-        if (ip.equalsIgnoreCase("")){return false;}
-        String resposta;
-        int fim;
-        boolean online = false;
-        String comando = "ping -n 1 -w 600 " + ip;
-        try {
-            Scanner s = new Scanner(Runtime.getRuntime().exec("cmd /c " + comando).getInputStream());
-            while (s.hasNextLine()) {
-                resposta = s.nextLine() + "\n";
-                fim = resposta.length() - 5;
-                for (int j = ip.length() + 13; j <= fim; j++) {
-                    if (resposta.substring(j, j + 5).equals("tempo")) {
-                        online = true;
-                        break;
-                    }
-                }
-                if (online) {
-                    break;
-                }
-            }
-        } catch (Exception e) {
-        }
-        return online;
-    }
-    
+         
     public void setSSHClient(SSHClient sshClient) {
         this.messenger.setSSHClient(sshClient);
     }
@@ -387,7 +362,7 @@ public class OneManager {
         }
         return hostid;
     }
-
+    
     /*
     public boolean newResourcesPending() throws ParserConfigurationException, SAXException, IOException, InterruptedException{        
         if (waiting_vms){
@@ -406,5 +381,35 @@ public class OneManager {
         }
         return waiting_vms;
     }*/
+
+    //================================ Methods discontinued =========================
+    
+    //ping :)
+    //this ping works in windows 
+    private boolean ping(String ip) {
+        if (ip.equalsIgnoreCase("")){return false;}
+        String resposta;
+        int fim;
+        boolean online = false;
+        String comando = "ping -n 1 -w 600 " + ip;
+        try {
+            Scanner s = new Scanner(Runtime.getRuntime().exec("cmd /c " + comando).getInputStream());
+            while (s.hasNextLine()) {
+                resposta = s.nextLine() + "\n";
+                fim = resposta.length() - 5;
+                for (int j = ip.length() + 13; j <= fim; j++) {
+                    if (resposta.substring(j, j + 5).equals("tempo")) {
+                        online = true;
+                        break;
+                    }
+                }
+                if (online) {
+                    break;
+                }
+            }
+        } catch (Exception e) {
+        }
+        return online;
+    }
 
 }

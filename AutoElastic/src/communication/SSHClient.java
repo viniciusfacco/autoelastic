@@ -23,6 +23,8 @@ import java.util.logging.Logger;
  * @author viniciusfacco
  * 09/07/2015 - viniciusfacco
  *            - creation
+ * 30/01/2017 - viniciusfacco
+ *            - added ping method
  */
 public class SSHClient {
     
@@ -269,6 +271,50 @@ public class SSHClient {
             }
         }
         return b;
+    }
+    
+    public boolean ping(String host){
+        String retorno;
+        retorno = "";
+        
+        try{      
+            //JSch jsch = new JSch();  
+            //Session session = jsch.getSession(user, server, 22);
+            //UserInfo ui = new ServerConnect(password);
+            //session.setUserInfo(ui);
+            //session.connect();
+            String command = "ping -c 1 -w 1 " + host;
+            Channel channel=session.openChannel("exec");
+            ((ChannelExec)channel).setCommand(command);
+            channel.setInputStream(null);
+            ((ChannelExec)channel).setErrStream(System.err);
+            InputStream in = channel.getInputStream();
+            channel.connect();
+            byte[] tmp=new byte[1024];
+            while(true){
+                while(in.available()>0){
+                    int i=in.read(tmp, 0, 1024);
+                    if(i<0)break;
+                    retorno = new String(tmp, 0, i);
+                    //System.out.println(new String(tmp, 0, i));
+                }
+                if(channel.isClosed()){
+                    break;
+                }
+                try{Thread.sleep(1000);}catch(Exception ee){}
+            }
+            channel.disconnect();            
+            //System.out.println("Retorno: " + retorno);
+            if (retorno.contains("1 received")){
+                return true;
+            } else {
+                return false;
+            }
+        }
+        catch(Exception e){
+            System.out.println(e);
+        }
+        return false;
     }
 
 }
