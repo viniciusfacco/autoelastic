@@ -220,7 +220,7 @@ public class OneManager {
                 new_vms.add(0,new OneVM(vmtemplateid));
                 new_vms.get(0).instantiate(oneClient, log);
                 waiting_vms = true;
-                //System.out.println("Instantiating vm " + i);
+                gera_log(objname, "increaseResources: VM ID " + new_vms.get(0).getID() + " intantiated. (" + (i + 1) + "/" + vms_per_operation + ")");
             }
         }
         return waiting_vms;
@@ -248,7 +248,9 @@ public class OneManager {
         String message = "";
         if (waiting_vms){
             for (int i = 0; i < new_vms.size(); i++){
-                new_vms.get(i).syncInfo();
+                if (new_vms.get(i).getIP().equalsIgnoreCase("")){
+                    new_vms.get(i).syncInfo();
+                }
                 if (!messenger.ping(new_vms.get(i).getIP())){
                     return waiting_vms;
                 }

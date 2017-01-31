@@ -352,6 +352,7 @@ public class AutoElastic implements Runnable {
                 /*LOG*/export_log(cont, time, System.currentTimeMillis(), cloud_manager.getTotalActiveResources(), cloud_manager.getAllocatedCPU(), cloud_manager.getUsedCPU(), cloud_manager.getAllocatedMEM(), cloud_manager.getUsedMEM(), cloud_manager.getAllocatedCPU() * thresholds.getUpperThreshold(), cloud_manager.getAllocatedCPU() * thresholds.getLowerThreshold(), cloud_manager.getCPULoad(), evaluator.getDecisionLoad(), thresholds.getLowerThreshold(), thresholds.getUpperThreshold(), cloud_manager.getLastMonitorTimes());
             }
             if (resourcesPending){//if there are resources being initialized, so we make sure they are already online to be added and recalculate the thresholds (Live Thresholding)
+                gera_log(objname, "monitoring: Checking if new resources are online.");
                 load_before = evaluator.getDecisionLoad();
                 resourcesPending = cloud_manager.newResourcesPending(); //we must check before sleep if we have to deliver resources, thus these resources will only be considered at the next observation
                 if (!resourcesPending){//if we delivered the resources, in the next observations we must recalculate the thresholds
