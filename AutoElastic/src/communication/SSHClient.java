@@ -46,15 +46,23 @@ public class SSHClient {
         try {
             session = jsch.getSession(user, server, port);
         } catch (JSchException ex) {
-            System.out.println("Problema ao solicitar sessão SSH.");
+            System.out.println("SSHClient: Error to get SSH session.");
             Logger.getLogger(SSHClient.class.getName()).log(Level.SEVERE, null, ex);
         }
         ui = new ServerConnect(password);
         session.setUserInfo(ui);
         try {
+            session.setServerAliveInterval(15 * 1000);
+            session.setServerAliveCountMax(10000);
+            session.setConfig("TCPKeepAlive", "yes");
+        } catch (JSchException ex) {
+            System.out.println("SSHClient: Error to configure TCPKeepAlive in the SSH session.");
+            Logger.getLogger(SSHClient.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
             session.connect();
         } catch (JSchException ex) {
-            System.out.println("Problema ao realizar a conexão SSH.");
+            System.out.println("SSHClient: Error to connect SSH session.");
             Logger.getLogger(SSHClient.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -80,6 +88,15 @@ public class SSHClient {
     public boolean fileExists(String remote_file_name, String remote_dir){
         String retorno;
         retorno = "";
+        
+        if (!(session.isConnected())){
+            try {
+                System.out.println("fileExists: restarting connection.");
+                session.connect();
+            } catch (JSchException ex) {
+                Logger.getLogger(SSHClient.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
         
         try{      
             //JSch jsch = new JSch();  
@@ -123,6 +140,15 @@ public class SSHClient {
      * @return
      */
     public boolean deleteFile(String file_name, String remote_dir){
+        if (!(session.isConnected())){
+            try {
+                System.out.println("deleteFile: restarting connection.");
+                session.connect();
+            } catch (JSchException ex) {
+                Logger.getLogger(SSHClient.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
         try{      
             //JSch jsch = new JSch();  
             //Session session = jsch.getSession(user, server, 22);
@@ -152,6 +178,15 @@ public class SSHClient {
      */
     public boolean sendFile(String filepath, String remote_dir){
         FileInputStream fis = null;
+        
+        if (!(session.isConnected())){
+            try {
+                System.out.println("sendFile: restarting connection.");
+                session.connect();
+            } catch (JSchException ex) {
+                Logger.getLogger(SSHClient.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
 
         try {
             //JSch jsch = new JSch();
@@ -276,6 +311,15 @@ public class SSHClient {
     public boolean ping(String host){
         String retorno;
         retorno = "";
+        
+        if (!(session.isConnected())){
+            try {
+                System.out.println("ping: restarting connection.");
+                session.connect();
+            } catch (JSchException ex) {
+                Logger.getLogger(SSHClient.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
         
         try{      
             //JSch jsch = new JSch();  
