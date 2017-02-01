@@ -224,11 +224,15 @@ public class AutoElastic implements Runnable {
         System.out.println("Oi Vini");        
 
         try {
+            monitoring = true;
 /*LOG*    */gera_log(objname,"Initializing.");
-            inicialize();//inicialize the system
-/*LOG*    */gera_log(objname,"Starting monitoring.");
-            monitoring();//start monitoring
-/*LOG*    */gera_log(objname,"Monitoring ended.");
+            if (inicialize()){
+/*LOG*          */gera_log(objname,"Starting monitoring.");
+                monitoring();//start monitoring
+/*LOG*          */gera_log(objname,"Monitoring ended.");
+            } else {
+/*LOG*          */gera_log(objname,"Monitoring stopped.");                
+            }
         } catch (ParserConfigurationException | SAXException | IOException e) {
 /*LOG*    */gera_log(objname,e.getMessage());
         } catch (Exception ex) {
@@ -274,7 +278,7 @@ public class AutoElastic implements Runnable {
         }
     }
 
-    private void monitoring() throws ParserConfigurationException, SAXException, IOException, InterruptedException, Exception {
+    private void monitoring() throws ParserConfigurationException, SAXException, IOException, Exception {
         boolean resourcesPending = false;           //flag to inform if the system are waiting for new resources
         int time;                                   //elapsed time
         int cont = 0;                               //counter of verifications
@@ -361,16 +365,23 @@ public class AutoElastic implements Runnable {
                 }
             }
             /*LOG*/gera_log(objname,"monitoring: Sleeping...");
+            gera_log(objname, "================================================================================");
             timeLoop = System.currentTimeMillis() - timen;
             if (timeLoop < intervalo){
-                Thread.sleep(intervalo - timeLoop);
+                try {
+                    Thread.sleep(intervalo - timeLoop);
+                } catch (InterruptedException ex) {
+                    gera_log(objname, "monitoring: Stop signal received.");
+                }
             }
             timen = System.currentTimeMillis();
         }
     }
 
     //inicialize all objects and parameters
-    private void inicialize() throws ParserConfigurationException, SAXException, IOException {
+    private boolean inicialize() throws ParserConfigurationException, SAXException, IOException {
+        
+        if (!monitoring){return false;}//return if not monitoring
         //create a new cloud manager with OpenNebula
         cloud_manager = new OneManager(
                 usuario, 
@@ -395,22 +406,31 @@ public class AutoElastic implements Runnable {
                 remotedirtarget,
                 managehosts,
                 serverport
-        );            
+        );  
+        
+        if (!monitoring){return false;}//return if not monitoring
         //connect with the cloud server
         if (cloud_manager.serverConnect()){
             gera_log(objname,"inicialize: Connection established with server " + frontend);
-            monitoring = true; //if connection ok, then we can monitor
         } else {
             gera_log(objname,"inicialize: Problem to connect to server " + frontend);
-            monitoring = false; //if trouble, then we can't monitor
+            return false; //if trouble, then we can't monitor
         }
+        
+        if (!monitoring){return false;}//return if not monitoring
         cloud_manager.setSSHClient(new SSHClient(frontend, usuario, senha, sshserverport));
-        //--
+        
+        if (!monitoring){return false;}//return if not monitoring
         gera_log(objname,"inicialize: Initializing SLA: " + slapath);
+        
+        if (!monitoring){return false;}//return if not monitoring
         //create a new SLA
         sla = new WSAgreementSLA(slapath, log);
-        //--
+        
+        if (!monitoring){return false;}//return if not monitoring
         gera_log(objname,"inicialize: Initializing evaluator.");
+        
+        if (!monitoring){return false;}//return if not monitoring
         //create a new cloud evaluator
         switch (evaluatortype){
             case "generic": 
@@ -424,6 +444,8 @@ public class AutoElastic implements Runnable {
             case "full_aging":
                 evaluator = new AgingFullEvaluator(viewsize);
         }
+        
+        if (!monitoring){return false;}//return if not monitoring
         //create a new threshold manager
         switch (thresholdtype){
             case "static":
@@ -432,11 +454,17 @@ public class AutoElastic implements Runnable {
             case "live":
                 thresholds = new LiveThresholds(uppert, lowert);
         }
+        
+        if (!monitoring){return false;}//return if not monitoring
         //now, if we are in the readonly mode, we will remove hosts and leave only the minimum hosts
         if (readonly){
             cloud_manager.organizeReadOnlyMode(sla.getLowThreshold(managehosts));
         }
+        
+        if (!monitoring){return false;}//return if not monitoring
         export_log(0,0,0,0,0,0,0,0,0,0,0,0,0,0,"Contador,Tempo,Tempo Milisegundos,Total Hosts Ativos,Total CPU Alocada,Total CPU Usada,Total RAM Alocada,Total RAM Usada,CPU Limite Superior,CPU Limite Inferior,% Carga de CPU,Load Calculado,Threshold Inferior,Threshold Superior,Tempos de Monitoramento");
+        
+        return true;
     }
     
     //os próximos métodos são utilizados apenas para a execução de testes em modo laboratório

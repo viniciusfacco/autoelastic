@@ -272,17 +272,18 @@ public class OneResourcePool {
             vmAllMEM = 0;
             vmUsedMEM = 0;
             vmAllMonitoringTimes = "";
+            float time = 0;
             for (OneVM vm : virtualMachines){
                 try {
                     //gera_log(objname,"syncResources: Updating VM ID " + vm.getID() + " data from cloud.");
-                    vm.syncInfo();
+                    time = vm.syncInfo();
                     //gera_log(objname,"syncResources: VM ID " + vm.getID() + " data from cloud updated.");
                     vmUsedCPU = vmUsedCPU + vm.getUsedCPU();
                     vmUsedMEM = vmUsedMEM + vm.getUsedMEM();
                     vmAllCPU = vmAllCPU + vm.getAllocatedCPU();
                     vmAllMEM = vmAllMEM + vm.getAllocatedMEM();
                     vmAllMonitoringTimes += ";" + vm.getLastPoll();
-                    gera_log(objname,"syncResources: VM " + vm.getID() + " synchronized.");
+                    gera_log(objname,"syncResources: VM " + vm.getID() + " synchronized. (Data from cloud in " + time + "s)");
                 } catch (ParserConfigurationException | SAXException | IOException ex) {
                     gera_log(objname + "(ERROR)",ex.getMessage());
                 }

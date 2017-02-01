@@ -152,10 +152,13 @@ public class OneVM {
         return this.LAST_POLL;
     }
   
-    public void syncInfo() throws ParserConfigurationException, SAXException, IOException{
+    public float syncInfo() throws ParserConfigurationException, SAXException, IOException{
+        long time0, time1;
         DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
+        time0 = System.currentTimeMillis();
         String info = this.getInfo();
+        time1 = System.currentTimeMillis();
         InputSource is = new InputSource(new ByteArrayInputStream(info.getBytes()));
         Document doc = docBuilder.parse(is);
         doc.getDocumentElement().normalize();
@@ -231,6 +234,8 @@ public class OneVM {
                 this.MAX_CPU = (float) (Double.parseDouble(el.getElementsByTagName("CPU").item(0).getChildNodes().item(0).getNodeValue().trim()) * 100);
             }
         }
+        //System.out.println("0: " + time0 + " | 1: " + time1 + " | " + (time1 - time0) + " | " + ((float) ((time1 - time0)* 0.001)));
+        return (float) ((time1 - time0)* 0.001);
     }
     
     private String getInfo() {

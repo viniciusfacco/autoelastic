@@ -137,7 +137,7 @@ public class OneCommunicator {
             //System.out.println("Main|VerificaLiberacao: Liberação de recursos pode ser realizada...");
             //gera_log(objname,"Main|VerificaLiberacao: Liberação de recursos pode ser realizada.");
         } else {
-            System.out.println("Recursos ainda não podem ser liberados.");
+            //System.out.println("Recursos ainda não podem ser liberados.");
             //gera_log(objname,"Main|VerificaLiberacao: Recursos ainda não podem ser liberados.");
             libera = false;
         }

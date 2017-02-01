@@ -1476,6 +1476,12 @@ public class FAutoElastic extends javax.swing.JFrame {
         //ao clicar em Parar chamo o método "stop()" dentro do gerenciador que finaliza sua execução
         //jtaLog.setText("");
         autoelastic_manager.stop();
+        th_gerenciador.interrupt();
+        try {
+            th_gerenciador.join();
+        } catch (InterruptedException ex) {
+            Logger.getLogger(FAutoElastic.class.getName()).log(Level.SEVERE, null, ex);
+        }
         //configuro os botões
         jbParar.setEnabled(false);
         jbParar.setBackground(new Color(204, 204, 204));

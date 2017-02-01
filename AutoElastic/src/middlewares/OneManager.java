@@ -228,8 +228,10 @@ public class OneManager {
         
     //método que remove um host e suas máquinas virtuais no ambiente
     public boolean decreaseResources() throws InterruptedException, IOException{
+        gera_log(objname, "decreaseResources: Waiting for application permission to decrease resources.");
         if (messenger.notifyDecrease(orpool.getLastActiveResources(vms_per_operation, hosts_per_operation))){
             while(!messenger.canDecrease()){}
+            gera_log(objname, "decreaseResources: Permission received.");
             return orpool.removeResource(oneClient, vms_per_operation, hosts_per_operation);//remove último host criado e suas vms também
         }
         return false;
