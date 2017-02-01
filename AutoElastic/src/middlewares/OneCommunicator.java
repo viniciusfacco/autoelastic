@@ -40,6 +40,8 @@ import org.xml.sax.SAXException;
  *            - added parameter "message" in the notifyDecrease method
  * 30/01/2017 - viniciusfacco
  *            - added ping method
+ * 01/02/2017 - viniciusfacco
+ *            - added parameter CREATELOCALFILE and updated notifyNewResources and notifyDecrease
  */
 
 public class OneCommunicator {
@@ -56,6 +58,7 @@ public class OneCommunicator {
     private String notify_increase_file_name = "novorecurso.txt";
     private String localdir_temp_files = "C:\\temp\\autoelastic\\";
     private SSHClient ssh;
+    private final boolean CREATELOCALFILE = false;
     
     public OneCommunicator(String pserver, String puser, String ppassword, JTextArea plog){
         server = pserver;
@@ -97,21 +100,30 @@ public class OneCommunicator {
     
     //método que verifica se é possível liberar recursos
     public boolean notifyDecrease(String message) throws InterruptedException, IOException {
-        File arquivo = new File(localdir_temp_files + warning_deacrease_file_name);
-        try (
-            BufferedWriter escritor = new BufferedWriter(new FileWriter(arquivo))) {
-            escritor.write(message);
-            escritor.flush();
-        }
-        //if (envia_arquivo(arquivo.getAbsolutePath())) {
-        if (ssh.sendFile(arquivo.getAbsolutePath(), remotedir_file_target)){
-            //gera_log(objname,"Main|posso_liberar: Arquivo enviado com sucesso...");
-            return true;
+        if (CREATELOCALFILE){
+            File arquivo = new File(localdir_temp_files + warning_deacrease_file_name);
+            try (
+                BufferedWriter escritor = new BufferedWriter(new FileWriter(arquivo))) {
+                escritor.write(message);
+                escritor.flush();
+            }
+            //if (envia_arquivo(arquivo.getAbsolutePath())) {
+            if (ssh.sendFile(arquivo.getAbsolutePath(), remotedir_file_target)){
+                //gera_log(objname,"Main|posso_liberar: Arquivo enviado com sucesso...");
+                return true;
+            } else {
+                //gera_log(objname,"Main|posso_liberar: Arquivo não foi enviado...");
+            }
+            //aqui eu deveria ler o diretorio compartilhado para verificar se posso ou nao liberar
+            //Thread.sleep(60000); //mas como nao implementei espero um tempo
         } else {
-            //gera_log(objname,"Main|posso_liberar: Arquivo não foi enviado...");
+            if (ssh.createFile(warning_deacrease_file_name, remotedir_file_target, message)){
+                //gera_log(objname,"Main|posso_liberar: Arquivo enviado com sucesso...");
+                return true;
+            } else {
+                //gera_log(objname,"Main|posso_liberar: Arquivo não foi enviado...");
+            }
         }
-        //aqui eu deveria ler o diretorio compartilhado para verificar se posso ou nao liberar
-        //Thread.sleep(60000); //mas como nao implementei espero um tempo
         return false;
     }
     
@@ -136,22 +148,31 @@ public class OneCommunicator {
     public boolean notifyNewResources(String file_content) throws ParserConfigurationException, SAXException, IOException, InterruptedException {
         
         gera_log(objname,"notifyNewResources: New VMs online.");
-        try {
-            //File arquivo = new File("C:\\temp\\one");
-            //arquivo.mkdirs();
-            File arquivo = new File(localdir_temp_files + notify_increase_file_name);
-            BufferedWriter escritor = new BufferedWriter(new FileWriter(arquivo));
-            escritor.write(file_content + "\n");
-            escritor.flush();
-            //if (envia_arquivo(arquivo.getAbsolutePath())) {
-            if (ssh.sendFile(arquivo.getAbsolutePath(), remotedir_file_target)){
-                //gera_log(objname,"Main|notifica: Arquivo enviado com sucesso...");
-                return true;
-            } else {
-                //gera_log(objname,"Main|notifica: Arquivo não foi enviado...");
+        if (CREATELOCALFILE){
+            try {
+                //File arquivo = new File("C:\\temp\\one");
+                //arquivo.mkdirs();
+                File arquivo = new File(localdir_temp_files + notify_increase_file_name);
+                BufferedWriter escritor = new BufferedWriter(new FileWriter(arquivo));
+                escritor.write(file_content + "\n");
+                escritor.flush();
+                //if (envia_arquivo(arquivo.getAbsolutePath())) {
+                if (ssh.sendFile(arquivo.getAbsolutePath(), remotedir_file_target)){
+                    //gera_log(objname,"Main|notifica: Arquivo enviado com sucesso...");
+                    return true;
+                } else {
+                    //gera_log(objname,"Main|notifica: Arquivo não foi enviado...");
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(AutoElastic.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } catch (IOException ex) {
-            Logger.getLogger(AutoElastic.class.getName()).log(Level.SEVERE, null, ex);
+        } else {
+            if (ssh.createFile(notify_increase_file_name, remotedir_file_target, file_content)){
+                    //gera_log(objname,"Main|notifica: Arquivo enviado com sucesso...");
+                    return true;
+                } else {
+                    //gera_log(objname,"Main|notifica: Arquivo não foi enviado...");
+                }
         }
         return false;
     }

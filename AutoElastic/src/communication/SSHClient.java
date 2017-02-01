@@ -25,6 +25,8 @@ import java.util.logging.Logger;
  *            - creation
  * 30/01/2017 - viniciusfacco
  *            - added ping method
+ * 01/02/2017 - viniciusfacco
+ *            - added createFile method
  */
 public class SSHClient {
     
@@ -274,6 +276,55 @@ public class SSHClient {
             }
         }
         return true;
+    }
+    
+    public boolean createFile(String remote_file_name, String remote_dir, String content){
+        String retorno;
+        retorno = "";
+        
+        if (!(session.isConnected())){
+            try {
+                System.out.println("createFile: restarting connection.");
+                session.connect();
+            } catch (JSchException ex) {
+                Logger.getLogger(SSHClient.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        try{      
+            //JSch jsch = new JSch();  
+            //Session session = jsch.getSession(user, server, 22);
+            //UserInfo ui = new ServerConnect(password);
+            //session.setUserInfo(ui);
+            //session.connect();
+            String command = "echo \"" + content + "\" > " + remote_dir + remote_file_name;
+            Channel channel=session.openChannel("exec");
+            ((ChannelExec)channel).setCommand(command);
+            channel.setInputStream(null);
+            ((ChannelExec)channel).setErrStream(System.err);
+            InputStream in = channel.getInputStream();
+            channel.connect();
+            byte[] tmp=new byte[1024];
+            while(true){
+                while(in.available()>0){
+                    int i=in.read(tmp, 0, 1024);
+                    if(i<0)break;
+                    retorno = new String(tmp, 0, i);
+                    //System.out.println(new String(tmp, 0, i));
+                }
+                if(channel.isClosed()){
+                    break;
+                }
+                try{Thread.sleep(1000);}catch(Exception ee){}
+            }
+            channel.disconnect(); 
+            System.out.println("createFile: " + retorno);
+            return true; //se listagem conter arquivo de liberação
+        }
+        catch(Exception e){
+            System.out.println(e);
+        }
+        return false;
     }
     
     //método auxiliar do método envia_arquivo(String filepath)
