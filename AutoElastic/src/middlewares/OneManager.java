@@ -253,6 +253,7 @@ public class OneManager {
                 if (new_vms.get(i).getIP().equalsIgnoreCase("")){
                     new_vms.get(i).syncInfo();
                 }
+                gera_log(objname,"newResourcesPending: Trying to reach VM IP " + new_vms.get(i).getIP()); 
                 if (!messenger.ping(new_vms.get(i).getIP())){
                     return waiting_vms;
                 }
