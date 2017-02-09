@@ -2002,7 +2002,6 @@ public final class FAutoElastic extends javax.swing.JFrame {
             }
             try (
                 BufferedWriter escritor = new BufferedWriter(new FileWriter(arquivo, true))) {
-                escritor.append(jtaLog.getText());
                 escritor.append("<AUTOELASTIC>\n");
                 escritor.append(" <SERVER>\n");
                     escritor.append("  <FRONTEND_ADDRESS>" + this.jtfFrontend.getText() + "</FRONTEND_ADDRESS>\n");
