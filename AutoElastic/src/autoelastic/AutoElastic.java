@@ -57,6 +57,9 @@ import thresholds.*;
  *            - implemented cooldown period after each elasticity operation
  * 24/01/2017 - viniciusfacco
  *            - added port parameters to connect servers
+ * 09/02/2017 - viniciusfacco
+ *            - added ssh object
+ *            - added instructions to verify for ending messagens from application running in the cloud
  */
 public class AutoElastic implements Runnable {
 
@@ -103,10 +106,13 @@ public class AutoElastic implements Runnable {
     private static int cooldown;
     private static int serverport;
     private static int sshserverport;
+    private static boolean cmdmode;
+    private SSHClient ssh;
     
-    public AutoElastic(JPanel pgraphic1, JPanel pgraphic2){
+    public AutoElastic(JPanel pgraphic1, JPanel pgraphic2, boolean commandlinemode){
         graphic1 = new Graphic(pgraphic1, "CPU Usage (Total)");
         graphic2 = new Graphic(pgraphic2, "CPU Usage (%)");
+        cmdmode = commandlinemode;
     }
 
     /**
@@ -237,6 +243,9 @@ public class AutoElastic implements Runnable {
 /*LOG*    */gera_log(objname,e.getMessage());
         } catch (Exception ex) {
 /*LOG*    */gera_log(objname,ex.getMessage());
+        }
+        if (cmdmode){
+            System.exit(0);
         }
     }
 
@@ -375,6 +384,13 @@ public class AutoElastic implements Runnable {
                 }
             }
             timen = System.currentTimeMillis();
+            
+            //if autoelastic finds a file with name "appstoped" in the shared data area it stops its execution too
+            if (ssh.fileExists("appstoped", remotedirsource)){
+                ssh.deleteFile("appstoped", remotedirsource);
+                monitoring = false;
+                System.out.println("Stop signal received. Application ended.");
+            }
         }
     }
 
@@ -418,7 +434,8 @@ public class AutoElastic implements Runnable {
         }
         
         if (!monitoring){return false;}//return if not monitoring
-        cloud_manager.setSSHClient(new SSHClient(frontend, usuario, senha, sshserverport));
+        ssh = new SSHClient(frontend, usuario, senha, sshserverport);
+        cloud_manager.setSSHClient(ssh);
         
         if (!monitoring){return false;}//return if not monitoring
         gera_log(objname,"inicialize: Initializing SLA: " + slapath);

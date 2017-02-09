@@ -38,8 +38,10 @@ import org.xml.sax.SAXException;
  *            - added port parameters to connect servers
  * 26/01/2017 - viniciusfacco
  *            - added methods to save and load all UI parameters
+ * 09/02/2017 - viniciusfacco
+ *            - implemented command line mode
  */
-public class FAutoElastic extends javax.swing.JFrame {
+public final class FAutoElastic extends javax.swing.JFrame {
 
     private Thread th_gerenciador;
     private AutoElastic autoelastic_manager;
@@ -50,7 +52,14 @@ public class FAutoElastic extends javax.swing.JFrame {
     public FAutoElastic() {
         setUndecorated(true);
         initComponents();
-        init();
+        init(false);
+    }
+    
+    public FAutoElastic(String config) {
+        setUndecorated(true);
+        initComponents();
+        init(true);
+        startCommandLineOnly(config);
     }
 
     @SuppressWarnings("unchecked")
@@ -1745,7 +1754,7 @@ public class FAutoElastic extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+    public static void main(final String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -1769,13 +1778,24 @@ public class FAutoElastic extends javax.swing.JFrame {
         }
         //</editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new FAutoElastic().setVisible(true);
-            }
-        });
+        if (args.length > 0){
+            System.out.println("Starting command line mode.");
+            java.awt.EventQueue.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    new FAutoElastic(args[0]).setVisible(false);
+                }
+            });
+        } else {
+            System.out.println("Starting graphical mode.");
+            /* Create and display the form */
+            java.awt.EventQueue.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    new FAutoElastic().setVisible(true);
+                }
+            });
+        }
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup bgEvaluators;
@@ -2151,7 +2171,7 @@ public class FAutoElastic extends javax.swing.JFrame {
         about.setVisible(true);
     }
 
-    private void init() {
+    private void init(boolean cmdmode) {
         /*this.jpUpperButtons.addMouseListener(
          new MouseAdapter(){
          @Override
@@ -2175,7 +2195,7 @@ public class FAutoElastic extends javax.swing.JFrame {
          }
          }
          );*/
-        autoelastic_manager = new AutoElastic(this.jpGraficoLineTotal, this.jbGraphicLinePercent);
+        autoelastic_manager = new AutoElastic(this.jpGraficoLineTotal, this.jbGraphicLinePercent, cmdmode);
         about = new About();
         about.setVisible(false);
         this.setExtendedState(MAXIMIZED_BOTH);//maximoza janela        
@@ -2273,4 +2293,165 @@ public class FAutoElastic extends javax.swing.JFrame {
         }
     }
 
+    public void startCommandLineOnly(String config_file){
+        File file = new File(config_file);
+        if (!config_file.equalsIgnoreCase("") && file.exists()){
+            try {
+                File arquivo = new File(config_file);
+                DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
+                DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
+                Document doc = docBuilder.parse(arquivo);
+                doc.getDocumentElement().normalize();
+
+                Element el;
+                NodeList nl;
+                
+                //============================================================================
+                //firstly we populate the fields
+                //server
+                this.jtfFrontend.setText(doc.getElementsByTagName("FRONTEND_ADDRESS").item(0).getChildNodes().item(0).getNodeValue().trim());
+                this.jtfFrontEndPort.setText(doc.getElementsByTagName("FRONTEND_PORT").item(0).getChildNodes().item(0).getNodeValue().trim());
+                this.jtfFrontEndUser.setText(doc.getElementsByTagName("FRONTEND_USER").item(0).getChildNodes().item(0).getNodeValue().trim());
+                this.jtfFrontEndPassword.setText(doc.getElementsByTagName("FRONTEND_PWD").item(0).getChildNodes().item(0).getNodeValue().trim());
+                this.jtfClusterId.setText(doc.getElementsByTagName("CLUSTER_ID").item(0).getChildNodes().item(0).getNodeValue().trim());
+                this.jtfIM.setText(doc.getElementsByTagName("IM").item(0).getChildNodes().item(0).getNodeValue().trim());
+                this.jtfVNM.setText(doc.getElementsByTagName("VNM").item(0).getChildNodes().item(0).getNodeValue().trim());
+                this.jtfVMM.setText(doc.getElementsByTagName("VMM").item(0).getChildNodes().item(0).getNodeValue().trim());
+                //parameters
+                this.jtfSla.setText(doc.getElementsByTagName("SLA").item(0).getChildNodes().item(0).getNodeValue().trim());
+                this.jtfLogPath.setText(doc.getElementsByTagName("LOG_PATH").item(0).getChildNodes().item(0).getNodeValue().trim());
+                this.jtfExecutionLogName.setText(doc.getElementsByTagName("EXEC_LOG").item(0).getChildNodes().item(0).getNodeValue().trim());
+                this.jtfTemplateid.setText(doc.getElementsByTagName("TEMPLATE_ID").item(0).getChildNodes().item(0).getNodeValue().trim());
+                this.jtfMonitoringInterval.setText(doc.getElementsByTagName("MON_INTERVAL").item(0).getChildNodes().item(0).getNodeValue().trim());
+                this.jtfVmsPorHost.setText(doc.getElementsByTagName("NUM_VMS").item(0).getChildNodes().item(0).getNodeValue().trim());
+                this.jtfThresholdMax.setText(doc.getElementsByTagName("UPPER_THRESHOLD").item(0).getChildNodes().item(0).getNodeValue().trim());
+                this.jtfThresholdMin.setText(doc.getElementsByTagName("LOWER_THRESHOLD").item(0).getChildNodes().item(0).getNodeValue().trim());
+                this.jtfMonitoringWindow.setText(doc.getElementsByTagName("MON_WINDOW").item(0).getChildNodes().item(0).getNodeValue().trim());
+                this.jtfCoolDown.setText(doc.getElementsByTagName("COOL_DOWN").item(0).getChildNodes().item(0).getNodeValue().trim());
+                switch (doc.getElementsByTagName("THRESHOLD_TYPE").item(0).getChildNodes().item(0).getNodeValue().trim()){
+                    case "static":
+                        this.jrbStatic.setSelected(true);
+                        this.jrbLive.setSelected(false);
+                        break;
+                    case "live":
+                        this.jrbStatic.setSelected(false);
+                        this.jrbLive.setSelected(true);
+                        break;
+                    default:
+                        this.jrbStatic.setSelected(true);
+                        this.jrbLive.setSelected(false);
+                }
+                switch (doc.getElementsByTagName("EVALUATION_ALGORITHM").item(0).getChildNodes().item(0).getNodeValue().trim()){
+                    case "window_aging":
+                        this.jrbAging.setSelected(true);
+                        this.jrbFullAging.setSelected(false);
+                        this.jrbGeneric.setSelected(false);
+                        break;
+                    case "full_aging":
+                        this.jrbAging.setSelected(false);
+                        this.jrbFullAging.setSelected(true);
+                        this.jrbGeneric.setSelected(false);
+                        break;
+                    case "generic":
+                        this.jrbAging.setSelected(false);
+                        this.jrbFullAging.setSelected(false);
+                        this.jrbGeneric.setSelected(true);
+                        break;
+                    default:
+                        this.jrbAging.setSelected(false);
+                        this.jrbFullAging.setSelected(true);
+                        this.jrbGeneric.setSelected(false);
+                }
+                if (doc.getElementsByTagName("LAB_MODE").item(0).getChildNodes().item(0).getNodeValue().trim().equalsIgnoreCase("true")){
+                    this.jcbLabMode.setSelected(true);
+                } else {
+                    this.jcbLabMode.setSelected(false);
+                }
+                if (doc.getElementsByTagName("READ_ONLY").item(0).getChildNodes().item(0).getNodeValue().trim().equalsIgnoreCase("true")){
+                    this.jcbReadOnly.setSelected(true);
+                } else {
+                    this.jcbReadOnly.setSelected(false);
+                }
+                if (doc.getElementsByTagName("MANAGE_HOSTS").item(0).getChildNodes().item(0).getNodeValue().trim().equalsIgnoreCase("true")){
+                    this.jcbManageHosts.setSelected(true);
+                } else {
+                    this.jcbManageHosts.setSelected(false);
+                }
+                //communication
+                this.jtfSSHServer.setText(doc.getElementsByTagName("DATA_SERVER_ADDRESS").item(0).getChildNodes().item(0).getNodeValue().trim());
+                this.jtfSSHPort.setText(doc.getElementsByTagName("DATA_SERVER_PORT").item(0).getChildNodes().item(0).getNodeValue().trim());
+                this.jtfSSHUser.setText(doc.getElementsByTagName("DATA_SERVER_USER").item(0).getChildNodes().item(0).getNodeValue().trim());
+                this.jtfSSHPassword.setText(doc.getElementsByTagName("DATA_SERVER_PWD").item(0).getChildNodes().item(0).getNodeValue().trim());
+                this.jtfMsgWarningRemove.setText(doc.getElementsByTagName("MSG_WARNING_REMOVE").item(0).getChildNodes().item(0).getNodeValue().trim());
+                this.jtfMsgPermissionRemove.setText(doc.getElementsByTagName("MSG_PERMISSION_REMOVE").item(0).getChildNodes().item(0).getNodeValue().trim());
+                this.jtfMsgNewResources.setText(doc.getElementsByTagName("MSG_NOTIFICATION_NEW_RESOURCES").item(0).getChildNodes().item(0).getNodeValue().trim());
+                this.jtfRemoteDirSource.setText(doc.getElementsByTagName("DIR_MSG_SOURCE").item(0).getChildNodes().item(0).getNodeValue().trim());
+                this.jtfRemoteDirTarget.setText(doc.getElementsByTagName("DIR_MSG_TARGET").item(0).getChildNodes().item(0).getNodeValue().trim());
+                this.jtfLocalDirTemp.setText(doc.getElementsByTagName("DIR_MSG_LOCAL").item(0).getChildNodes().item(0).getNodeValue().trim());
+                //hosts
+                DefaultTableModel model = (DefaultTableModel) jtHosts.getModel();
+                for (int i = 0; i < doc.getElementsByTagName("HOST").getLength(); i++){
+                    model.addRow(new Object[]{doc.getElementsByTagName("HOST").item(i).getChildNodes().item(0).getNodeValue().trim()});
+                }
+                //============================================================================
+                //now we execute
+                //este bloco eu pego o grid com os hosts e transformo em um array contendo cada host como String
+                model = (DefaultTableModel) jtHosts.getModel();
+                String hosts[] = new String[model.getRowCount()];
+                String host;
+                for (int i = 0; i < model.getRowCount(); i++) {
+                    host = model.getDataVector().get(i).toString();
+                    hosts[i] = host.replace("[", "").replace("]", "");
+                }
+
+                //seta parametros do gerenciador
+                autoelastic_manager.set_parameters(this.jtfFrontend.getText(),
+                        this.jtfFrontEndUser.getText(),
+                        this.jtfFrontEndPassword.getText(),
+                        this.jtfSla.getText(),
+                        this.jtfLogPath.getText(),
+                        this.jtfExecutionLogName.getText(),
+                        Integer.parseInt(this.jtfTemplateid.getText()),
+                        Integer.parseInt(this.jtfMonitoringInterval.getText()),
+                        Double.parseDouble(this.jtfThresholdMax.getText()) / 100,
+                        Double.parseDouble(this.jtfThresholdMin.getText()) / 100,
+                        Integer.parseInt(this.jtfVmsPorHost.getText()),
+                        this.bgEvaluators.getSelection().getActionCommand(),
+                        this.bgThresholdType.getSelection().getActionCommand(),
+                        Integer.parseInt(this.jtfMonitoringWindow.getText()),
+                        hosts,
+                        this.jtfIM.getText(),
+                        this.jtfVMM.getText(),
+                        this.jtfVNM.getText(),
+                        Integer.parseInt(this.jtfClusterId.getText()),
+                        this.jtfSSHServer.getText(),
+                        this.jtfSSHUser.getText(),
+                        this.jtfSSHPassword.getText(),
+                        this.jtfMsgWarningRemove.getText(),
+                        this.jtfMsgPermissionRemove.getText(),
+                        this.jtfMsgNewResources.getText(),
+                        this.jtfLocalDirTemp.getText(),
+                        this.jtfRemoteDirSource.getText(),
+                        this.jtfRemoteDirTarget.getText(),
+                        this.jtaLog,
+                        this.jcbReadOnly.isSelected(),
+                        this.jcbManageHosts.isSelected(),
+                        Integer.parseInt(this.jtfCoolDown.getText()),
+                        Integer.parseInt(this.jtfFrontEndPort.getText()),
+                        Integer.parseInt(this.jtfSSHPort.getText())
+                );
+                //coloco o gerenciador dentro de uma Thread e inicio ele
+                th_gerenciador = new Thread(autoelastic_manager);
+                th_gerenciador.start();
+                //============================================================================
+            } catch (IOException | ParserConfigurationException | SAXException ex){
+                Logger.getLogger(AutoElastic.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println("Error loading XML file:" + ex.getMessage());
+                System.exit(1);
+            }
+        } else {
+            System.out.println("Input configuration file does not exist: " + file.getAbsolutePath());
+            System.exit(1);
+        }
+    }
 }
