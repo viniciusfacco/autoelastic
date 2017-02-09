@@ -373,6 +373,14 @@ public class AutoElastic implements Runnable {
                     cooldowncont = cooldown; //as we delivered resources, set the cooldown period
                 }
             }
+            
+            //if autoelastic finds a file with name "appstoped" in the shared data area it stops its execution too
+            if (ssh.fileExists("appstoped", remotedirsource)){
+                ssh.deleteFile("appstoped", remotedirsource);
+                monitoring = false;
+                System.out.println("Stop signal received. Application ended.");
+            }
+            
             /*LOG*/gera_log(objname,"monitoring: Sleeping...");
             gera_log(objname, "================================================================================");
             timeLoop = System.currentTimeMillis() - timen;
@@ -384,13 +392,6 @@ public class AutoElastic implements Runnable {
                 }
             }
             timen = System.currentTimeMillis();
-            
-            //if autoelastic finds a file with name "appstoped" in the shared data area it stops its execution too
-            if (ssh.fileExists("appstoped", remotedirsource)){
-                ssh.deleteFile("appstoped", remotedirsource);
-                monitoring = false;
-                System.out.println("Stop signal received. Application ended.");
-            }
         }
     }
 
