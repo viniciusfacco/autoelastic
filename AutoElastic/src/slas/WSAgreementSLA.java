@@ -105,7 +105,7 @@ public class WSAgreementSLA {
      * @param managehosts
      * @return Returns the value of the high threshold which is the maximal number of resources allowed.
      */
-    public int getHighThreshold(boolean managehosts){
+    public int getMaxResources(boolean managehosts){
         if (managehosts){
             return MaximalHosts;
         } else {
@@ -118,7 +118,7 @@ public class WSAgreementSLA {
      * @param managehosts
      * @return Returns the value of the low threshold which is the minimum number of resources allowed.
      */
-    public int getLowThreshold(boolean managehosts){
+    public int getMinResources(boolean managehosts){
         if (managehosts){
             return MinimalHosts;
         } else {

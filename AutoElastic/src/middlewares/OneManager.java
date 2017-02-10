@@ -242,7 +242,23 @@ public class OneManager {
      * @return
      * @throws InterruptedException
      */
-    public boolean decreaseResourcesHard() throws InterruptedException{
+    public boolean decreaseResourcesHard(){
+        //if there are resources starting, we activate them even if they are not online yet because we will remove them anyway
+        if (waiting_vms){
+            //now lets activate this new resources in the monitoring
+            if(managehosts){ //if we are monitoring hosts then lets enable the added hosts
+                for (int i = 0; i < hosts_per_operation; i++){
+                    orpool.enableLastHost();
+                }
+            } else { //if we are monitoring only virtual machines lets add them to monitoring
+                for (int i = 0; i < new_vms.size(); i++){
+                    orpool.addVirtualMachine(new_vms.get(i));
+                }
+            }
+            new_vms = null;
+            waiting_vms = false;
+        }
+        //now we remove one grain of resources
         return orpool.removeResource(oneClient, vms_per_operation, hosts_per_operation);//remove último host criado e suas vms também
     }
     

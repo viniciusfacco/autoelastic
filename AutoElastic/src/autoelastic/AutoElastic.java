@@ -60,6 +60,8 @@ import thresholds.*;
  * 09/02/2017 - viniciusfacco
  *            - added ssh object
  *            - added instructions to verify for ending messagens from application running in the cloud
+ * 10/02/2017 - viniciusfacco
+ *            - added method resetCloudResources to set the cloud to initial state (minimun resources in sla) when monitoring stops
  */
 public class AutoElastic implements Runnable {
 
@@ -234,8 +236,9 @@ public class AutoElastic implements Runnable {
 /*LOG*    */gera_log(objname,"Initializing.");
             if (inicialize()){
 /*LOG*          */gera_log(objname,"Starting monitoring.");
-                monitoring();//start monitoring
+                monitorCloud();//start monitoring
 /*LOG*          */gera_log(objname,"Monitoring ended.");
+                resetCloudResources();//reset cloud state from the beginning that is: resources equal minimum sla
             } else {
 /*LOG*          */gera_log(objname,"Monitoring stopped.");                
             }
@@ -287,7 +290,7 @@ public class AutoElastic implements Runnable {
         }
     }
 
-    private void monitoring() throws ParserConfigurationException, SAXException, IOException, Exception {
+    private void monitorCloud() throws ParserConfigurationException, SAXException, IOException, Exception {
         boolean resourcesPending = false;           //flag to inform if the system are waiting for new resources
         int time;                                   //elapsed time
         int cont = 0;                               //counter of verifications
@@ -476,7 +479,7 @@ public class AutoElastic implements Runnable {
         if (!monitoring){return false;}//return if not monitoring
         //now, if we are in the readonly mode, we will remove hosts and leave only the minimum hosts
         if (readonly){
-            cloud_manager.organizeReadOnlyMode(sla.getLowThreshold(managehosts));
+            cloud_manager.organizeReadOnlyMode(sla.getMinResources(managehosts));
         }
         
         if (!monitoring){return false;}//return if not monitoring
@@ -766,5 +769,14 @@ public class AutoElastic implements Runnable {
         }
         ssh.deleteFile(message, remotedir);
         return times;
+    }
+
+    //method to decrease allocated resources and set the cloud to initial state
+    private void resetCloudResources() {
+        gera_log(objname,"resetCloudResources: Reset Cloud to minimun resouces defined by SLA(" + sla.getMinResources(managehosts) + ").");
+        while(cloud_manager.getTotalActiveResources() > sla.getMinResources(managehosts)){
+            cloud_manager.decreaseResourcesHard();
+        }
+        gera_log(objname,"resetCloudResources: Cloud reseted.");
     }
 }

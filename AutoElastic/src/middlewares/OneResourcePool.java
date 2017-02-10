@@ -5,6 +5,8 @@ import static autoelastic.AutoElastic.gera_log;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JTextArea;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -212,14 +214,16 @@ public class OneResourcePool {
         virtualMachines.add(0, vm);
     }
     
-    public boolean removeResource(Client oc, int amount_of_vms, int amount_of_hosts) throws InterruptedException{        
+    public boolean removeResource(Client oc, int amount_of_vms, int amount_of_hosts) {        
         if (managehosts){
             //if we must manage hosts then remove the last amount of hosts
             OneHost host;
             for (int i = 0; i < amount_of_hosts; i++){
                 hosts_ativos.get(0).deleteVMs();
                 while (!hosts_ativos.get(0).delete()){
-                    Thread.sleep(1000);
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException ex) {Logger.getLogger(OneResourcePool.class.getName()).log(Level.SEVERE, null, ex);}
                 }
                 //hosts_ativos.get(i).delete();
                 host = hosts_ativos.remove(0);
@@ -232,7 +236,9 @@ public class OneResourcePool {
             for (int i = 0; i < amount_of_vms; i++){
                 vm = virtualMachines.remove(0);
                 while (!vm.delete()){
-                    Thread.sleep(1000);
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException ex) {Logger.getLogger(OneResourcePool.class.getName()).log(Level.SEVERE, null, ex);}
                 }
             }
             return true;
