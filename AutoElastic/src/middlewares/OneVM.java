@@ -7,6 +7,9 @@ package middlewares;
 import static autoelastic.AutoElastic.gera_log;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.StringReader;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JTextArea;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -152,15 +155,28 @@ public class OneVM {
         return this.LAST_POLL;
     }
   
-    public float syncInfo() throws ParserConfigurationException, SAXException, IOException{
+    public float syncInfo(){
         long time0, time1;
         DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
+        DocumentBuilder docBuilder = null;
+        try {
+            docBuilder = docBuilderFactory.newDocumentBuilder();
+        } catch (ParserConfigurationException ex) {
+            Logger.getLogger(OneVM.class.getName()).log(Level.SEVERE, null, ex);
+            gera_log(objname,"syncInfo: Error creating docBuilder.");
+        }
         time0 = System.currentTimeMillis();
         String info = this.getInfo();
         time1 = System.currentTimeMillis();
-        InputSource is = new InputSource(new ByteArrayInputStream(info.getBytes()));
-        Document doc = docBuilder.parse(is);
+        //InputSource is = new InputSource(new ByteArrayInputStream(info.getBytes()));
+        Document doc = null;
+        try {
+            //doc = docBuilder.parse(is);
+            doc = docBuilder.parse(new InputSource(new StringReader(info)));
+        } catch (SAXException | IOException ex) {
+            Logger.getLogger(OneVM.class.getName()).log(Level.SEVERE, null, ex);
+            gera_log(objname,"syncInfo: Error parsing XML file from VM ID " + this.id + ": " + ex.getMessage() + "\nXML from frontend: " + info);
+        }
         doc.getDocumentElement().normalize();
         
         Element el;

@@ -318,7 +318,7 @@ public class SSHClient {
                 try{Thread.sleep(1000);}catch(Exception ee){}
             }
             channel.disconnect(); 
-            System.out.println("createFile: " + retorno);
+            //System.out.println("createFile: " + retorno);
             return true; //se listagem conter arquivo de liberação
         }
         catch(Exception e){

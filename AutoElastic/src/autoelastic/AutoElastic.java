@@ -273,7 +273,7 @@ public class AutoElastic implements Runnable {
      * @param texto - the message
      */
     public static void gera_log(String name, String texto){
-        System.out.println(texto);
+        System.out.println(name + ": " + texto);
         log.append(name + ": " + texto + "\n");
         log.setCaretPosition(log.getText().length());
     }
@@ -381,13 +381,13 @@ public class AutoElastic implements Runnable {
             if (ssh.fileExists("appstoped", remotedirsource)){
                 ssh.deleteFile("appstoped", remotedirsource);
                 monitoring = false;
-                System.out.println("Stop signal received. Application ended.");
+                gera_log(objname,"Stop signal received. Application ended.");
             }
             
             /*LOG*/gera_log(objname,"monitoring: Sleeping...");
             gera_log(objname, "================================================================================");
             timeLoop = System.currentTimeMillis() - timen;
-            if (timeLoop < intervalo){
+            if ((timeLoop < intervalo) && (monitoring)){
                 try {
                     Thread.sleep(intervalo - timeLoop);
                 } catch (InterruptedException ex) {
@@ -774,8 +774,13 @@ public class AutoElastic implements Runnable {
     //method to decrease allocated resources and set the cloud to initial state
     private void resetCloudResources() {
         gera_log(objname,"resetCloudResources: Reset Cloud to minimun resouces defined by SLA(" + sla.getMinResources(managehosts) + ").");
-        while(cloud_manager.getTotalActiveResources() > sla.getMinResources(managehosts)){
-            cloud_manager.decreaseResourcesHard();
+        try {
+            while((cloud_manager.getTotalActiveResources() > sla.getMinResources(managehosts)) || cloud_manager.newResourcesPending()){
+                cloud_manager.decreaseResourcesHard();
+            }
+        } catch (ParserConfigurationException | SAXException | IOException | InterruptedException ex) {
+            Logger.getLogger(AutoElastic.class.getName()).log(Level.SEVERE, null, ex);
+            gera_log(objname,"resetCloudResources: Error releasing resources: " + ex.getMessage());
         }
         gera_log(objname,"resetCloudResources: Cloud reseted.");
     }
