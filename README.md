@@ -22,7 +22,7 @@ How to Use
 AutoElastic Modes
 ==========
 AutoElastic has two execution modes depending on the arguments passed by command line:
-- 0 argunments: If no argument is passed by command line, AutoElastic runs the User Interface Mode. In an user interface, all execution parameters can be setted and there are a possibility to save these parameters in a XML file to load them latter or pass them by argument to AutoElastic.jar.
+- 0 argunments: If no argument is passed by command line, AutoElastic runs the User Interface Mode. In an user interface, all execution parameters can be setted and there is a possibility to save these parameters in a XML file to load them latter or pass them by argument to AutoElastic.jar.
 - 1 argument: If one argument is passed by command line, AutoElastic runs the Command Line Mode. This argument must be a XML file with all parameters. To generate this file you can run AutoElastic firstly in the User Interface Mode and then set parameters and save a XML file. After that, you can edit this file and change any parameter if you wish.
 
 Extras
