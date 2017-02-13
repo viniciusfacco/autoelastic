@@ -116,6 +116,10 @@ public class AutoElasticManager implements Runnable {
         graphic2 = new Graphic(pgraphic2, "CPU Usage (%)");
         cmdmode = commandlinemode;
     }
+    
+    public AutoElasticManager(boolean commandlinemode){
+        cmdmode = commandlinemode;
+    }
 
     /**
      * Set all systems' parameters.
@@ -205,8 +209,10 @@ public class AutoElasticManager implements Runnable {
         virtual_machine_manager = pvmm;
         virtual_network_manager = pvnm;
         cluster_id = pcid;
-        graphic1.initialize();
-        graphic2.initialize();
+        if (!cmdmode){
+            graphic1.initialize();
+            graphic2.initialize();
+        }        
         logtitle = plogname;
         sshserver = psshserver;
         sshuser = psshuser;
@@ -274,8 +280,10 @@ public class AutoElasticManager implements Runnable {
      */
     public static void gera_log(String name, String texto){
         System.out.println(name + ": " + texto);
-        log.append(name + ": " + texto + "\n");
-        log.setCaretPosition(log.getText().length());
+        if(!cmdmode){
+            log.append(name + ": " + texto + "\n");
+            log.setCaretPosition(log.getText().length());
+        }
     }
     
     //método para geração do arquivo de log
@@ -311,8 +319,10 @@ public class AutoElasticManager implements Runnable {
             /*LOG*/gera_log(objname,"monitoring: Used CPU of all resources: " + cloud_manager.getUsedCPU() + " / Total CPU of all resources: " + cloud_manager.getAllocatedCPU());
             evaluator.computeLoad(cloud_manager.getCPULoad());            
             /*LOG*/gera_log(objname,"monitoring: Load = " + evaluator.getDecisionLoad() + " / Upper threshold = " + thresholds.getUpperThreshold() + " / Lower threshold = " + thresholds.getLowerThreshold());
-            /*GRA*/graphic1.update(cont, cloud_manager.getUsedCPU(), cloud_manager.getAllocatedCPU(), cloud_manager.getAllocatedCPU() * thresholds.getUpperThreshold(), cloud_manager.getAllocatedCPU() * thresholds.getLowerThreshold(), cloud_manager.getAllocatedCPU() * evaluator.getDecisionLoad());
-            /*GRA*/graphic2.update(cont, cloud_manager.getCPULoad(), 1, thresholds.getUpperThreshold(), thresholds.getLowerThreshold(), evaluator.getDecisionLoad());            
+            if (!cmdmode){
+                /*GRA*/graphic1.update(cont, cloud_manager.getUsedCPU(), cloud_manager.getAllocatedCPU(), cloud_manager.getAllocatedCPU() * thresholds.getUpperThreshold(), cloud_manager.getAllocatedCPU() * thresholds.getLowerThreshold(), cloud_manager.getAllocatedCPU() * evaluator.getDecisionLoad());
+                /*GRA*/graphic2.update(cont, cloud_manager.getCPULoad(), 1, thresholds.getUpperThreshold(), thresholds.getLowerThreshold(), evaluator.getDecisionLoad());            
+            }
             if (recalculate_thresholds > 0){//if this flag is greater than 0, then we must recalculate the thresholds (Live Thresholding)
                 load_after = evaluator.getDecisionLoad();//get the new load with the new resources
                 switch (recalculate_thresholds){
