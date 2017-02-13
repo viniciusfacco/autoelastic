@@ -6,7 +6,7 @@
  */
 package thresholds;
 
-import static autoelastic.AutoElastic.gera_log;
+import static autoelastic.AutoElasticManager.gera_log;
 
 /**
  * Reviews

@@ -4,7 +4,7 @@
  */
 package middlewares;
 
-import static autoelastic.AutoElastic.gera_log;
+import static autoelastic.AutoElasticManager.gera_log;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.StringReader;

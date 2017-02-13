@@ -6,8 +6,8 @@
 
 package middlewares;
 
-import autoelastic.AutoElastic;
-import static autoelastic.AutoElastic.gera_log;
+import autoelastic.AutoElasticManager;
+import static autoelastic.AutoElasticManager.gera_log;
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.JSch;
@@ -164,7 +164,7 @@ public class OneCommunicator {
                     //gera_log(objname,"Main|notifica: Arquivo não foi enviado...");
                 }
             } catch (IOException ex) {
-                Logger.getLogger(AutoElastic.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(AutoElasticManager.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
             if (ssh.createFile(notify_increase_file_name, remotedir_file_target, file_content)){

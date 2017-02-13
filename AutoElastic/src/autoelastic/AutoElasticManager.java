@@ -19,51 +19,51 @@ import thresholds.*;
 /**
  * Main class that runs the monitoring system.
  * @author viniciusfacco
- * 23/05/2014 - viniciusfacco
- *            - Criação do novo AutoElastic
- *            - Inicialização está OK
- * 26/05/2014 - viniciusfacco
- *            - Finalizada a implementação do novo gerenciador
- * Última atualização: 26/05/2014
- * 26/06/2014 - viniciusfacco
- *            - Inicialização do projeto no GitHub
- *            - Versão 2.1
- * 05/08/2014 - viniciusfacco
- *            - Realizadas correções de erros
- * 27/10/2014 - viniciusfacco
- *            - Update to export the MAX_MEM, USED_MEM and LAST_MON_TIME
- * 02/07/2015 - viniciusfacco
- *            - added parameter "thresholdtype"
- *            - renamed parametes "threshold_max" and "threshold_min" to "upper_threshold" and "lower_threshold"
- *            - created object to manage thresholds
- * 06/07/2015 - viniciusfacco
- *            - created selection of constructors using the new parameter "thresholdtype"
- *            - inserted calls to new obect "thresholds" to recalculate thresholds
- * 08/07/2015 - viniciusfacco
- *            - created two methods to group the code for inicialization and monitoring
- * 11/08/2015 - viniciusfacco
- *            - method set_parameters ajusted to receive the name of the log
- *            - created a new boolean in the monitoring method and ajusted the logic when new resources are not online
- *            - added SSHClient object to the cloud manager in the inicialize method
- * 04/01/2016 - viniciusfacco
- *            - updated the monitoring method to use the new Live Thresholding algorithm with the class LiveThresholds
- * 13/01/2016 - viniciusfacco
- *            - fixed bug when using fixed threshold (after a threshold violation one of the thresholds was reset)
- * 16/11/2016 - viniciusfacco
- *            - added new parameters to set in the OneCommunicator through the OneManager
- * 03/01/2017 - viniciusfacco
- *            - implemented read only mode in the monitoring and innitialize methods
- * 06/01/2017 - viniciusfacco
- *            - implemented cooldown period after each elasticity operation
- * 24/01/2017 - viniciusfacco
- *            - added port parameters to connect servers
- * 09/02/2017 - viniciusfacco
- *            - added ssh object
- *            - added instructions to verify for ending messagens from application running in the cloud
- * 10/02/2017 - viniciusfacco
- *            - added method resetCloudResources to set the cloud to initial state (minimun resources in sla) when monitoring stops
+ 23/05/2014 - viniciusfacco
+            - Criação do novo AutoElasticManager
+            - Inicialização está OK
+ 26/05/2014 - viniciusfacco
+            - Finalizada a implementação do novo gerenciador
+ Última atualização: 26/05/2014
+ 26/06/2014 - viniciusfacco
+            - Inicialização do projeto no GitHub
+            - Versão 2.1
+ 05/08/2014 - viniciusfacco
+            - Realizadas correções de erros
+ 27/10/2014 - viniciusfacco
+            - Update to export the MAX_MEM, USED_MEM and LAST_MON_TIME
+ 02/07/2015 - viniciusfacco
+            - added parameter "thresholdtype"
+            - renamed parametes "threshold_max" and "threshold_min" to "upper_threshold" and "lower_threshold"
+            - created object to manage thresholds
+ 06/07/2015 - viniciusfacco
+            - created selection of constructors using the new parameter "thresholdtype"
+            - inserted calls to new obect "thresholds" to recalculate thresholds
+ 08/07/2015 - viniciusfacco
+            - created two methods to group the code for inicialization and monitoring
+ 11/08/2015 - viniciusfacco
+            - method set_parameters ajusted to receive the name of the log
+            - created a new boolean in the monitoring method and ajusted the logic when new resources are not online
+            - added SSHClient object to the cloud manager in the inicialize method
+ 04/01/2016 - viniciusfacco
+            - updated the monitoring method to use the new Live Thresholding algorithm with the class LiveThresholds
+ 13/01/2016 - viniciusfacco
+            - fixed bug when using fixed threshold (after a threshold violation one of the thresholds was reset)
+ 16/11/2016 - viniciusfacco
+            - added new parameters to set in the OneCommunicator through the OneManager
+ 03/01/2017 - viniciusfacco
+            - implemented read only mode in the monitoring and innitialize methods
+ 06/01/2017 - viniciusfacco
+            - implemented cooldown period after each elasticity operation
+ 24/01/2017 - viniciusfacco
+            - added port parameters to connect servers
+ 09/02/2017 - viniciusfacco
+            - added ssh object
+            - added instructions to verify for ending messagens from application running in the cloud
+ 10/02/2017 - viniciusfacco
+            - added method resetCloudResources to set the cloud to initial state (minimun resources in sla) when monitoring stops
  */
-public class AutoElastic implements Runnable {
+public class AutoElasticManager implements Runnable {
 
     private OneManager cloud_manager;   //manager para a nuvem que vamos usar
     private WSAgreementSLA sla;         //sla que será utilizado pelo gerenciador para monitoramento
@@ -111,7 +111,7 @@ public class AutoElastic implements Runnable {
     private static boolean cmdmode;
     private SSHClient ssh;
     
-    public AutoElastic(JPanel pgraphic1, JPanel pgraphic2, boolean commandlinemode){
+    public AutoElasticManager(JPanel pgraphic1, JPanel pgraphic2, boolean commandlinemode){
         graphic1 = new Graphic(pgraphic1, "CPU Usage (Total)");
         graphic2 = new Graphic(pgraphic2, "CPU Usage (%)");
         cmdmode = commandlinemode;
@@ -286,7 +286,7 @@ public class AutoElastic implements Runnable {
             escritor.append(contador + ";" + time + ";" + timemilis + ";" + num_hosts + ";" + tot_cpu_dis + ";" + tot_cpu_usa + ";" + tot_mem_dis + ";" + tot_mem_usa + ";" + th_max + ";" + th_min + ";" + load + ";" + calcutated_load + ";" + lowert + ";" + uppert + ";" + extra_info + "\n");
             escritor.close();
         } catch (IOException ex) { 
-            Logger.getLogger(AutoElastic.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AutoElasticManager.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -522,23 +522,23 @@ public class AutoElastic implements Runnable {
         File arquivo; //usaremos para manipular arquivos de logs
         BufferedWriter escritor; //usaremos para manipular arquivos de logs
         
-        AutoElastic.frontend = srv;
-        AutoElastic.usuario = usr;
-        AutoElastic.senha = pwd;
-        AutoElastic.slapath = sla;
-        AutoElastic.log = lg;
-        AutoElastic.iphosts = hosts;        
-        AutoElastic.logspath = "C:\\Temp\\autoelastic\\";
-        AutoElastic.vmtemplateid = 3;
-        AutoElastic.intervalo = 15 * 1000;
-        AutoElastic.num_vms = 2;
-        AutoElastic.viewsize = 6;
-        AutoElastic.evaluatortype = "full_aging";
-        AutoElastic.thresholdtype = "static";
-        AutoElastic.image_manager = "kvm";
-        AutoElastic.virtual_machine_manager = "kvm";
-        AutoElastic.virtual_network_manager = "dummy";
-        AutoElastic.cluster_id = 0;
+        AutoElasticManager.frontend = srv;
+        AutoElasticManager.usuario = usr;
+        AutoElasticManager.senha = pwd;
+        AutoElasticManager.slapath = sla;
+        AutoElasticManager.log = lg;
+        AutoElasticManager.iphosts = hosts;        
+        AutoElasticManager.logspath = "C:\\Temp\\autoelastic\\";
+        AutoElasticManager.vmtemplateid = 3;
+        AutoElasticManager.intervalo = 15 * 1000;
+        AutoElasticManager.num_vms = 2;
+        AutoElasticManager.viewsize = 6;
+        AutoElasticManager.evaluatortype = "full_aging";
+        AutoElasticManager.thresholdtype = "static";
+        AutoElasticManager.image_manager = "kvm";
+        AutoElasticManager.virtual_machine_manager = "kvm";
+        AutoElasticManager.virtual_network_manager = "dummy";
+        AutoElasticManager.cluster_id = 0;
 
         inicialize();
         cloud_manager.setSSHClient(ssh);
@@ -554,10 +554,10 @@ public class AutoElastic implements Runnable {
                 for (int lthreshold : lowerthresholds){
                     if (lthreshold <= uthreshold){//não posso fazer execuções em que threshold inferior é maior que o superior
                         //seto os parametros dessa execução
-                        AutoElastic.logtitle = thresholdtype + "-" + app + "UT" + uthreshold + "LT" + lthreshold;
-                        System.out.println("Log: " + AutoElastic.logtitle);
-                        AutoElastic.uppert = (float) uthreshold/100;
-                        AutoElastic.lowert = (float) lthreshold/100;
+                        AutoElasticManager.logtitle = thresholdtype + "-" + app + "UT" + uthreshold + "LT" + lthreshold;
+                        System.out.println("Log: " + AutoElasticManager.logtitle);
+                        AutoElasticManager.uppert = (float) uthreshold/100;
+                        AutoElasticManager.lowert = (float) lthreshold/100;
 
                         export_log(0,0,0,0,0,0,0,0,0,0,0,0,0,0,"Contador;Tempo;Tempo Milisegundos;Total Hosts Ativos;Total CPU Alocada;Total CPU Usada;Total RAM Alocada;Total RAM Usada;CPU Limite Superior;CPU Limite Inferior;% Carga de CPU;Load Calculado;Threshold Inferior;Threshold Superior;Tempos de Monitoramento");
                         thresholds.reset(uppert, lowert);
@@ -601,7 +601,7 @@ public class AutoElastic implements Runnable {
 
                         //crio o comando para rodar a aplicação com esses parâmetros
                         master_command = "/one/app/scripts/master.sh " 
-                                + AutoElastic.logtitle  
+                                + AutoElasticManager.logtitle  
                                 //#1 titulo do log
                                 + " " 
                                 + ip_vm_master          
@@ -613,7 +613,7 @@ public class AutoElastic implements Runnable {
                                 + (initial_hosts * 2)               
                                 //#4 quantidade inicial de vms
                                 + " "
-                                + remotedir_logs + AutoElastic.thresholdtype + "/" + app + "/u" + uthreshold + "/l" + lthreshold + "/";
+                                + remotedir_logs + AutoElasticManager.thresholdtype + "/" + app + "/u" + uthreshold + "/l" + lthreshold + "/";
                                 //#5 diretorio que o mestre vai salvar o log
                         //crio o arquivo para o bash ler e rodar o comando de dentro dele
                         System.out.println("Comando de inicialização da aplicação: " + master_command);
@@ -636,7 +636,7 @@ public class AutoElastic implements Runnable {
                         //aqui vamos colocar dentro do arquivo de alocações um marcador de que uma nova execução está iniciando. Esse marcador vai ser o nome da execução que é o nome do outro log que é gerado
                         arquivo = new File("C:\\temp\\autoelastic\\autoelastic_resource_operation.csv");
                         escritor = new BufferedWriter(new FileWriter(arquivo, true));
-                        escritor.append(System.currentTimeMillis() + ";INI " + AutoElastic.logtitle + "\n");
+                        escritor.append(System.currentTimeMillis() + ";INI " + AutoElasticManager.logtitle + "\n");
                         escritor.close();
 
                         System.out.println("###############Aplicação iniciada###############");
@@ -646,14 +646,14 @@ public class AutoElastic implements Runnable {
                         //aqui vamos escrever dentro do arquivo de alocações que a execução terminou
                         arquivo = new File("C:\\temp\\autoelastic\\autoelastic_resource_operation.csv");
                         escritor = new BufferedWriter(new FileWriter(arquivo, true));
-                        escritor.append(System.currentTimeMillis() + ";FIM " + AutoElastic.logtitle + "\n");
+                        escritor.append(System.currentTimeMillis() + ";FIM " + AutoElasticManager.logtitle + "\n");
                         escritor.close();
 
                         //deletamos o arquivo que informa que a aplicação iniciou
                         ssh.deleteFile(server_message_start, remotedir_message);
 
-                        //vamos salvar o log com os tempos do AutoElastic
-                        arquivo = new File("C:\\temp\\autoelastic\\Tempos-" + AutoElastic.logtitle + ".csv");
+                        //vamos salvar o log com os tempos do AutoElasticManager
+                        arquivo = new File("C:\\temp\\autoelastic\\Tempos-" + AutoElasticManager.logtitle + ".csv");
                         escritor = new BufferedWriter(new FileWriter(arquivo, true));
                         escritor.append(times);
                         escritor.close();
@@ -779,7 +779,7 @@ public class AutoElastic implements Runnable {
                 cloud_manager.decreaseResourcesHard();
             }
         } catch (ParserConfigurationException | SAXException | IOException | InterruptedException ex) {
-            Logger.getLogger(AutoElastic.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AutoElasticManager.class.getName()).log(Level.SEVERE, null, ex);
             gera_log(objname,"resetCloudResources: Error releasing resources: " + ex.getMessage());
         }
         gera_log(objname,"resetCloudResources: Cloud reseted.");

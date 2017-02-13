@@ -1,8 +1,8 @@
 
 package middlewares;
 
-import autoelastic.AutoElastic;
-import static autoelastic.AutoElastic.gera_log;
+import autoelastic.AutoElasticManager;
+import static autoelastic.AutoElasticManager.gera_log;
 import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -271,7 +271,7 @@ public class OneHost {
             escritor.append(data + "\n");
             escritor.close();
         } catch (IOException ex) {
-            Logger.getLogger(AutoElastic.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AutoElasticManager.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     

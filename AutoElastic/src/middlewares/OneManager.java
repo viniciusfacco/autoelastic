@@ -6,7 +6,7 @@
 
 package middlewares;
 
-import static autoelastic.AutoElastic.gera_log;
+import static autoelastic.AutoElasticManager.gera_log;
 import communication.SSHClient;
 import java.io.IOException;
 import java.util.ArrayList;

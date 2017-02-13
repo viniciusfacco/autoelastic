@@ -41,21 +41,21 @@ import org.xml.sax.SAXException;
  * 09/02/2017 - viniciusfacco
  *            - implemented command line mode
  */
-public final class FAutoElastic extends javax.swing.JFrame {
+public final class AutoElasticUserInterface extends javax.swing.JFrame {
 
     private Thread th_gerenciador;
-    private AutoElastic autoelastic_manager;
+    private AutoElasticManager autoelastic_manager;
     private About about;
     //private int positionX;
     //private int positionY;
 
-    public FAutoElastic() {
+    public AutoElasticUserInterface() {
         setUndecorated(true);
         initComponents();
         init(false);
     }
     
-    public FAutoElastic(String config) {
+    public AutoElasticUserInterface(String config) {
         setUndecorated(true);
         initComponents();
         init(true);
@@ -1489,7 +1489,7 @@ public final class FAutoElastic extends javax.swing.JFrame {
         try {
             th_gerenciador.join();
         } catch (InterruptedException ex) {
-            Logger.getLogger(FAutoElastic.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AutoElasticUserInterface.class.getName()).log(Level.SEVERE, null, ex);
         }
         //configuro os botões
         jbParar.setEnabled(false);
@@ -1768,14 +1768,15 @@ public final class FAutoElastic extends javax.swing.JFrame {
                 //}
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FAutoElastic.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AutoElasticUserInterface.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FAutoElastic.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AutoElasticUserInterface.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FAutoElastic.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AutoElasticUserInterface.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FAutoElastic.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AutoElasticUserInterface.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         if (args.length > 0){
@@ -1783,7 +1784,7 @@ public final class FAutoElastic extends javax.swing.JFrame {
             java.awt.EventQueue.invokeLater(new Runnable() {
                 @Override
                 public void run() {
-                    new FAutoElastic(args[0]).setVisible(false);
+                    new AutoElasticUserInterface(args[0]).setVisible(false);
                 }
             });
         } else {
@@ -1792,7 +1793,7 @@ public final class FAutoElastic extends javax.swing.JFrame {
             java.awt.EventQueue.invokeLater(new Runnable() {
                 @Override
                 public void run() {
-                    new FAutoElastic().setVisible(true);
+                    new AutoElasticUserInterface().setVisible(true);
                 }
             });
         }
@@ -1988,7 +1989,7 @@ public final class FAutoElastic extends javax.swing.JFrame {
             escritor.append(jtaLog.getText());
             escritor.close();
         } catch (IOException ex) {
-            Logger.getLogger(AutoElastic.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AutoElasticManager.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -2054,7 +2055,7 @@ public final class FAutoElastic extends javax.swing.JFrame {
                 escritor.append("</AUTOELASTIC>\n");
                 escritor.close();
             } catch (IOException ex) {
-                Logger.getLogger(AutoElastic.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(AutoElasticManager.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
@@ -2159,7 +2160,7 @@ public final class FAutoElastic extends javax.swing.JFrame {
                     model.addRow(new Object[]{doc.getElementsByTagName("HOST").item(i).getChildNodes().item(0).getNodeValue().trim()});
                 }
             } catch (IOException | ParserConfigurationException | SAXException ex){
-                Logger.getLogger(AutoElastic.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(AutoElasticManager.class.getName()).log(Level.SEVERE, null, ex);
                 JOptionPane.showMessageDialog(null, "Error loading XML file:" + ex.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
             }
         }
@@ -2194,7 +2195,7 @@ public final class FAutoElastic extends javax.swing.JFrame {
          }
          }
          );*/
-        autoelastic_manager = new AutoElastic(this.jpGraficoLineTotal, this.jbGraphicLinePercent, cmdmode);
+        autoelastic_manager = new AutoElasticManager(this.jpGraficoLineTotal, this.jbGraphicLinePercent, cmdmode);
         about = new About();
         about.setVisible(false);
         this.setExtendedState(MAXIMIZED_BOTH);//maximoza janela        
@@ -2276,13 +2277,13 @@ public final class FAutoElastic extends javax.swing.JFrame {
                     this.setVisible(false);
                     autoelastic_manager.startLabMode(this.jtfFrontend.getText(), this.jtfFrontEndUser.getText(), this.jtfFrontEndPassword.getText(), this.jtfSla.getText(), hosts, jtaLog, this.jtfFrontEndPort.getText());
                 } catch (IOException ex) {
-                    Logger.getLogger(FAutoElastic.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(AutoElasticUserInterface.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (ParserConfigurationException ex) {
-                    Logger.getLogger(FAutoElastic.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(AutoElasticUserInterface.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (SAXException ex) {
-                    Logger.getLogger(FAutoElastic.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(AutoElasticUserInterface.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (Exception ex) {
-                    Logger.getLogger(FAutoElastic.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(AutoElasticUserInterface.class.getName()).log(Level.SEVERE, null, ex);
                 }
             } else {
                 //coloco o gerenciador dentro de uma Thread e inicio ele
@@ -2444,7 +2445,7 @@ public final class FAutoElastic extends javax.swing.JFrame {
                 th_gerenciador.start();
                 //============================================================================
             } catch (IOException | ParserConfigurationException | SAXException ex){
-                Logger.getLogger(AutoElastic.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(AutoElasticManager.class.getName()).log(Level.SEVERE, null, ex);
                 System.out.println("Error loading XML file:" + ex.getMessage());
                 System.exit(1);
             }
