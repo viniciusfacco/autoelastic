@@ -297,6 +297,7 @@ public class OneResourcePool {
     //>update hosts running in the cloud and its virtual machines
     private void updateResources(Client oc) throws ParserConfigurationException, SAXException, IOException, Exception {
         
+        gera_log(objname,"updateResources: Updating hosts in the cloud.");
         DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
         InputSource is = new InputSource(new ByteArrayInputStream(hostpool.info().getMessage().getBytes()));
@@ -304,8 +305,10 @@ public class OneResourcePool {
         doc.getDocumentElement().normalize();
 
         NodeList childs = doc.getDocumentElement().getChildNodes();
+        gera_log(objname,"updateResources: " + childs.getLength() + " found.");
         for (int i = 0; i < childs.getLength(); i++){
             Element host = (Element) childs.item(i);
+            gera_log(objname,"updateResources: looking for host name " + host.getElementsByTagName("NAME").item(0).getChildNodes().item(0).getNodeValue() + " in the list of input parameters.");
             createHost(
                     host.getElementsByTagName("ID").item(0).getChildNodes().item(0).getNodeValue(),
                     host.getElementsByTagName("NAME").item(0).getChildNodes().item(0).getNodeValue(),
@@ -327,6 +330,7 @@ public class OneResourcePool {
         OneHost host;
         for (int i = 0; i < hosts_inativos.size(); i++){
             if (hosts_inativos.get(i).getName().equals(name)){
+                gera_log(objname,"createHost: activating host name " + name + ".");
                 hosts_inativos.get(i).create(oc, id);
                 host = hosts_inativos.remove(i);
                 hosts_ativos.add(0, host);

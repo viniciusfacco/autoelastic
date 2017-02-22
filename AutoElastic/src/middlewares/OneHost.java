@@ -95,7 +95,9 @@ public class OneHost {
         this.host = new Host(this.id, oc);
         //aqui tambem tenho que ler e adicionar as vms que estao neste host
         String id_vms[] = this.getValuesFromXML("VMS", "ID");
+        gera_log(objname,"create: found " + id_vms.length + " virtual machines.");
         for(int i = 0; i < id_vms.length; i++){
+            gera_log(objname,"create: creating virtual machine ID " + id_vms[i] + ".");
             this.addVM(new OneVM(oc, Integer.parseInt(id_vms[i]), this.id));
         }
         this.status = true;
