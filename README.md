@@ -27,4 +27,4 @@ AutoElastic has two execution modes depending on the arguments passed by command
 
 Extras
 ==========
-- Application for run experiments in the cloud: https://github.com/viniciusfacco/FunctionProcessing
+- Application for running experiments in the cloud: https://github.com/viniciusfacco/FunctionProcessing
